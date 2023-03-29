@@ -3,6 +3,7 @@ package ca.ubc.cs304.controller;
 import ca.ubc.cs304.database.GameAwardsDbHandler;
 import ca.ubc.cs304.delegates.LoginWindowDelegate;
 import ca.ubc.cs304.delegates.TerminalGamesDelegate;
+import ca.ubc.cs304.model.DeveloperNameModel;
 import ca.ubc.cs304.model.VideoGameModel;
 import ca.ubc.cs304.ui.LoginWindow;
 import ca.ubc.cs304.ui.TerminalGames;
@@ -73,6 +74,20 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		}
 	}
 
+	public void showDeveloperName() {
+		DeveloperNameModel[] models = dbHandler.getDeveloperNameInfo();
+
+		for (int i = 0; i < models.length; i++) {
+			DeveloperNameModel model = models[i];
+
+			// simplified output formatting; truncation may occur
+			System.out.printf("%-10.10s", model.getLeadDeveloper());
+			System.out.printf("%-20.20s", model.getWebsite());
+			System.out.printf("%-15.15s", model.getName());
+			System.out.println();
+		}
+	}
+
 	public void updateVideoGame(String newTitle, int year, String oldTitle) {
 		dbHandler.updateVideoGame(newTitle, year, oldTitle);
 	}
@@ -82,6 +97,18 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		dbHandler = null;
 
 		System.exit(0);
+	}
+
+	public void insertDeveloperName(DeveloperNameModel model) {
+		dbHandler.insertDeveloperName(model);
+	}
+
+	public void deleteDeveloperName(String developerName) {
+		dbHandler.deleteDeveloperName(developerName);
+	}
+
+	public void updateDeveloperName(String newLeadDev, String developerName) {
+		dbHandler.updateDeveloperName(newLeadDev, developerName);
 	}
 
 	/**

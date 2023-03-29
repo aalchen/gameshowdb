@@ -1,6 +1,7 @@
 package ca.ubc.cs304.ui;
 
 import ca.ubc.cs304.delegates.TerminalGamesDelegate;
+import ca.ubc.cs304.model.DeveloperNameModel;
 import ca.ubc.cs304.model.VideoGameModel;
 
 import java.io.BufferedReader;
@@ -68,8 +69,21 @@ public class TerminalGames {
 			System.out.println("2. Delete video game");
 			System.out.println("3. Update video game");
 			System.out.println("4. Show video game");
-			System.out.println("5. Quit");
-			System.out.print("Please choose one of the above 5 options: ");
+			System.out.println("5. Selection of tables");
+			System.out.println("6. Projection of tables");
+			System.out.println("7. Join tables");
+			System.out.println("8. Aggregation with GROUP BY");
+			System.out.println("9. Aggregation with HAVING");
+			System.out.println("10. Nested aggregation with GROUP BY");
+			System.out.println("11. Division of tables");
+			System.out.println("==========");
+			System.out.println("12. Insert Developer Name");
+			System.out.println("13. Delete Developer Name");
+			System.out.println("14. Update Developer Name");
+			System.out.println("15. Show Developer Name");
+			System.out.println("==========");
+			System.out.println("16. Quit");
+			System.out.print("Please choose one of the above options: ");
 
 			choice = readInteger(false);
 
@@ -92,6 +106,20 @@ public class TerminalGames {
 				case 5:
 					handleQuitOption();
 					break;
+				case 12:
+					handleDevInsertOption();
+				break;
+				case 13:
+					handleDevDeleteOption();
+					break;
+				case 14:
+					handleDevUpdateOption();
+					break;
+				case 15:
+					delegate.showDeveloperName();
+					break;
+
+
 				default:
 					System.out.println(WARNING_TAG + " The number that you entered was not a valid option.");
 					break;
@@ -99,7 +127,7 @@ public class TerminalGames {
 			}
 		}		
 	}
-	
+
 	private void handleDeleteOption() {
 		String gameTitle = null;
 		int gameYear = INVALID_INPUT;
@@ -116,6 +144,40 @@ public class TerminalGames {
 		if (gameYear != INVALID_INPUT) {
 			delegate.deleteVideoGame(gameTitle, gameYear);
 		}
+	}
+
+	private void handleDevDeleteOption() {
+		String developer_name = null;
+
+		while (developer_name == null  || developer_name.length() <= 0) {
+			System.out.print("Please enter the developer name you wish to delete: ");
+			developer_name = readLine().trim();
+			delegate.deleteDeveloperName(developer_name);
+		}
+	}
+
+	private void handleDevInsertOption() {
+		String lead_dev = null;
+		String website = null;
+		String developer_name = null;
+
+		while (lead_dev == null || lead_dev.length() <= 0) {
+			System.out.print("Please enter the lead developer name you wish to insert: ");
+			lead_dev = readLine().trim();
+		}
+
+		while (website == null || website.length() <= 0) {
+			System.out.print("Please enter the website you wish to insert: ");
+			website = readLine().trim();
+		}
+
+		while (developer_name == null || developer_name.length() <= 0) {
+			System.out.print("Please enter the video game developer name you wish to insert: ");
+			developer_name = readLine().trim();
+		}
+
+		DeveloperNameModel model = new DeveloperNameModel(lead_dev, website, developer_name);
+		delegate.insertDeveloperName(model);
 	}
 	
 	private void handleInsertOption() {
@@ -183,7 +245,46 @@ public class TerminalGames {
 
 		delegate.updateVideoGame(name, year, oldName);
 	}
-	
+
+	private void handleDevUpdateChoose() {
+		System.out.println("Which column do you want to update? Enter a space separated list (ex. 1 OR 1 2 3)");
+
+		bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+		int choice = INVALID_INPUT;
+
+		while (choice != 4) {
+			System.out.println();
+			System.out.println("1. Update lead_developer");
+			System.out.println("2. Update website");
+			System.out.println("3. Update name");
+			System.out.println("4. Quit");
+			System.out.print("Please choose one of the above 4 options: ");
+		}
+
+
+
+
+	}
+
+	private void handleDevUpdateOption() {
+		String lead_dev = null;
+		String website = null;
+		String developer_name = null;
+		String new_lead_dev = null;
+
+		while (developer_name == null || developer_name.length() <= 0) {
+			System.out.print("Please enter the developer_name you wish to update: ");
+			developer_name = readLine().trim();
+		}
+
+		while (new_lead_dev == null || new_lead_dev.length() <= 0) {
+			System.out.print("Please enter the new lead developer name: ");
+			new_lead_dev = readLine().trim();
+		}
+
+		delegate.updateDeveloperName(new_lead_dev, developer_name);
+	}
+
 	private int readInteger(boolean allowEmpty) {
 		String line = null;
 		int input = INVALID_INPUT;
@@ -201,7 +302,7 @@ public class TerminalGames {
 		}
 		return input;
 	}
-	
+
 	private String readLine() {
 		String result = null;
 		try {

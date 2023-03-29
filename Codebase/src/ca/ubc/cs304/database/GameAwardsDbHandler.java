@@ -83,7 +83,7 @@ public class GameAwardsDbHandler {
 		}
 	}
 
-	public void insertDevName(DeveloperNameModel model) {
+	public void insertDeveloperName(DeveloperNameModel model) {
 		try {
 			String query = "INSERT INTO DeveloperName VALUES (?,?,?)";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -110,10 +110,10 @@ public class GameAwardsDbHandler {
 			ResultSet rs = ps.executeQuery();
 
 			while(rs.next()) {
-				VideoGameModel model = new VideoGameModel(rs.getString("game_title"),
-						rs.getInt("game_year"),
-						rs.getString("game_genre"),
-						rs.getString("genre_developer_name"));
+				VideoGameModel model = new VideoGameModel(rs.getString("title"),
+						rs.getInt("year"),
+						rs.getString("genre"),
+						rs.getString("developer_name"));
 				result.add(model);
 			}
 
@@ -179,7 +179,7 @@ public class GameAwardsDbHandler {
 		try {
 //			// removed ON UPDATE CASCADE as it's not supported in Oracle
 //			// https://stackoverflow.com/questions/48399874/oracle-on-delete-on-update
-			String query0 = "CREATE TABLE DeveloperName(lead_developer VARCHAR(50), dev_website VARCHAR(50), name VARCHAR(50) PRIMARY KEY)";
+			String query0 = "CREATE TABLE DeveloperName(lead_developer VARCHAR(50), website VARCHAR(50), name VARCHAR(50) PRIMARY KEY)";
 			String query1 = "CREATE TABLE VideoGame(title VARCHAR(128), year INTEGER, genre VARCHAR(50), developer_name VARCHAR(50), CONSTRAINT pk_game PRIMARY KEY (title, year), CONSTRAINT fk_devname FOREIGN KEY (developer_name) REFERENCES DeveloperName(name) ON DELETE SET NULL)";
 			PrintablePreparedStatement ps0 = new PrintablePreparedStatement(connection.prepareStatement(query0), query0, false);
 			ps0.executeUpdate();
@@ -193,10 +193,10 @@ public class GameAwardsDbHandler {
 		}
 
 		DeveloperNameModel devName1 = new DeveloperNameModel("Todd Howard", "https://bethesdagamestudios.com/", "Bethesda Game Studio");
-		insertDevName(devName1);
+		insertDeveloperName(devName1);
 
 		DeveloperNameModel devName2 = new DeveloperNameModel("Hidetaka Miyazaki", "https://www.fromsoftware.jp/ww/", "FromSoftware");
-		insertDevName(devName2);
+		insertDeveloperName(devName2);
 
 		VideoGameModel game1 = new VideoGameModel("Skyrim", 2013, "Action role-playing", "Bethesda Game Studio");
 		insertVideoGame(game1);
@@ -228,6 +228,71 @@ public class GameAwardsDbHandler {
 			ps.close();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		}
+	}
+
+	public DeveloperNameModel[] getDeveloperNameInfo() {
+		ArrayList<DeveloperNameModel> result = new ArrayList<DeveloperNameModel>();
+
+		try {
+			String query = "SELECT * FROM DeveloperName";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+
+			while(rs.next()) {
+				DeveloperNameModel model = new DeveloperNameModel(rs.getString("lead_developer"),
+						rs.getString("website"),
+						rs.getString("name"));
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		}
+
+		return result.toArray(new DeveloperNameModel[result.size()]);
+	}
+
+	public void updateDeveloperName(String newLeadDev, String developerName) {
+		try {
+			String query = "UPDATE DeveloperName SET lead_developer = ? WHERE name = ?";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ps.setString(1, newLeadDev);
+			ps.setString(2, developerName);
+
+			int rowCount = ps.executeUpdate();
+			if (rowCount == 0) {
+				System.out.println(WARNING_TAG + " Developer name" + developerName + " does not exist!");
+			}
+
+			connection.commit();
+
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			rollbackConnection();
+		}
+	}
+
+	public void deleteDeveloperName(String developerName) {
+		try {
+			String query = "DELETE FROM DeveloperName WHERE name = ?";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ps.setString(1, developerName);
+
+			int rowCount = ps.executeUpdate();
+			if (rowCount == 0) {
+				System.out.println(WARNING_TAG + " Developer name " + developerName + " does not exist!");
+			}
+
+			connection.commit();
+
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			rollbackConnection();
 		}
 	}
 }
