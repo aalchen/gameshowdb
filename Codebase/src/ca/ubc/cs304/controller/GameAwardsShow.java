@@ -8,6 +8,8 @@ import ca.ubc.cs304.model.VideoGameModel;
 import ca.ubc.cs304.ui.LoginWindow;
 import ca.ubc.cs304.ui.TerminalGames;
 
+import java.io.IOException;
+
 /**
  * This is the main controller class that will orchestrate everything.
  */
@@ -29,7 +31,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 	 * 
      * connects to Oracle database with supplied username and password
      */ 
-	public void login(String username, String password) {
+	public void login(String username, String password) throws IOException {
 		boolean didConnect = dbHandler.login(username, password);
 
 		if (didConnect) {
@@ -109,6 +111,18 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 
 	public void updateDeveloperName(String newLeadDev, String developerName) {
 		dbHandler.updateDeveloperName(newLeadDev, developerName);
+	}
+
+	public void updateDeveloperNameLead(String newLeadDev, String developerName) {
+		dbHandler.updateDeveloperNameLead(newLeadDev, developerName);
+	}
+
+	public void updateDeveloperNameWebsite(String website, String developerName) {
+		dbHandler.updateDeveloperNameWebsite(website, developerName);
+	}
+
+	public void updateDeveloperNameName(String newDeveloperName, String developerName) {
+		dbHandler.updateDeveloperNameName(newDeveloperName, developerName);
 	}
 
 	/**

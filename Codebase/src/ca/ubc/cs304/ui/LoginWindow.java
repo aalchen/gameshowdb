@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -134,6 +135,10 @@ public class LoginWindow extends JFrame implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		delegate.login(usernameField.getText(), String.valueOf(passwordField.getPassword()));
+		try {
+			delegate.login(usernameField.getText(), String.valueOf(passwordField.getPassword()));
+		} catch (IOException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 }

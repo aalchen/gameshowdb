@@ -22,5 +22,7 @@ public interface TerminalGamesDelegate {
 	public void terminalGamesFinished();
 	public void insertDeveloperName(DeveloperNameModel model);
 	public void deleteDeveloperName(String developerName);
-	public void updateDeveloperName(String newLeadDev, String developerName);
+	public void updateDeveloperNameLead(String newLeadDev, String developerName);
+	public void updateDeveloperNameWebsite(String website, String developerName);
+	public void updateDeveloperNameName(String newDeveloperName, String developerName);
 }

@@ -295,4 +295,67 @@ public class GameAwardsDbHandler {
 			rollbackConnection();
 		}
 	}
+
+	public void updateDeveloperNameLead(String newLeadDev, String developerName) {
+		try {
+			String query = "UPDATE DeveloperName SET lead_developer = ? WHERE name = ?";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ps.setString(1, newLeadDev);
+			ps.setString(2, developerName);
+
+			int rowCount = ps.executeUpdate();
+			if (rowCount == 0) {
+				System.out.println(WARNING_TAG + " Developer name" + developerName + " does not exist!");
+			}
+
+			connection.commit();
+
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			rollbackConnection();
+		}
+	}
+
+	public void updateDeveloperNameWebsite(String website, String developerName) {
+		try {
+			String query = "UPDATE DeveloperName SET website = ? WHERE name = ?";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ps.setString(1, website);
+			ps.setString(2, developerName);
+
+			int rowCount = ps.executeUpdate();
+			if (rowCount == 0) {
+				System.out.println(WARNING_TAG + " Developer name" + developerName + " does not exist!");
+			}
+
+			connection.commit();
+
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			rollbackConnection();
+		}
+	}
+
+	public void updateDeveloperNameName(String newDeveloperName, String developerName) {
+		try {
+			String query = "UPDATE DeveloperName SET name = ? WHERE name = ?";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ps.setString(1, newDeveloperName);
+			ps.setString(2, developerName);
+
+			int rowCount = ps.executeUpdate();
+			if (rowCount == 0) {
+				System.out.println(WARNING_TAG + " Developer name" + developerName + " does not exist!");
+			}
+
+			connection.commit();
+
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			rollbackConnection();
+		}
+	}
 }

@@ -1,5 +1,7 @@
 package ca.ubc.cs304.delegates;
 
+import java.io.IOException;
+
 /**
  * This interface uses the delegation design pattern where instead of having
  * the LoginWindow class try to do everything, it will only focus on
@@ -10,5 +12,5 @@ package ca.ubc.cs304.delegates;
  * Bank is the actual class that will implement the methods.
  */
 public interface LoginWindowDelegate {
-    void login(String username, String password);
+    void login(String username, String password) throws IOException;
 }

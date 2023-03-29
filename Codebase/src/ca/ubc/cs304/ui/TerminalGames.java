@@ -57,7 +57,7 @@ public class TerminalGames {
 	/**
 	 * Displays simple text interface
 	 */ 
-	public void showMainMenu(TerminalGamesDelegate delegate) {
+	public void showMainMenu(TerminalGamesDelegate delegate) throws IOException {
 		this.delegate = delegate;
 		
 	    bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -69,6 +69,7 @@ public class TerminalGames {
 			System.out.println("2. Delete video game");
 			System.out.println("3. Update video game");
 			System.out.println("4. Show video game");
+			System.out.println("==========");
 			System.out.println("5. Selection of tables");
 			System.out.println("6. Projection of tables");
 			System.out.println("7. Join tables");
@@ -103,7 +104,7 @@ public class TerminalGames {
 				case 4:  
 					delegate.showVideoGame();
 					break;
-				case 5:
+				case 16:
 					handleQuitOption();
 					break;
 				case 12:
@@ -113,13 +114,11 @@ public class TerminalGames {
 					handleDevDeleteOption();
 					break;
 				case 14:
-					handleDevUpdateOption();
+					handleDevUpdateChoose(delegate);
 					break;
 				case 15:
 					delegate.showDeveloperName();
-					break;
-
-
+				break;
 				default:
 					System.out.println(WARNING_TAG + " The number that you entered was not a valid option.");
 					break;
@@ -246,7 +245,7 @@ public class TerminalGames {
 		delegate.updateVideoGame(name, year, oldName);
 	}
 
-	private void handleDevUpdateChoose() {
+	private void handleDevUpdateChoose(TerminalGamesDelegate delegate) throws IOException {
 		System.out.println("Which column do you want to update? Enter a space separated list (ex. 1 OR 1 2 3)");
 
 		bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -259,21 +258,31 @@ public class TerminalGames {
 			System.out.println("3. Update name");
 			System.out.println("4. Quit");
 			System.out.print("Please choose one of the above 4 options: ");
+
+			String separatedInput = bufferedReader.readLine();
+			System.out.println(separatedInput);
+
+			if (separatedInput.contains("1")) {
+				handleDevUpdateLead();
+			}
+			if (separatedInput.contains("2")) {
+				handleDevUpdateWeb();
+			}
+			if (separatedInput.contains("3")) {
+				handleDevUpdateName();
+			}
+			if (separatedInput.contains("4")) {
+				showMainMenu(delegate);
+			}
 		}
-
-
-
-
 	}
 
-	private void handleDevUpdateOption() {
-		String lead_dev = null;
-		String website = null;
+	private void handleDevUpdateLead() {
 		String developer_name = null;
 		String new_lead_dev = null;
 
 		while (developer_name == null || developer_name.length() <= 0) {
-			System.out.print("Please enter the developer_name you wish to update: ");
+			System.out.print("Please enter the developer name you wish to update: ");
 			developer_name = readLine().trim();
 		}
 
@@ -282,7 +291,41 @@ public class TerminalGames {
 			new_lead_dev = readLine().trim();
 		}
 
-		delegate.updateDeveloperName(new_lead_dev, developer_name);
+		delegate.updateDeveloperNameLead(new_lead_dev, developer_name);
+	}
+
+	private void handleDevUpdateWeb() {
+		String website = null;
+		String developer_name = null;
+
+		while (developer_name == null || developer_name.length() <= 0) {
+			System.out.print("Please enter the developer name you wish to update: ");
+			developer_name = readLine().trim();
+		}
+
+		while (website == null || website.length() <= 0) {
+			System.out.print("Please enter the new website name: ");
+			website = readLine().trim();
+		}
+
+		delegate.updateDeveloperNameWebsite(website, developer_name);
+	}
+
+	private void handleDevUpdateName() {
+		String developer_name = null;
+		String new_developer_name = null;
+
+		while (developer_name == null || developer_name.length() <= 0) {
+			System.out.print("Please enter the developer_name you wish to update: ");
+			developer_name = readLine().trim();
+		}
+
+		while (new_developer_name == null || new_developer_name.length() <= 0) {
+			System.out.print("Please enter the new developer name: ");
+			new_developer_name = readLine().trim();
+		}
+
+		delegate.updateDeveloperNameName(new_developer_name, developer_name);
 	}
 
 	private int readInteger(boolean allowEmpty) {
