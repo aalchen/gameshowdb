@@ -73,8 +73,8 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		}
 	}
 
-	public void updateVideoGame(String title, int year) {
-		dbHandler.updateVideoGame(title, year);
+	public void updateVideoGame(String newTitle, int year, String oldTitle) {
+		dbHandler.updateVideoGame(newTitle, year, oldTitle);
 	}
 
 	public void terminalGamesFinished() {

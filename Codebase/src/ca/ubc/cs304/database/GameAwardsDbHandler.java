@@ -1,5 +1,6 @@
 package ca.ubc.cs304.database;
 
+import ca.ubc.cs304.model.DeveloperNameModel;
 import ca.ubc.cs304.model.VideoGameModel;
 import ca.ubc.cs304.util.PrintablePreparedStatement;
 
@@ -82,6 +83,24 @@ public class GameAwardsDbHandler {
 		}
 	}
 
+	public void insertDevName(DeveloperNameModel model) {
+		try {
+			String query = "INSERT INTO DeveloperName VALUES (?,?,?)";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ps.setString(1, model.getLeadDeveloper());
+			ps.setString(2, model.getWebsite());
+			ps.setString(3, model.getName());
+
+			ps.executeUpdate();
+			connection.commit();
+
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			rollbackConnection();
+		}
+	}
+
 	public VideoGameModel[] getVideoGameInfo() {
 		ArrayList<VideoGameModel> result = new ArrayList<VideoGameModel>();
 
@@ -107,16 +126,17 @@ public class GameAwardsDbHandler {
 		return result.toArray(new VideoGameModel[result.size()]);
 	}
 
-	public void updateVideoGame(String name, int year) {
+	public void updateVideoGame(String newName, int year, String oldName) {
 		try {
-			String query = "UPDATE videogame SET game_name = ? WHERE game_year = ?";
+			String query = "UPDATE VideoGame SET title = ? WHERE year = ? AND title = ?";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-			ps.setString(1, name);
+			ps.setString(1, newName);
 			ps.setInt(2, year);
+			ps.setString(3, oldName);
 
 			int rowCount = ps.executeUpdate();
 			if (rowCount == 0) {
-				System.out.println(WARNING_TAG + " Video game name " + name+ " does not exist!");
+				System.out.println(WARNING_TAG + " Video game name " + oldName + " does not exist!");
 			}
 
 			connection.commit();
@@ -157,17 +177,28 @@ public class GameAwardsDbHandler {
 		dropBranchTableIfExists();
 
 		try {
-			// removed ON UPDATE CASCADE as it's not supported in Oracle
-			// https://stackoverflow.com/questions/48399874/oracle-on-delete-on-update
-			String query = "CREATE TABLE VideoGame(title VARCHAR(128), year INTEGER, genre VARCHAR(50), developer_name VARCHAR(20), PRIMARY KEY (title, year), FOREIGN KEY (developer_name) REFERENCES Developer(Name) ON DELETE SET NULL)";
-			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-			ps.executeUpdate();
-			ps.close();
+//			// removed ON UPDATE CASCADE as it's not supported in Oracle
+//			// https://stackoverflow.com/questions/48399874/oracle-on-delete-on-update
+			String query0 = "CREATE TABLE DeveloperName(lead_developer VARCHAR(50), dev_website VARCHAR(50), name VARCHAR(50) PRIMARY KEY)";
+			String query1 = "CREATE TABLE VideoGame(title VARCHAR(128), year INTEGER, genre VARCHAR(50), developer_name VARCHAR(50), CONSTRAINT pk_game PRIMARY KEY (title, year), CONSTRAINT fk_devname FOREIGN KEY (developer_name) REFERENCES DeveloperName(name) ON DELETE SET NULL)";
+			PrintablePreparedStatement ps0 = new PrintablePreparedStatement(connection.prepareStatement(query0), query0, false);
+			ps0.executeUpdate();
+			ps0.close();
+
+			PrintablePreparedStatement ps2 = new PrintablePreparedStatement(connection.prepareStatement(query1), query1, false);
+			ps2.executeUpdate();
+			ps2.close();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 		}
 
-		VideoGameModel game1 = new VideoGameModel("Skyrim", 2013, "Action role-playing", "Bethesda Game Studios");
+		DeveloperNameModel devName1 = new DeveloperNameModel("Todd Howard", "https://bethesdagamestudios.com/", "Bethesda Game Studio");
+		insertDevName(devName1);
+
+		DeveloperNameModel devName2 = new DeveloperNameModel("Hidetaka Miyazaki", "https://www.fromsoftware.jp/ww/", "FromSoftware");
+		insertDevName(devName2);
+
+		VideoGameModel game1 = new VideoGameModel("Skyrim", 2013, "Action role-playing", "Bethesda Game Studio");
 		insertVideoGame(game1);
 
 		VideoGameModel game2 = new VideoGameModel("Sekiro: Shadows Die Twice", 2019, "Action-adventure", "FromSoftware");
@@ -181,8 +212,14 @@ public class GameAwardsDbHandler {
 			ResultSet rs = ps.executeQuery();
 
 			while(rs.next()) {
-				if(rs.getString(1).toLowerCase().equals("branch")) {
-					ps.execute("DROP TABLE branch");
+				if(rs.getString(1).toLowerCase().equals("developername")) {
+					System.out.println(rs.getString(1).toLowerCase());
+					ps.execute("DROP TABLE DeveloperName");
+					break;
+				}
+				if(rs.getString(1).toLowerCase().equals("videogame")) {
+					System.out.println(rs.getString(1).toLowerCase());
+					ps.execute("DROP TABLE VideoGame");
 					break;
 				}
 			}

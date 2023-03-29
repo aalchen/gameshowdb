@@ -18,7 +18,7 @@ public interface TerminalGamesDelegate {
 	public void deleteVideoGame(String title, int year);
 	public void insertVideoGame(VideoGameModel videoGame);
 	public void showVideoGame();
-	public void updateVideoGame(String title, int year);
+	public void updateVideoGame(String newTitle, int year, String oldTitle);
 	
 	public void terminalGamesFinished();
 }

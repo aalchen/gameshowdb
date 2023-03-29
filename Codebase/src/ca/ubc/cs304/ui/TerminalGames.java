@@ -104,10 +104,11 @@ public class TerminalGames {
 		String gameTitle = null;
 		int gameYear = INVALID_INPUT;
 
-		while (gameTitle == null) {
+		while (gameTitle == null  || gameTitle.length() <= 0) {
 			System.out.print("Please enter the video game title you wish to delete: ");
+			gameTitle = readLine().trim();
 		}
-		while (gameYear == INVALID_INPUT) {
+		while (gameTitle != null && gameYear == INVALID_INPUT) {
 			System.out.print("Please enter the video game year you wish to delete: ");
 			gameYear = readInteger(false);
 		}
@@ -162,10 +163,10 @@ public class TerminalGames {
 	}
 	
 	private void handleUpdateOption() {
-		String name = null;
-		while (name == null || name.length() <= 0) {
+		String oldName = null;
+		while (oldName == null || oldName.length() <= 0) {
 			System.out.print("Please enter the video game name you wish to update: ");
-			name = readLine().trim();
+			oldName = readLine().trim();
 		}
 
 		int year = INVALID_INPUT;
@@ -174,7 +175,13 @@ public class TerminalGames {
 			year = readInteger(false);
 		}
 
-		delegate.updateVideoGame(name, year);
+		String name = null;
+		while (name == null || name.length() <= 0) {
+			System.out.print("Please enter the new video game name: ");
+			name = readLine().trim();
+		}
+
+		delegate.updateVideoGame(name, year, oldName);
 	}
 	
 	private int readInteger(boolean allowEmpty) {
