@@ -65,10 +65,10 @@ public class TerminalGames {
 		
 		while (choice != 5) {
 			System.out.println();
-			System.out.println("1. Insert video game");
-			System.out.println("2. Delete video game");
-			System.out.println("3. Update video game");
-			System.out.println("4. Show video game");
+			System.out.println("1. Insert into VideoGame");
+			System.out.println("2. Delete from VideoGame");
+			System.out.println("3. Update a VideoGame");
+			System.out.println("4. Show all VideoGame values");
 			System.out.println("==========");
 			System.out.println("5. Selection of tables");
 			System.out.println("6. Projection of tables");
@@ -78,10 +78,10 @@ public class TerminalGames {
 			System.out.println("10. Nested aggregation with GROUP BY");
 			System.out.println("11. Division of tables");
 			System.out.println("==========");
-			System.out.println("12. Insert Developer Name");
-			System.out.println("13. Delete Developer Name");
-			System.out.println("14. Update Developer Name");
-			System.out.println("15. Show Developer Name");
+			System.out.println("12. Insert into DeveloperName");
+			System.out.println("13. Delete from DeveloperName");
+			System.out.println("14. Update a DeveloperName");
+			System.out.println("15. Show all DeveloperName values");
 			System.out.println("==========");
 			System.out.println("16. Quit");
 			System.out.print("Please choose one of the above options: ");
@@ -111,7 +111,7 @@ public class TerminalGames {
 					handleDevInsertOption();
 				break;
 				case 13:
-					handleDevDeleteOption();
+					handleDevDeleteOptionChoose(delegate);
 					break;
 				case 14:
 					handleDevUpdateChoose(delegate);
@@ -142,6 +142,59 @@ public class TerminalGames {
 
 		if (gameYear != INVALID_INPUT) {
 			delegate.deleteVideoGame(gameTitle, gameYear);
+		}
+	}
+
+	private void handleDevDeleteOptionChoose(TerminalGamesDelegate delegate) throws IOException {
+		System.out.println("What do you want to delete?");
+
+		bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+		int choice = INVALID_INPUT;
+		String devNameToDelete = null;
+		while (choice != 4) {
+			System.out.println();
+			System.out.println("1. Delete by lead_developer");
+			System.out.println("2. Delete by website");
+			System.out.println("3. Delete by name");
+			System.out.println("4. Return to Main Menu");
+			System.out.print("Please choose one of the above 4 options: ");
+
+			String separatedInput = bufferedReader.readLine();
+			System.out.println(separatedInput);
+
+			if (separatedInput.contains("4")) {
+				showMainMenu(delegate);
+			}
+
+			if (separatedInput.contains("1")) {
+				handleDevDeleteLead();
+			}
+			if (separatedInput.contains("2")) {
+				handleDevDeleteWebsite();
+			}
+			if (separatedInput.contains("3")) {
+				delegate.deleteDeveloperName(getDevNameDelete());
+			}
+		}
+	}
+
+	private void handleDevDeleteLead() {
+		String lead_dev = null;
+
+		while (lead_dev == null  || lead_dev.length() <= 0) {
+			System.out.print("Please enter the lead developer you wish to delete: ");
+			lead_dev = readLine().trim();
+			delegate.deleteDeveloperNameLead(lead_dev);
+		}
+	}
+
+	private void handleDevDeleteWebsite() {
+		String website = null;
+
+		while (website == null  || website.length() <= 0) {
+			System.out.print("Please enter the website you wish to delete: ");
+			website = readLine().trim();
+			delegate.deleteDeveloperNameWeb(website);
 		}
 	}
 
@@ -256,7 +309,7 @@ public class TerminalGames {
 			System.out.println("1. Update lead_developer");
 			System.out.println("2. Update website");
 			System.out.println("3. Update name");
-			System.out.println("4. Quit");
+			System.out.println("4. Return to Main Menu");
 			System.out.print("Please choose one of the above 4 options: ");
 
 			String separatedInput = bufferedReader.readLine();
@@ -277,7 +330,6 @@ public class TerminalGames {
 			if (separatedInput.contains("3")) {
 				handleDevUpdateName(devNameToChange);
 			}
-
 		}
 	}
 
@@ -286,6 +338,16 @@ public class TerminalGames {
 
 		while (developer_name == null || developer_name.length() <= 0) {
 			System.out.print("Please enter the developer name you wish to update: ");
+			developer_name = readLine().trim();
+		}
+		return developer_name;
+	}
+
+	private String getDevNameDelete() {
+		String developer_name = null;
+
+		while (developer_name == null || developer_name.length() <= 0) {
+			System.out.print("Please enter the developer name you wish to delete: ");
 			developer_name = readLine().trim();
 		}
 		return developer_name;

@@ -125,6 +125,14 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		dbHandler.updateDeveloperNameName(newDeveloperName, developerName);
 	}
 
+	public void deleteDeveloperNameLead(String deleteLeadDev) {
+		dbHandler.deleteDeveloperNameLead(deleteLeadDev);
+	}
+
+	public void deleteDeveloperNameWeb(String deleteWebsite) {
+		dbHandler.deleteDeveloperNameWeb(deleteWebsite);
+	}
+
 	/**
 	 * TermainalTransactionsDelegate Implementation
 	 * 
