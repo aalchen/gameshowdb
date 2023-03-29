@@ -250,7 +250,7 @@ public class TerminalGames {
 
 		bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 		int choice = INVALID_INPUT;
-
+		String devNameToChange = null;
 		while (choice != 4) {
 			System.out.println();
 			System.out.println("1. Update lead_developer");
@@ -262,29 +262,37 @@ public class TerminalGames {
 			String separatedInput = bufferedReader.readLine();
 			System.out.println(separatedInput);
 
-			if (separatedInput.contains("1")) {
-				handleDevUpdateLead();
-			}
-			if (separatedInput.contains("2")) {
-				handleDevUpdateWeb();
-			}
-			if (separatedInput.contains("3")) {
-				handleDevUpdateName();
-			}
 			if (separatedInput.contains("4")) {
 				showMainMenu(delegate);
+			} else {
+				devNameToChange = getDevName();
 			}
+
+			if (separatedInput.contains("1")) {
+				handleDevUpdateLead(devNameToChange);
+			}
+			if (separatedInput.contains("2")) {
+				handleDevUpdateWeb(devNameToChange);
+			}
+			if (separatedInput.contains("3")) {
+				handleDevUpdateName(devNameToChange);
+			}
+
 		}
 	}
 
-	private void handleDevUpdateLead() {
+	private String getDevName() {
 		String developer_name = null;
-		String new_lead_dev = null;
 
 		while (developer_name == null || developer_name.length() <= 0) {
 			System.out.print("Please enter the developer name you wish to update: ");
 			developer_name = readLine().trim();
 		}
+		return developer_name;
+	}
+
+	private void handleDevUpdateLead(String developer_name) {
+		String new_lead_dev = null;
 
 		while (new_lead_dev == null || new_lead_dev.length() <= 0) {
 			System.out.print("Please enter the new lead developer name: ");
@@ -294,14 +302,8 @@ public class TerminalGames {
 		delegate.updateDeveloperNameLead(new_lead_dev, developer_name);
 	}
 
-	private void handleDevUpdateWeb() {
+	private void handleDevUpdateWeb(String developer_name) {
 		String website = null;
-		String developer_name = null;
-
-		while (developer_name == null || developer_name.length() <= 0) {
-			System.out.print("Please enter the developer name you wish to update: ");
-			developer_name = readLine().trim();
-		}
 
 		while (website == null || website.length() <= 0) {
 			System.out.print("Please enter the new website name: ");
@@ -311,14 +313,8 @@ public class TerminalGames {
 		delegate.updateDeveloperNameWebsite(website, developer_name);
 	}
 
-	private void handleDevUpdateName() {
-		String developer_name = null;
+	private void handleDevUpdateName(String developer_name) {
 		String new_developer_name = null;
-
-		while (developer_name == null || developer_name.length() <= 0) {
-			System.out.print("Please enter the developer_name you wish to update: ");
-			developer_name = readLine().trim();
-		}
 
 		while (new_developer_name == null || new_developer_name.length() <= 0) {
 			System.out.print("Please enter the new developer name: ");
