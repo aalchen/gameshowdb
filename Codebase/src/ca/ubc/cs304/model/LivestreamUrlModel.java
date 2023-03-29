@@ -1,5 +1,7 @@
 package ca.ubc.cs304.model;
 
+import java.util.Date;
+
 public class LivestreamUrlModel {
 
 	private final String url;

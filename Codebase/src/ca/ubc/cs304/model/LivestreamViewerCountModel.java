@@ -1,5 +1,7 @@
 package ca.ubc.cs304.model;
 
+import java.util.Date;
+
 public class LivestreamViewerCountModel {
 
 	private final String language;

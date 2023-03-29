@@ -1,5 +1,7 @@
 package ca.ubc.cs304.model;
 
+import java.util.Date;
+
 public class SponsorsModel {
 
 	private final String company_name;

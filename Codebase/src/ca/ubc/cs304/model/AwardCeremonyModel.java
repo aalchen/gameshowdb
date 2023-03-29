@@ -1,5 +1,7 @@
 package ca.ubc.cs304.model;
 
+import java.util.Date;
+
 public class AwardCeremonyModel {
 
 	private final int viewer_count;
@@ -12,7 +14,7 @@ public class AwardCeremonyModel {
 		this.venue_name = venue_name;
 	}
 
-	public String getViewerCount() {
+	public int getViewerCount() {
 		return viewer_count;
 	}
 
