@@ -2,6 +2,7 @@ package ca.ubc.cs304.database;
 
 import ca.ubc.cs304.model.DeveloperNameModel;
 import ca.ubc.cs304.model.DeveloperNameVideoGameModel;
+import ca.ubc.cs304.model.VideoGameCountModel;
 import ca.ubc.cs304.model.VideoGameModel;
 import ca.ubc.cs304.util.PrintablePreparedStatement;
 
@@ -586,4 +587,51 @@ public class GameAwardsDbHandler {
 
 		return result.toArray(new DeveloperNameVideoGameModel[result.size()]);
 	}
-}
+
+	public VideoGameCountModel[] aggregateGroupBy(String table, String aggregationOp, String aggregateCol, List<String> otherCol, String groupByCol) {
+		ArrayList<VideoGameCountModel> result = new ArrayList<VideoGameCountModel>();
+		String queryColumns = "";
+		for (int i = 0; i < otherCol.size(); i++) {
+			queryColumns = queryColumns + otherCol.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0,queryColumns.length() - 2);
+		String selectStatement = aggregationOp + "(" + aggregateCol + "), " + queryColumns;
+		try {
+			String query = "SELECT " + selectStatement + " FROM " + table + " GROUP BY " + groupByCol;
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+
+			String title = "";
+			int year = INVALID_INPUT;
+			String genre = "";
+			String name = "";
+
+			while (rs.next()) {
+				if (otherCol.contains("Title")) {
+					title = rs.getString("title");
+				}
+				if (otherCol.contains("Year")) {
+					year = rs.getInt("year");
+				}
+				if (otherCol.contains("Genre")) {
+					genre = rs.getString("genre");
+				}
+				if (otherCol.contains("Developer_Name")) {
+					name = rs.getString("developer_name");
+				}
+
+				VideoGameCountModel model = new VideoGameCountModel(title,
+						year,
+						genre,
+						name,
+						rs.getInt("COUNT(Title)"));
+				result.add(model);
+			}
+			rs.close();
+			ps.close();
+		} catch(SQLException e){
+				System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			}
+			return result.toArray(new VideoGameCountModel[result.size()]);
+		}
+	}

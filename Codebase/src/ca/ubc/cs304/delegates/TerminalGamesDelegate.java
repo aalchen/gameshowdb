@@ -34,4 +34,5 @@ public interface TerminalGamesDelegate {
 	public void selectName(String name);
 	public void projectionColumns(List<String> columns);
 	public void joinTables(List<String> colsArray, String joinWhereCol, String joinWhere, String table1, String table2);
+	public void aggregateGroupBy(String table, String aggregationOp, String aggregateCol, List<String> otherCol, String groupByCol);
 }

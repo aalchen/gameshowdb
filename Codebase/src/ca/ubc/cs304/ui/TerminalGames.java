@@ -115,6 +115,9 @@ public class TerminalGames {
 				case 7:
 					handleJoinOption();
 					break;
+				case 8:
+					handleAggregationGroupByOption();
+					break;	
 				case 12:
 					handleDevInsertOption();
 					break;
@@ -136,6 +139,121 @@ public class TerminalGames {
 				}
 			}
 		}		
+	}
+
+	private void handleAggregationGroupByOption() throws IOException {
+		String table = null;
+		while (table == null || table.length() <= 0) {
+			System.out.println("Please enter Table name: ");
+			table = readLine().trim();
+		}
+
+		System.out.println("Select the type of aggregation: ");
+		bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+		int choice = INVALID_INPUT;
+		String aggregationOp = "";
+		while (choice != 5) {
+			System.out.println();
+			System.out.println("1. COUNT");
+			System.out.println("2. MIN");
+			System.out.println("3. MAX");
+			System.out.println("4. AVG");
+			System.out.println("5. Return to Main Menu");
+
+			String separatedInput = bufferedReader.readLine();
+			System.out.println(separatedInput);
+
+			if (separatedInput.contains("5")) {
+				showMainMenu(delegate);
+			}
+
+			if (separatedInput.contains("1")) {
+				aggregationOp = "COUNT";
+			} else if (separatedInput.contains("2")) {
+				aggregationOp = "MIN";
+			} else if (separatedInput.contains("3")) {
+				aggregationOp = "MAX";
+			} else if (separatedInput.contains("4")) {
+				aggregationOp = "AVG";
+			}
+
+			if (table.equals("VideoGame")) {
+				System.out.println("Table selected is: " + table);
+
+				System.out.println();
+				System.out.println("These are your menu items, refer to them in the following questions:");
+				System.out.println("1. Title");
+				System.out.println("2. Year");
+				System.out.println("3. Genre");
+				System.out.println("4. Developer Name");
+				System.out.println("5. Return to Main Menu");
+
+				String aggregateCol = null;
+				while (aggregateCol == null || aggregateCol.length() <= 0) {
+					System.out.println("Please enter a column number to AGGREGATE on: ");
+					aggregateCol = readLine().trim();
+				}
+				String otherCol = null;
+				while (otherCol == null || otherCol.length() <= 0) {
+					System.out.println("Please enter other column numbers to add to the table: ");
+					otherCol = readLine().trim();
+				}
+				String groupByCol = null;
+				while (groupByCol == null || groupByCol.length() <= 0) {
+					System.out.println("Please enter a column number to GROUP BY: ");
+					groupByCol = readLine().trim();
+				}
+
+				if (aggregateCol.contains("5") || otherCol.contains("5") || groupByCol.contains("5")) {
+					showMainMenu(delegate);
+				}
+				delegate.aggregateGroupBy(table, aggregationOp, returnVideoGameArray(aggregateCol).get(0).toString(), returnVideoGameArray(otherCol), returnVideoGameArray(groupByCol).get(0).toString());
+			}
+		}
+	}
+
+	private List<String> returnVideoGameArray(String val) {
+		List<String> colsArray = new ArrayList<>();
+
+		if (val.contains("1")) {
+			colsArray.add("Title");
+		}
+
+		if (val.contains("2")) {
+			colsArray.add("Year");
+		}
+
+		if (val.contains("3")) {
+			colsArray.add("Genre");
+		}
+
+		if (val.contains("4")) {
+			colsArray.add("Developer_Name");
+		}
+
+		return colsArray;
+	}
+
+	private List<String> returnDeveloperNameArray(String val) {
+		List<String> colsArray = new ArrayList<>();
+
+		if (val.contains("1")) {
+			colsArray.add("Title");
+		}
+
+		if (val.contains("2")) {
+			colsArray.add("Year");
+		}
+
+		if (val.contains("3")) {
+			colsArray.add("Genre");
+		}
+
+		if (val.contains("4")) {
+			colsArray.add("Developer_Name");
+		}
+
+		return colsArray;
 	}
 
 	private void handleJoinOption() throws IOException {

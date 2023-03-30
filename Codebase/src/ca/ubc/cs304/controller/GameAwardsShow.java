@@ -7,6 +7,7 @@ import ca.ubc.cs304.delegates.LoginWindowDelegate;
 import ca.ubc.cs304.delegates.TerminalGamesDelegate;
 import ca.ubc.cs304.model.DeveloperNameModel;
 import ca.ubc.cs304.model.DeveloperNameVideoGameModel;
+import ca.ubc.cs304.model.VideoGameCountModel;
 import ca.ubc.cs304.model.VideoGameModel;
 import ca.ubc.cs304.ui.LoginWindow;
 import ca.ubc.cs304.ui.TerminalGames;
@@ -72,10 +73,10 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			VideoGameModel model = models[i];
 
 			// simplified output formatting; truncation may occur
-			System.out.printf("%-10.10s", model.getTitle());
-			System.out.printf("%-20.20s", model.getYear());
-			System.out.printf("%-15.15s", model.getGenre());
-			System.out.printf("%-15.15s", model.getDeveloperName());
+			System.out.println(model.getTitle());
+			System.out.println(model.getYear());
+			System.out.println(model.getGenre());
+			System.out.println(model.getDeveloperName());
 			System.out.println();
 		}
 	}
@@ -87,9 +88,9 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			DeveloperNameModel model = models[i];
 
 			// simplified output formatting; truncation may occur
-			System.out.printf("%-10.10s", model.getLeadDeveloper());
-			System.out.printf("%-20.20s", model.getWebsite());
-			System.out.printf("%-15.15s", model.getName());
+			System.out.println(model.getLeadDeveloper());
+			System.out.println(model.getWebsite());
+			System.out.println(model.getName());
 			System.out.println();
 		}
 	}
@@ -144,9 +145,9 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			DeveloperNameModel model = models[i];
 
 			// simplified output formatting; truncation may occur
-			System.out.printf("%-10.10s", model.getLeadDeveloper());
-			System.out.printf("%-20.20s", model.getWebsite());
-			System.out.printf("%-15.15s", model.getName());
+			System.out.println(model.getLeadDeveloper());
+			System.out.println(model.getWebsite());
+			System.out.println(model.getName());
 			System.out.println();
 		}
 	}
@@ -158,9 +159,9 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			DeveloperNameModel model = models[i];
 
 			// simplified output formatting; truncation may occur
-			System.out.printf("%-10.10s", model.getLeadDeveloper());
-			System.out.printf("%-20.20s", model.getWebsite());
-			System.out.printf("%-15.15s", model.getName());
+			System.out.println(model.getLeadDeveloper());
+			System.out.println(model.getWebsite());
+			System.out.println(model.getName());
 			System.out.println();
 		}
 	}
@@ -172,9 +173,9 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			DeveloperNameModel model = models[i];
 
 			// simplified output formatting; truncation may occur
-			System.out.printf("%-10.10s", model.getLeadDeveloper());
-			System.out.printf("%-20.20s", model.getWebsite());
-			System.out.printf("%-15.15s", model.getName());
+			System.out.println(model.getLeadDeveloper());
+			System.out.println(model.getWebsite());
+			System.out.println(model.getName());
 			System.out.println();
 		}
 	}
@@ -186,16 +187,16 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			VideoGameModel model = models[i];
 
 			if (columns.contains("Title")) {
-				System.out.printf("%-10.10s", model.getTitle());
+				System.out.println(model.getTitle());
 			}
 			if (columns.contains("Year")) {
-				System.out.printf("%-20.20s", model.getYear());
+				System.out.println(model.getYear());
 			}
 			if (columns.contains("Genre")) {
-				System.out.printf("%-15.15s", model.getGenre());
+				System.out.println(model.getGenre());
 			}
 			if (columns.contains("Developer_Name")) {
-				System.out.printf("%-15.15s", model.getDeveloperName());
+				System.out.println(model.getDeveloperName());
 			}
 
 			System.out.println();
@@ -209,24 +210,49 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			DeveloperNameVideoGameModel model = models[i];
 
 			if (colsArray.contains("Title")) {
-				System.out.printf("%-10.10s", model.getTitle());
+				System.out.println(model.getTitle());
 			}
 			if (colsArray.contains("Year")) {
-				System.out.printf("%-20.20s", model.getYear());
+				System.out.println(model.getYear());
 			}
 			if (colsArray.contains("Genre")) {
-				System.out.printf("%-15.15s", model.getGenre());
+				System.out.println(model.getGenre());
 			}
 			if (colsArray.contains("Developer_Name")) {
-				System.out.printf("%-15.15s", model.getDeveloperName());
+				System.out.println(model.getDeveloperName());
 			}
 			if (colsArray.contains("Lead_Developer")) {
-				System.out.printf("%-15.15s", model.getLeadDeveloper());
+				System.out.println(model.getLeadDeveloper());
 			}
 			if (colsArray.contains("Website")) {
-				System.out.printf("%-15.15s", model.getWebsite());
+				System.out.println(model.getWebsite());
 			}
 
+			System.out.println();
+		}
+	}
+
+	public void aggregateGroupBy(String table, String aggregationOp, String aggregateCol, List<String> otherCol, String groupByCol) {
+		VideoGameCountModel[] models = dbHandler.aggregateGroupBy(table, aggregationOp, aggregateCol, otherCol, groupByCol);
+		List<String> colsArray = otherCol;
+
+		for (int i = 0; i < models.length; i++) {
+			VideoGameCountModel model = models[i];
+
+			if (colsArray.contains("Title")) {
+				System.out.println(model.getTitle());
+			}
+			if (colsArray.contains("Year")) {
+				System.out.println(model.getYear());
+			}
+			if (colsArray.contains("Genre")) {
+				System.out.println(model.getGenre());
+			}
+			if (colsArray.contains("Developer_Name")) {
+				System.out.println(model.getDeveloperName());
+			}
+
+			System.out.println(model.getColumnNum());
 			System.out.println();
 		}
 	}
