@@ -33,4 +33,5 @@ public interface TerminalGamesDelegate {
 	public void selectWebsite(String website);
 	public void selectName(String name);
 	public void projectionColumns(List<String> columns);
+	public void joinTables(List<String> colsArray, String joinWhereCol, String joinWhere, String table1, String table2);
 }

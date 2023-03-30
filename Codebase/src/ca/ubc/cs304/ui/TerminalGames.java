@@ -112,12 +112,12 @@ public class TerminalGames {
 				case 6:
 					handleProjectionOption();
 					break;
-				case 16:
-					handleQuitOption();
+				case 7:
+					handleJoinOption();
 					break;
 				case 12:
 					handleDevInsertOption();
-				break;
+					break;
 				case 13:
 					handleDevDeleteOptionChoose(delegate);
 					break;
@@ -126,13 +126,130 @@ public class TerminalGames {
 					break;
 				case 15:
 					delegate.showDeveloperName();
-				break;
+					break;
+				case 16:
+					handleQuitOption();
+					break;
 				default:
 					System.out.println(WARNING_TAG + " The number that you entered was not a valid option.");
 					break;
 				}
 			}
 		}		
+	}
+
+	private void handleJoinOption() throws IOException {
+		String table1 = null;
+		String table2 = null;
+		while (table1 == null || table1.length() <= 0) {
+			System.out.println("Please enter TABLE 1 for Join operation: ");
+			table1 = readLine().trim();
+		}
+
+		while (table2 == null || table2.length() <= 0) {
+			System.out.println("Please enter TABLE 2 for Join operation: ");
+			table2 = readLine().trim();
+		}
+
+		System.out.println("Select columns to view - Enter a space separated list (ex. 1 OR 1 2 3): ");
+		bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+		int choice = INVALID_INPUT;
+
+		while (choice != 7) {
+			List<String> colsArray = new ArrayList<>();
+			System.out.println();
+			System.out.println("1. Title");
+			System.out.println("2. Year");
+			System.out.println("3. Genre");
+			System.out.println("4. Developer Name");
+			System.out.println("5. Lead Developer");
+			System.out.println("6. Website");
+			System.out.println("7. Return to Main Menu");
+			System.out.print("Please choose one of the above 7 options: ");
+
+
+			String separatedInput = bufferedReader.readLine();
+			System.out.println(separatedInput);
+
+			if (separatedInput.contains("5")) {
+				showMainMenu(delegate);
+			}
+
+			if (separatedInput.contains("1")) {
+				colsArray.add("Title");
+			}
+
+			if (separatedInput.contains("2")) {
+				colsArray.add("Year");
+			}
+
+			if (separatedInput.contains("3")) {
+				colsArray.add("Genre");
+			}
+
+			if (separatedInput.contains("4")) {
+				colsArray.add("Developer_Name");
+			}
+
+			if (separatedInput.contains("5")) {
+				colsArray.add("Lead_Developer");
+			}
+
+			if (separatedInput.contains("6")) {
+				colsArray.add("Website");
+			}
+
+			handleJoinWhere(colsArray, table1, table2);
+		}
+	}
+
+	private void handleJoinWhere(List<String> colsArray, String table1, String table2) throws IOException {
+		System.out.println("Select a column to filter by: ");
+		bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+		int choice = INVALID_INPUT;
+		String joinWhereCol = "";
+
+		while (choice != 7) {
+			System.out.println();
+			System.out.println("1. Title");
+			System.out.println("2. Year");
+			System.out.println("3. Genre");
+			System.out.println("4. Developer Name");
+			System.out.println("5. Lead Developer");
+			System.out.println("6. Website");
+			System.out.println("7. Return to Main Menu");
+			System.out.print("Please choose one of the above 7 options: ");
+
+
+			String separatedInput = bufferedReader.readLine();
+			System.out.println(separatedInput);
+
+			if (separatedInput.contains("7")) {
+				showMainMenu(delegate);
+			}
+			if (separatedInput.contains("1")) {
+				joinWhereCol="Title";
+			} else if (separatedInput.contains("2")) {
+				joinWhereCol="Year";
+			} else if (separatedInput.contains("3")) {
+				joinWhereCol="Genre";
+			} else if (separatedInput.contains("4")) {
+				joinWhereCol="Developer_Name";
+			} else if (separatedInput.contains("5")) {
+				joinWhereCol="Lead_Developer";
+			} else if (separatedInput.contains("6")) {
+				joinWhereCol="Website";
+			}
+
+			String joinWhere = null;
+
+			while (joinWhere == null || joinWhere.length() <= 0) {
+				System.out.println("Please enter the value to check against: ");
+				joinWhere = readLine().trim();
+			}
+
+			delegate.joinTables(colsArray, joinWhereCol, joinWhere, table1, table2);
+		}
 	}
 
 	private void handleProjectionOption() throws IOException {

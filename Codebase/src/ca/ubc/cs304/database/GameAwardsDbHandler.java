@@ -1,6 +1,7 @@
 package ca.ubc.cs304.database;
 
 import ca.ubc.cs304.model.DeveloperNameModel;
+import ca.ubc.cs304.model.DeveloperNameVideoGameModel;
 import ca.ubc.cs304.model.VideoGameModel;
 import ca.ubc.cs304.util.PrintablePreparedStatement;
 
@@ -520,5 +521,69 @@ public class GameAwardsDbHandler {
 		}
 
 		return result.toArray(new DeveloperNameModel[result.size()]);
+	}
+
+	public DeveloperNameVideoGameModel[] joinTables(List<String> colsArray, String joinWhereCol, String joinWhere, String table1, String table2) {
+		ArrayList<DeveloperNameVideoGameModel> result = new ArrayList<DeveloperNameVideoGameModel>();
+		String queryColumns = "";
+		String joinWhereTable = "";
+		for (int i = 0; i < colsArray.size(); i++) {
+			queryColumns = queryColumns + colsArray.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0,queryColumns.length() - 2);
+
+		if (joinWhereCol == "Title" || joinWhereCol == "Year" || joinWhereCol == "Genre" || joinWhereCol == "Developer_Name" ) {
+			joinWhereTable = "VideoGame";
+		}
+		if (joinWhereCol == "Name" || joinWhereCol == "Website" || joinWhereCol == "Lead_Developer") {
+			joinWhereTable = "DeveloperName";
+		}
+
+		try {
+			String query = "SELECT " + queryColumns + " FROM " + table1 + " INNER JOIN " + table2 + " ON VideoGame.Developer_Name = DeveloperName.name WHERE " + joinWhereTable + "." + joinWhereCol + " = '" + joinWhere + "'";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			String title = "";
+			int year = INVALID_INPUT;
+			String genre = "";
+			String name = "";
+			String lead_dev = "";
+			String website = "";
+
+			while(rs.next()) {
+				if (colsArray.contains("Title")) {
+					title = rs.getString("title");
+				}
+				if (colsArray.contains("Year")) {
+					year = rs.getInt("year");
+				}
+				if (colsArray.contains("Genre")) {
+					genre = rs.getString("genre");
+				}
+				if (colsArray.contains("Developer_Name")) {
+					name = rs.getString("developer_name");
+				}
+				if (colsArray.contains("Lead_Developer")) {
+					lead_dev = rs.getString("lead_developer");
+				}
+				if (colsArray.contains("Website")) {
+					website = rs.getString("website");
+				}
+				DeveloperNameVideoGameModel model = new DeveloperNameVideoGameModel(title,
+						year,
+						genre,
+						name,
+						website,
+						lead_dev);
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		}
+
+		return result.toArray(new DeveloperNameVideoGameModel[result.size()]);
 	}
 }

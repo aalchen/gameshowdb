@@ -6,6 +6,7 @@ import ca.ubc.cs304.database.GameAwardsDbHandler;
 import ca.ubc.cs304.delegates.LoginWindowDelegate;
 import ca.ubc.cs304.delegates.TerminalGamesDelegate;
 import ca.ubc.cs304.model.DeveloperNameModel;
+import ca.ubc.cs304.model.DeveloperNameVideoGameModel;
 import ca.ubc.cs304.model.VideoGameModel;
 import ca.ubc.cs304.ui.LoginWindow;
 import ca.ubc.cs304.ui.TerminalGames;
@@ -195,6 +196,35 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			}
 			if (columns.contains("Developer_Name")) {
 				System.out.printf("%-15.15s", model.getDeveloperName());
+			}
+
+			System.out.println();
+		}
+	}
+
+	public void joinTables(List<String> colsArray, String joinWhereCol, String joinWhere, String table1, String table2) {
+		DeveloperNameVideoGameModel[] models = dbHandler.joinTables(colsArray, joinWhereCol, joinWhere, table1, table2);
+
+		for (int i = 0; i < models.length; i++) {
+			DeveloperNameVideoGameModel model = models[i];
+
+			if (colsArray.contains("Title")) {
+				System.out.printf("%-10.10s", model.getTitle());
+			}
+			if (colsArray.contains("Year")) {
+				System.out.printf("%-20.20s", model.getYear());
+			}
+			if (colsArray.contains("Genre")) {
+				System.out.printf("%-15.15s", model.getGenre());
+			}
+			if (colsArray.contains("Developer_Name")) {
+				System.out.printf("%-15.15s", model.getDeveloperName());
+			}
+			if (colsArray.contains("Lead_Developer")) {
+				System.out.printf("%-15.15s", model.getLeadDeveloper());
+			}
+			if (colsArray.contains("Website")) {
+				System.out.printf("%-15.15s", model.getWebsite());
 			}
 
 			System.out.println();
