@@ -1,3 +1,5 @@
+// reference: https://github.students.cs.ubc.ca/CPSC304/CPSC304_Java_Project
+
 package ca.ubc.cs304.controller;
 
 import ca.ubc.cs304.database.GameAwardsDbHandler;
@@ -9,6 +11,7 @@ import ca.ubc.cs304.ui.LoginWindow;
 import ca.ubc.cs304.ui.TerminalGames;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * This is the main controller class that will orchestrate everything.
@@ -162,7 +165,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 	}
 
 	public void selectName(String name) {
-		DeveloperNameModel[] models = dbHandler.selectName(name);;
+		DeveloperNameModel[] models = dbHandler.selectName(name);
 
 		for (int i = 0; i < models.length; i++) {
 			DeveloperNameModel model = models[i];
@@ -171,6 +174,29 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			System.out.printf("%-10.10s", model.getLeadDeveloper());
 			System.out.printf("%-20.20s", model.getWebsite());
 			System.out.printf("%-15.15s", model.getName());
+			System.out.println();
+		}
+	}
+
+	public void projectionColumns(List<String> columns) {
+		VideoGameModel[] models = dbHandler.projectionColumns(columns);
+
+		for (int i = 0; i < models.length; i++) {
+			VideoGameModel model = models[i];
+
+			if (columns.contains("Title")) {
+				System.out.printf("%-10.10s", model.getTitle());
+			}
+			if (columns.contains("Year")) {
+				System.out.printf("%-20.20s", model.getYear());
+			}
+			if (columns.contains("Genre")) {
+				System.out.printf("%-15.15s", model.getGenre());
+			}
+			if (columns.contains("Developer_Name")) {
+				System.out.printf("%-15.15s", model.getDeveloperName());
+			}
+
 			System.out.println();
 		}
 	}

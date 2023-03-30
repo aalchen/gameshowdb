@@ -7,6 +7,8 @@ import ca.ubc.cs304.model.VideoGameModel;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The class is only responsible for handling terminal text inputs. 
@@ -106,7 +108,10 @@ public class TerminalGames {
 					break;
 				case 5:
 					handleSelectionOption();
-					break;	
+					break;
+				case 6:
+					handleProjectionOption();
+					break;
 				case 16:
 					handleQuitOption();
 					break;
@@ -130,12 +135,64 @@ public class TerminalGames {
 		}		
 	}
 
+	private void handleProjectionOption() throws IOException {
+		String table = null;
+
+		while (table == null || table.length() <= 0) {
+			System.out.println("Please enter the TABLE name for Projection: ");
+			table = readLine().trim();
+		}
+
+		if (table.equals("VideoGame")) {
+			System.out.println("Table selected is: " + table);
+
+			System.out.println("Select columns to view - Enter a space separated list (ex. 1 OR 1 2 3): ");
+			bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+			int choice = INVALID_INPUT;
+
+			while (choice != 5) {
+				List<String> colsArray = new ArrayList<>();
+				System.out.println();
+				System.out.println("1. Title");
+				System.out.println("2. Year");
+				System.out.println("3. Genre");
+				System.out.println("4. Developer Name");
+				System.out.println("5. Return to Main Menu");
+				System.out.print("Please choose one of the above 5 options: ");
+
+				String separatedInput = bufferedReader.readLine();
+				System.out.println(separatedInput);
+
+				if (separatedInput.contains("5")) {
+					showMainMenu(delegate);
+				}
+
+				if (separatedInput.contains("1")) {
+					colsArray.add("Title");
+				}
+
+				if (separatedInput.contains("2")) {
+					colsArray.add("Year");
+				}
+
+				if (separatedInput.contains("3")) {
+					colsArray.add("Genre");
+				}
+
+				if (separatedInput.contains("4")) {
+					colsArray.add("Developer_Name");
+				}
+
+				delegate.projectionColumns(colsArray);
+			}
+		}
+	}
+
 	private void handleSelectionOption() throws IOException {
 		// choose table
 		// choose which column to filter
 		// give column value
 		String table = null;
-
 
 		while (table == null  || table.length() <= 0) {
 			System.out.println("Please enter the TABLE name for Selection: ");
@@ -162,12 +219,11 @@ public class TerminalGames {
 
 				if (separatedInput.contains("4")) {
 					showMainMenu(delegate);
+				} else {
+					handleDevSelect(separatedInput);
 				}
-
-				handleDevSelect(separatedInput);
 			}
 		}
-
 	}
 
 	private void handleDevSelect(String separatedInput) {

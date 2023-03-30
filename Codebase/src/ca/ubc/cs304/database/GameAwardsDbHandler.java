@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class handles all database related transactions
@@ -21,6 +22,7 @@ public class GameAwardsDbHandler {
 	private static final String EXCEPTION_TAG = "[EXCEPTION]";
 	private static final String WARNING_TAG = "[WARNING]";
 
+	private static final int INVALID_INPUT = Integer.MIN_VALUE;
 	private Connection connection = null;
 
 	public GameAwardsDbHandler() {
@@ -447,6 +449,52 @@ public class GameAwardsDbHandler {
 		}
 
 		return result.toArray(new DeveloperNameModel[result.size()]);
+	}
+
+	public VideoGameModel[] projectionColumns(List<String> projectionColumns) {
+		ArrayList<VideoGameModel> result = new ArrayList<VideoGameModel>();
+		String queryColumns = "";
+		for (int i = 0; i < projectionColumns.size(); i++) {
+			queryColumns = queryColumns + projectionColumns.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0,queryColumns.length() - 2);
+
+		try {
+			String query = "SELECT " + queryColumns + " FROM VideoGame";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			String title = "";
+			int year = INVALID_INPUT;
+			String genre = "";
+			String name = "";
+
+			while(rs.next()) {
+				if (projectionColumns.contains("Title")) {
+					title = rs.getString("title");
+				}
+				if (projectionColumns.contains("Year")) {
+					year = rs.getInt("year");
+				}
+				if (projectionColumns.contains("Genre")) {
+					genre = rs.getString("genre");
+				}
+				if (projectionColumns.contains("Developer_Name")) {
+					name = rs.getString("developer_name");
+				}
+				VideoGameModel model = new VideoGameModel(title,
+						year,
+						genre,
+						name);
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		}
+
+		return result.toArray(new VideoGameModel[result.size()]);
 	}
 
 	public DeveloperNameModel[] selectName(String name) {

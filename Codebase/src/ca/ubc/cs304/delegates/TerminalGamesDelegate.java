@@ -3,6 +3,8 @@ package ca.ubc.cs304.delegates;
 import ca.ubc.cs304.model.DeveloperNameModel;
 import ca.ubc.cs304.model.VideoGameModel;
 
+import java.util.List;
+
 /**
  * This interface uses the delegation design pattern where instead of having
  * the TerminalTransactions class try to do everything, it will only
@@ -30,4 +32,5 @@ public interface TerminalGamesDelegate {
     public void selectLeadDev(String leadDev);
 	public void selectWebsite(String website);
 	public void selectName(String name);
+	public void projectionColumns(List<String> columns);
 }
