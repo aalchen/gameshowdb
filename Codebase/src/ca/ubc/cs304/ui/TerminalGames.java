@@ -104,6 +104,9 @@ public class TerminalGames {
 				case 4:  
 					delegate.showVideoGame();
 					break;
+				case 5:
+					handleSelectionOption();
+					break;	
 				case 16:
 					handleQuitOption();
 					break;
@@ -127,6 +130,79 @@ public class TerminalGames {
 		}		
 	}
 
+	private void handleSelectionOption() throws IOException {
+		// choose table
+		// choose which column to filter
+		// give column value
+		String table = null;
+
+
+		while (table == null  || table.length() <= 0) {
+			System.out.println("Please enter the TABLE name for Selection: ");
+			table = readLine().trim();
+		}
+
+		if (table.equals("DeveloperName")) {
+			System.out.println("Table selected is: " + table);
+
+			System.out.println("Select columns to filter: ");
+			bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+			int choice = INVALID_INPUT;
+
+			while (choice != 4) {
+				System.out.println();
+				System.out.println("1. Lead_developer");
+				System.out.println("2. Website");
+				System.out.println("3. Name");
+				System.out.println("4. Return to Main Menu");
+				System.out.print("Please choose one of the above 4 options: ");
+
+				String separatedInput = bufferedReader.readLine();
+				System.out.println(separatedInput);
+
+				if (separatedInput.contains("4")) {
+					showMainMenu(delegate);
+				}
+
+				handleDevSelect(separatedInput);
+			}
+		}
+
+	}
+
+	private void handleDevSelect(String separatedInput) {
+		if (separatedInput.contains("1")) {
+			String lead_dev = null;
+
+			while (lead_dev == null  || lead_dev.length() <= 0) {
+				System.out.print("Please enter the lead developer to filter for: ");
+				lead_dev = readLine().trim();
+			}
+
+			delegate.selectLeadDev(lead_dev);
+		}
+		if (separatedInput.contains("2")) {
+			String website = null;
+
+			while (website == null  || website.length() <= 0) {
+				System.out.print("Please enter the website to filter for: ");
+				website = readLine().trim();
+			}
+
+			delegate.selectWebsite(website);
+		}
+		if (separatedInput.contains("3")) {
+			String name = null;
+
+			while (name == null  || name.length() <= 0) {
+				System.out.print("Please enter the developer name to filter for: ");
+				name = readLine().trim();
+			}
+
+			delegate.selectName(name);
+		}
+	}
+
 	private void handleDeleteOption() {
 		String gameTitle = null;
 		int gameYear = INVALID_INPUT;
@@ -146,11 +222,10 @@ public class TerminalGames {
 	}
 
 	private void handleDevDeleteOptionChoose(TerminalGamesDelegate delegate) throws IOException {
-		System.out.println("What do you want to delete?");
-
+		System.out.println("Select deletion method: ");
 		bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 		int choice = INVALID_INPUT;
-		String devNameToDelete = null;
+		
 		while (choice != 4) {
 			System.out.println();
 			System.out.println("1. Delete by lead_developer");
@@ -195,16 +270,6 @@ public class TerminalGames {
 			System.out.print("Please enter the website you wish to delete: ");
 			website = readLine().trim();
 			delegate.deleteDeveloperNameWeb(website);
-		}
-	}
-
-	private void handleDevDeleteOption() {
-		String developer_name = null;
-
-		while (developer_name == null  || developer_name.length() <= 0) {
-			System.out.print("Please enter the developer name you wish to delete: ");
-			developer_name = readLine().trim();
-			delegate.deleteDeveloperName(developer_name);
 		}
 	}
 

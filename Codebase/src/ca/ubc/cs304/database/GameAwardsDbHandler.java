@@ -398,4 +398,79 @@ public class GameAwardsDbHandler {
 			rollbackConnection();
 		}
 	}
+
+	public DeveloperNameModel[] selectLeadDev(String leadDev) {
+		ArrayList<DeveloperNameModel> result = new ArrayList<DeveloperNameModel>();
+
+		try {
+			String query = "SELECT * FROM DeveloperName WHERE lead_developer = ?";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ps.setString(1, leadDev);
+			ResultSet rs = ps.executeQuery();
+
+			while(rs.next()) {
+				DeveloperNameModel model = new DeveloperNameModel(rs.getString("lead_developer"),
+						rs.getString("website"),
+						rs.getString("name"));
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		}
+
+		return result.toArray(new DeveloperNameModel[result.size()]);
+	}
+
+	public DeveloperNameModel[] selectWebsite(String website) {
+		ArrayList<DeveloperNameModel> result = new ArrayList<DeveloperNameModel>();
+
+		try {
+			String query = "SELECT * FROM DeveloperName WHERE website = ?";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ps.setString(1, website);
+			ResultSet rs = ps.executeQuery();
+
+			while(rs.next()) {
+				DeveloperNameModel model = new DeveloperNameModel(rs.getString("lead_developer"),
+						rs.getString("website"),
+						rs.getString("name"));
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		}
+
+		return result.toArray(new DeveloperNameModel[result.size()]);
+	}
+
+	public DeveloperNameModel[] selectName(String name) {
+		ArrayList<DeveloperNameModel> result = new ArrayList<DeveloperNameModel>();
+
+		try {
+			String query = "SELECT * FROM DeveloperName WHERE name = ?";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ps.setString(1, name);
+			ResultSet rs = ps.executeQuery();
+
+			while(rs.next()) {
+				DeveloperNameModel model = new DeveloperNameModel(rs.getString("lead_developer"),
+						rs.getString("website"),
+						rs.getString("name"));
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		}
+
+		return result.toArray(new DeveloperNameModel[result.size()]);
+	}
 }

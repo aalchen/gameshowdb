@@ -26,5 +26,8 @@ public interface TerminalGamesDelegate {
 	public void updateDeveloperNameWebsite(String website, String developerName);
 	public void updateDeveloperNameName(String newDeveloperName, String developerName);
 	public void deleteDeveloperNameLead(String deleteLeadDev);
-	public void deleteDeveloperNameWeb(String deleteWEbsite);
+	public void deleteDeveloperNameWeb(String deleteWebsite);
+    public void selectLeadDev(String leadDev);
+	public void selectWebsite(String website);
+	public void selectName(String name);
 }

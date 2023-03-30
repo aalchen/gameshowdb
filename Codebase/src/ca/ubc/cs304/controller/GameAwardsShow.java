@@ -133,6 +133,48 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		dbHandler.deleteDeveloperNameWeb(deleteWebsite);
 	}
 
+	public void selectLeadDev(String leadDev) {
+		DeveloperNameModel[] models = dbHandler.selectLeadDev(leadDev);
+
+		for (int i = 0; i < models.length; i++) {
+			DeveloperNameModel model = models[i];
+
+			// simplified output formatting; truncation may occur
+			System.out.printf("%-10.10s", model.getLeadDeveloper());
+			System.out.printf("%-20.20s", model.getWebsite());
+			System.out.printf("%-15.15s", model.getName());
+			System.out.println();
+		}
+	}
+
+	public void selectWebsite(String website) {
+		DeveloperNameModel[] models = dbHandler.selectWebsite(website);
+
+		for (int i = 0; i < models.length; i++) {
+			DeveloperNameModel model = models[i];
+
+			// simplified output formatting; truncation may occur
+			System.out.printf("%-10.10s", model.getLeadDeveloper());
+			System.out.printf("%-20.20s", model.getWebsite());
+			System.out.printf("%-15.15s", model.getName());
+			System.out.println();
+		}
+	}
+
+	public void selectName(String name) {
+		DeveloperNameModel[] models = dbHandler.selectName(name);;
+
+		for (int i = 0; i < models.length; i++) {
+			DeveloperNameModel model = models[i];
+
+			// simplified output formatting; truncation may occur
+			System.out.printf("%-10.10s", model.getLeadDeveloper());
+			System.out.printf("%-20.20s", model.getWebsite());
+			System.out.printf("%-15.15s", model.getName());
+			System.out.println();
+		}
+	}
+
 	/**
 	 * TermainalTransactionsDelegate Implementation
 	 * 
