@@ -113,7 +113,7 @@ public class GameAwardsDbHandler {
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 			ResultSet rs = ps.executeQuery();
 
-			while(rs.next()) {
+			while (rs.next()) {
 				VideoGameModel model = new VideoGameModel(rs.getString("title"),
 						rs.getInt("year"),
 						rs.getString("genre"),
@@ -170,7 +170,7 @@ public class GameAwardsDbHandler {
 	}
 
 	private void rollbackConnection() {
-		try  {
+		try {
 			connection.rollback();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
@@ -181,8 +181,8 @@ public class GameAwardsDbHandler {
 		dropBranchTableIfExists();
 
 		try {
-//			// removed ON UPDATE CASCADE as it's not supported in Oracle
-//			// https://stackoverflow.com/questions/48399874/oracle-on-delete-on-update
+			// removed ON UPDATE CASCADE as it's not supported in Oracle
+			// https://stackoverflow.com/questions/48399874/oracle-on-delete-on-update
 			String query0 = "CREATE TABLE DeveloperName(lead_developer VARCHAR(50), website VARCHAR(50), name VARCHAR(50) PRIMARY KEY)";
 			String query1 = "CREATE TABLE VideoGame(title VARCHAR(128), year INTEGER, genre VARCHAR(50), developer_name VARCHAR(50), CONSTRAINT pk_game PRIMARY KEY (title, year), CONSTRAINT fk_devname FOREIGN KEY (developer_name) REFERENCES DeveloperName(name) ON DELETE CASCADE)";
 			PrintablePreparedStatement ps0 = new PrintablePreparedStatement(connection.prepareStatement(query0), query0, false);
@@ -215,15 +215,15 @@ public class GameAwardsDbHandler {
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 			ResultSet rs = ps.executeQuery();
 
-			while(rs.next()) {
-				if(rs.getString(1).toLowerCase().equals("developername")) {
-					System.out.println(rs.getString(1).toLowerCase());
-					ps.execute("DROP TABLE DeveloperName");
-					break;
-				}
-				if(rs.getString(1).toLowerCase().equals("videogame")) {
+			while (rs.next()) {
+				if (rs.getString(1).toLowerCase().equals("videogame")) {
 					System.out.println(rs.getString(1).toLowerCase());
 					ps.execute("DROP TABLE VideoGame");
+					break;
+				}
+				if (rs.getString(1).toLowerCase().equals("developername")) {
+					System.out.println(rs.getString(1).toLowerCase());
+					ps.execute("DROP TABLE DeveloperName");
 					break;
 				}
 			}
@@ -243,7 +243,7 @@ public class GameAwardsDbHandler {
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 			ResultSet rs = ps.executeQuery();
 
-			while(rs.next()) {
+			while (rs.next()) {
 				DeveloperNameModel model = new DeveloperNameModel(rs.getString("lead_developer"),
 						rs.getString("website"),
 						rs.getString("name"));
@@ -412,7 +412,7 @@ public class GameAwardsDbHandler {
 			ps.setString(1, leadDev);
 			ResultSet rs = ps.executeQuery();
 
-			while(rs.next()) {
+			while (rs.next()) {
 				DeveloperNameModel model = new DeveloperNameModel(rs.getString("lead_developer"),
 						rs.getString("website"),
 						rs.getString("name"));
@@ -437,7 +437,7 @@ public class GameAwardsDbHandler {
 			ps.setString(1, website);
 			ResultSet rs = ps.executeQuery();
 
-			while(rs.next()) {
+			while (rs.next()) {
 				DeveloperNameModel model = new DeveloperNameModel(rs.getString("lead_developer"),
 						rs.getString("website"),
 						rs.getString("name"));
@@ -459,7 +459,7 @@ public class GameAwardsDbHandler {
 		for (int i = 0; i < projectionColumns.size(); i++) {
 			queryColumns = queryColumns + projectionColumns.get(i) + ", ";
 		}
-		queryColumns = queryColumns.substring(0,queryColumns.length() - 2);
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
 
 		try {
 			String query = "SELECT " + queryColumns + " FROM VideoGame";
@@ -470,7 +470,7 @@ public class GameAwardsDbHandler {
 			String genre = "";
 			String name = "";
 
-			while(rs.next()) {
+			while (rs.next()) {
 				if (projectionColumns.contains("Title")) {
 					title = rs.getString("title");
 				}
@@ -508,7 +508,7 @@ public class GameAwardsDbHandler {
 			ps.setString(1, name);
 			ResultSet rs = ps.executeQuery();
 
-			while(rs.next()) {
+			while (rs.next()) {
 				DeveloperNameModel model = new DeveloperNameModel(rs.getString("lead_developer"),
 						rs.getString("website"),
 						rs.getString("name"));
@@ -531,9 +531,9 @@ public class GameAwardsDbHandler {
 		for (int i = 0; i < colsArray.size(); i++) {
 			queryColumns = queryColumns + colsArray.get(i) + ", ";
 		}
-		queryColumns = queryColumns.substring(0,queryColumns.length() - 2);
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
 
-		if (joinWhereCol == "Title" || joinWhereCol == "Year" || joinWhereCol == "Genre" || joinWhereCol == "Developer_Name" ) {
+		if (joinWhereCol == "Title" || joinWhereCol == "Year" || joinWhereCol == "Genre" || joinWhereCol == "Developer_Name") {
 			joinWhereTable = "VideoGame";
 		}
 		if (joinWhereCol == "Name" || joinWhereCol == "Website" || joinWhereCol == "Lead_Developer") {
@@ -551,7 +551,7 @@ public class GameAwardsDbHandler {
 			String lead_dev = "";
 			String website = "";
 
-			while(rs.next()) {
+			while (rs.next()) {
 				if (colsArray.contains("Title")) {
 					title = rs.getString("title");
 				}
@@ -594,7 +594,7 @@ public class GameAwardsDbHandler {
 		for (int i = 0; i < otherCol.size(); i++) {
 			queryColumns = queryColumns + otherCol.get(i) + ", ";
 		}
-		queryColumns = queryColumns.substring(0,queryColumns.length() - 2);
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
 		String selectStatement = aggregationOp + "(" + aggregateCol + "), " + queryColumns;
 		try {
 			String query = "SELECT " + selectStatement + " FROM " + table + " GROUP BY " + groupByCol;
@@ -629,9 +629,56 @@ public class GameAwardsDbHandler {
 			}
 			rs.close();
 			ps.close();
-		} catch(SQLException e){
-				System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-			}
-			return result.toArray(new VideoGameCountModel[result.size()]);
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 		}
+		return result.toArray(new VideoGameCountModel[result.size()]);
 	}
+
+	public VideoGameCountModel[] aggregateGroupByHaving(String table, String aggregationOp, String aggregateCol, List<String> otherCol, String groupByCol, String havingCol, String havingOperator, String havingValue) {
+		ArrayList<VideoGameCountModel> result = new ArrayList<VideoGameCountModel>();
+		String queryColumns = "";
+		for (int i = 0; i < otherCol.size(); i++) {
+			queryColumns = queryColumns + otherCol.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
+		String selectStatement = aggregationOp + "(" + aggregateCol + "), " + queryColumns;
+		try {
+			String query = "SELECT " + selectStatement + " FROM " + table + " GROUP BY " + groupByCol + " HAVING " + havingCol + " " + havingOperator + " " + havingValue;
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+
+			String title = "";
+			int year = INVALID_INPUT;
+			String genre = "";
+			String name = "";
+
+			while (rs.next()) {
+				if (otherCol.contains("Title")) {
+					title = rs.getString("title");
+				}
+				if (otherCol.contains("Year")) {
+					year = rs.getInt("year");
+				}
+				if (otherCol.contains("Genre")) {
+					genre = rs.getString("genre");
+				}
+				if (otherCol.contains("Developer_Name")) {
+					name = rs.getString("developer_name");
+				}
+
+				VideoGameCountModel model = new VideoGameCountModel(title,
+						year,
+						genre,
+						name,
+						rs.getInt("MAX(Year)"));
+				result.add(model);
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		}
+		return result.toArray(new VideoGameCountModel[result.size()]);
+	}
+}

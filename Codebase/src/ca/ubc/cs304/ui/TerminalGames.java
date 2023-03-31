@@ -36,7 +36,7 @@ public class TerminalGames {
 		int choice = INVALID_INPUT;
 		
 		while(choice != 1 && choice != 2) {
-			System.out.println("If you have a table called VideoGame in your database (capitialization of the name does not matter), it will be dropped and a new VideoGame table will be created.\nIf you want to proceed, enter 1; if you want to quit, enter 2.");
+			System.out.println("If you have a table called VideoGame in your database (capitalization of the name does not matter), it will be dropped and a new VideoGame table will be created.\nIf you want to proceed, enter 1; if you want to quit, enter 2.");
 			
 			choice = readInteger(false);
 			
@@ -117,7 +117,10 @@ public class TerminalGames {
 					break;
 				case 8:
 					handleAggregationGroupByOption();
-					break;	
+					break;
+				case 9:
+					handleAggregationGroupByHavingOption();
+					break;
 				case 12:
 					handleDevInsertOption();
 					break;
@@ -141,7 +144,7 @@ public class TerminalGames {
 		}		
 	}
 
-	private void handleAggregationGroupByOption() throws IOException {
+	private void handleAggregationGroupByHavingOption() throws IOException {
 		String table = null;
 		while (table == null || table.length() <= 0) {
 			System.out.println("Please enter Table name: ");
@@ -178,29 +181,133 @@ public class TerminalGames {
 			}
 
 			if (table.equals("VideoGame")) {
-				System.out.println("Table selected is: " + table);
-
 				System.out.println();
+				System.out.println("Table selected is: " + table);
 				System.out.println("These are your menu items, refer to them in the following questions:");
 				System.out.println("1. Title");
 				System.out.println("2. Year");
 				System.out.println("3. Genre");
 				System.out.println("4. Developer Name");
 				System.out.println("5. Return to Main Menu");
+				System.out.println();
 
 				String aggregateCol = null;
 				while (aggregateCol == null || aggregateCol.length() <= 0) {
-					System.out.println("Please enter a column number to AGGREGATE on: ");
+					System.out.println("Please enter ONE column number to AGGREGATE on: ");
 					aggregateCol = readLine().trim();
 				}
 				String otherCol = null;
 				while (otherCol == null || otherCol.length() <= 0) {
-					System.out.println("Please enter other column numbers to add to the table: ");
+					System.out.println("Please enter other column numbers to add to the table - Enter a space separated list (ex. 1 OR 1 2 3):  ");
 					otherCol = readLine().trim();
 				}
 				String groupByCol = null;
 				while (groupByCol == null || groupByCol.length() <= 0) {
-					System.out.println("Please enter a column number to GROUP BY: ");
+					System.out.println("Please enter ONE column number to GROUP BY: ");
+					groupByCol = readLine().trim();
+				}
+
+				String havingCol = null;
+				String havingValue = null;
+				String havingOperator = null;
+				while (havingCol == null || havingCol.length() <= 0) {
+					List<String> otherColList = returnVideoGameArray(otherCol);
+
+					for (int i=0; i<otherColList.size(); i++) {
+						System.out.println(i + ". " + otherColList.get(i));
+						if (i == otherColList.size()-1) {
+							System.out.println(i+1 + ". " + aggregationOp + "(" + returnVideoGameArray(aggregateCol).get(i) + ")");
+						}
+					}
+					System.out.println();
+					System.out.println("Please enter ONE column number from the above for HAVING: ");
+					havingCol = readLine().trim();
+
+					if (Integer.valueOf(havingCol)-1 < otherColList.size()-1) {
+						havingCol = otherColList.get(Integer.valueOf(havingCol)-1);
+					} else {
+						havingCol = aggregationOp + "(" + returnVideoGameArray(aggregateCol).get(0) + ")";
+					}
+
+					while (havingOperator == null || havingOperator.length() <= 0) {
+						System.out.println("Please enter ONE operator to use (ex. =, >, <, etc): ");
+						havingOperator = readLine().trim();
+					}
+
+					while (havingValue == null || havingValue.length() <= 0) {
+						System.out.println("Please enter ONE value to check the HAVING against: ");
+						havingValue = readLine().trim();
+					}
+				}
+
+				if (aggregateCol.contains("5") || otherCol.contains("5") || groupByCol.contains("5")) {
+					showMainMenu(delegate);
+				}
+				delegate.aggregateGroupByHaving(table, aggregationOp, returnVideoGameArray(aggregateCol).get(0).toString(), returnVideoGameArray(otherCol), returnVideoGameArray(groupByCol).get(0).toString(), havingCol, havingOperator, havingValue);
+			}
+		}
+	}
+
+	private void handleAggregationGroupByOption() throws IOException {
+		String table = null;
+		while (table == null || table.length() <= 0) {
+			System.out.println("Please enter Table name: ");
+			table = readLine().trim();
+		}
+
+		System.out.println("Select the 3: ");
+		bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+		int choice = INVALID_INPUT;
+		String aggregationOp = "";
+		while (choice != 5) {
+			System.out.println();
+			System.out.println("1. COUNT");
+			System.out.println("2. MIN");
+			System.out.println("3. MAX");
+			System.out.println("4. AVG");
+			System.out.println("5. Return to Main Menu");
+
+			String separatedInput = bufferedReader.readLine();
+			System.out.println(separatedInput);
+
+			if (separatedInput.contains("5")) {
+				showMainMenu(delegate);
+			}
+
+			if (separatedInput.contains("1")) {
+				aggregationOp = "COUNT";
+			} else if (separatedInput.contains("2")) {
+				aggregationOp = "MIN";
+			} else if (separatedInput.contains("3")) {
+				aggregationOp = "MAX";
+			} else if (separatedInput.contains("4")) {
+				aggregationOp = "AVG";
+			}
+
+			if (table.equals("VideoGame")) {
+				System.out.println();
+				System.out.println("Table selected is: " + table);
+				System.out.println("These are your menu items, refer to them in the following questions:");
+				System.out.println("1. Title");
+				System.out.println("2. Year");
+				System.out.println("3. Genre");
+				System.out.println("4. Developer Name");
+				System.out.println("5. Return to Main Menu");
+				System.out.println();
+
+				String aggregateCol = null;
+				while (aggregateCol == null || aggregateCol.length() <= 0) {
+					System.out.println("Please enter ONE column number to AGGREGATE on: ");
+					aggregateCol = readLine().trim();
+				}
+				String otherCol = null;
+				while (otherCol == null || otherCol.length() <= 0) {
+					System.out.println("Please enter other column numbers to add to the table - Enter a space separated list (ex. 1 OR 1 2 3):  ");
+					otherCol = readLine().trim();
+				}
+				String groupByCol = null;
+				while (groupByCol == null || groupByCol.length() <= 0) {
+					System.out.println("Please enter ONE column number to GROUP BY: ");
 					groupByCol = readLine().trim();
 				}
 
@@ -259,6 +366,7 @@ public class TerminalGames {
 	private void handleJoinOption() throws IOException {
 		String table1 = null;
 		String table2 = null;
+
 		while (table1 == null || table1.length() <= 0) {
 			System.out.println("Please enter TABLE 1 for Join operation: ");
 			table1 = readLine().trim();
@@ -293,21 +401,7 @@ public class TerminalGames {
 				showMainMenu(delegate);
 			}
 
-			if (separatedInput.contains("1")) {
-				colsArray.add("Title");
-			}
-
-			if (separatedInput.contains("2")) {
-				colsArray.add("Year");
-			}
-
-			if (separatedInput.contains("3")) {
-				colsArray.add("Genre");
-			}
-
-			if (separatedInput.contains("4")) {
-				colsArray.add("Developer_Name");
-			}
+			colsArray = returnVideoGameArray(separatedInput);
 
 			if (separatedInput.contains("5")) {
 				colsArray.add("Lead_Developer");
@@ -337,7 +431,6 @@ public class TerminalGames {
 			System.out.println("6. Website");
 			System.out.println("7. Return to Main Menu");
 			System.out.print("Please choose one of the above 7 options: ");
-
 
 			String separatedInput = bufferedReader.readLine();
 			System.out.println(separatedInput);
@@ -402,31 +495,13 @@ public class TerminalGames {
 					showMainMenu(delegate);
 				}
 
-				if (separatedInput.contains("1")) {
-					colsArray.add("Title");
-				}
-
-				if (separatedInput.contains("2")) {
-					colsArray.add("Year");
-				}
-
-				if (separatedInput.contains("3")) {
-					colsArray.add("Genre");
-				}
-
-				if (separatedInput.contains("4")) {
-					colsArray.add("Developer_Name");
-				}
-
+				colsArray = returnVideoGameArray(separatedInput);
 				delegate.projectionColumns(colsArray);
 			}
 		}
 	}
 
 	private void handleSelectionOption() throws IOException {
-		// choose table
-		// choose which column to filter
-		// give column value
 		String table = null;
 
 		while (table == null  || table.length() <= 0) {

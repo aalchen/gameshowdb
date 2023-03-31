@@ -257,6 +257,31 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		}
 	}
 
+	public void aggregateGroupByHaving(String table, String aggregationOp, String aggregateCol, List<String> otherCol, String groupByCol, String havingCol, String havingOperator, String havingValue) {
+		VideoGameCountModel[] models = dbHandler.aggregateGroupByHaving(table, aggregationOp, aggregateCol, otherCol, groupByCol, havingCol, havingOperator, havingValue);
+		List<String> colsArray = otherCol;
+
+		for (int i = 0; i < models.length; i++) {
+			VideoGameCountModel model = models[i];
+
+			if (colsArray.contains("Title")) {
+				System.out.println(model.getTitle());
+			}
+			if (colsArray.contains("Year")) {
+				System.out.println(model.getYear());
+			}
+			if (colsArray.contains("Genre")) {
+				System.out.println(model.getGenre());
+			}
+			if (colsArray.contains("Developer_Name")) {
+				System.out.println(model.getDeveloperName());
+			}
+
+			System.out.println(model.getColumnNum());
+			System.out.println();
+		}
+	}
+
 	/**
 	 * TermainalTransactionsDelegate Implementation
 	 * 
