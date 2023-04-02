@@ -20,8 +20,6 @@ import static java.lang.Integer.parseInt;
  * The class is only responsible for displaying and handling the login GUI.
  */
 public class MainMenuWindow extends JFrame implements ActionListener {
-	private static final int INVALID_INPUT = Integer.MIN_VALUE;
-	private static final int EMPTY_INPUT = 0;
 	private static final int FRAME_WIDTH = 500;
 	private static final int FRAME_HEIGHT = 300;
 	private static final int TABLE_FRAME_WIDTH = 1000;
@@ -29,7 +27,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 
 	// Buttons
 	private JButton manageVideoGameButton, manageDeveloperNameButton, quitButton, mainMenuButton;
-	private JButton addVideoGameButton, addSubmitButton, removeSubmitButton, removeVideoGameButton, updateVideoGameButton, showAllVideoGameButton;
+	private JButton addVideoGameButton, addSubmitButton, removeSubmitButton, removeVideoGameButton, showAllVideoGameButton;
 	private JButton addDeveloperButton, removeDeveloperButton, updateDeveloperButton, showAllDevelopersButton;
 
 	// Text fields
@@ -43,19 +41,8 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 
 	public MainMenuWindow() {
 		super("VideoGame Award Manager");
-	}
-
-	public void mainMenuHandler(GUIWindowDelegate delegate) {
-		this.delegate = delegate;
-		this.manageVideoGameButton = new JButton("Manage VideoGame Table");
-		this.manageDeveloperNameButton = new JButton("Manage DeveloperName Table");
-		this.quitButton = new JButton("Quit");		setUpJpanel();
-
-		// add buttons
-		addButton(manageVideoGameButton);
-		addButton(manageDeveloperNameButton);
-		addButton(quitButton);
-
+		setSize(FRAME_WIDTH, FRAME_HEIGHT);
+		setUpJpanel();
 		// size the window to obtain a best fit for the components
 		this.pack();
 
@@ -66,6 +53,23 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 
 		// make the window visible
 		this.setVisible(true);
+		this.setSize(500, 300);
+
+	}
+
+	public void mainMenuHandler(GUIWindowDelegate delegate) {
+		this.delegate = delegate;
+		this.manageVideoGameButton = new JButton("Manage VideoGame Table");
+		this.manageDeveloperNameButton = new JButton("Manage DeveloperName Table");
+		this.quitButton = new JButton("Quit");
+		setUpJpanel();
+
+		// add buttons
+		addButton(manageVideoGameButton);
+		addButton(manageDeveloperNameButton);
+		addButton(quitButton);
+		revalidate();
+		repaint();
 	}
 
 	/**
@@ -105,10 +109,6 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			else if (evt.getSource()== removeSubmitButton)
 			{
 				removeVideoGameHandler(delegate);
-			}
-			else if (evt.getSource()== manageDeveloperNameButton)
-			{
-				//do something
 			}
 			else if (evt.getSource()== manageDeveloperNameButton)
 			{
@@ -308,7 +308,8 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		contentPanel.add(scrollPane, c);
 
 		// Create a new JPanel for buttons with FlowLayout
-		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
 
 		// add delete button
 		JButton deleteButton = new JButton("Delete");
@@ -335,7 +336,15 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		});
 
 		buttonsPanel.add(deleteButton);
+		// Add a 5-pixel spacer between the buttons
+		Dimension spacer = new Dimension(2, 0);
+		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
 		buttonsPanel.add(addVideoGameButton);
+
+		// Add a 5-pixel spacer between the buttons
+		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
 		buttonsPanel.add(manageVideoGameButton);
 
 		// Add the buttonsPanel to the contentPanel with GridBagLayout
@@ -348,33 +357,38 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		c.insets = new Insets(0, 5, 5, 5);
 		contentPanel.add(buttonsPanel, c);
 
-		this.setSize(1000, 500);
+		contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
+		revalidate();
+		repaint();
 	}
 
 	private void manageVideoGames() {
 		this.addVideoGameButton = new JButton("Add video game");
 		this.removeVideoGameButton = new JButton("Find and remove video game");
-		this.updateVideoGameButton = new JButton("Update video game");
 		this.showAllVideoGameButton = new JButton("Show all video game");
 		this.mainMenuButton = new JButton("Return to Main Menu");
-		this.setSize(500, 300);
 
 		setUpJpanel();
 
 		addButton(addVideoGameButton);
 		addButton(removeVideoGameButton);
-		addButton(updateVideoGameButton);
 		addButton(showAllVideoGameButton);
 		addButton(mainMenuButton);
+
+		contentPanel.setPreferredSize(new Dimension(FRAME_WIDTH - 20, FRAME_HEIGHT - 30));
+		revalidate();
+		repaint();
 	}
 
 	private void addButton(JButton button) {
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		c.insets = new Insets(2, 10, 2, 10);
-		c.anchor = GridBagConstraints.CENTER;
-		gb.setConstraints(button, c);
-		contentPanel.add(button);
-		button.addActionListener(this);
+			Dimension currentPreferredSize = button.getPreferredSize();
+			button.setPreferredSize(new Dimension(250, currentPreferredSize.height));
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			c.insets = new Insets(2, 10, 2, 10);
+			c.anchor = GridBagConstraints.CENTER;
+			gb.setConstraints(button, c);
+			contentPanel.add(button);
+			button.addActionListener(this);
 	}
 
 	private void addLabel(JLabel label) {
@@ -401,6 +415,5 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 
 		contentPanel.setLayout(gb);
 		contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 20, 10));
-
 	}
 }
