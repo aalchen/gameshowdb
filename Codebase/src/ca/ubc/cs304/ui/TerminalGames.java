@@ -121,6 +121,12 @@ public class TerminalGames {
 				case 9:
 					handleAggregationGroupByHavingOption();
 					break;
+				case 10:
+					handleNestedAggregation();
+					break;
+				case 11:
+					handleDivisionOption();
+					break;
 				case 12:
 					handleDevInsertOption();
 					break;
@@ -142,6 +148,14 @@ public class TerminalGames {
 				}
 			}
 		}		
+	}
+
+	private void handleDivisionOption() {
+		delegate.division();
+	}
+
+	private void handleNestedAggregation() {
+		delegate.nestedAggregation();
 	}
 
 	private void handleAggregationGroupByHavingOption() throws IOException {

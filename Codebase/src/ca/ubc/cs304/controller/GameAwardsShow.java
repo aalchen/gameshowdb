@@ -281,6 +281,26 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		}
 	}
 
+	public void division() {
+		VideoGameModel[] models = dbHandler.division();
+		System.out.println("Division query : number of titles grouped by developer_name, but after 2015");
+		for (int i = 0; i < models.length; i++) {
+			VideoGameModel model = models[i];
+			System.out.println(model.getDeveloperName());
+		}
+		System.out.println();
+	}
+
+	public void nestedAggregation() {
+		VideoGameCountModel[] models = dbHandler.nestedAggregation();
+		for (int i = 0; i < models.length; i++) {
+			VideoGameCountModel model = models[i];
+			System.out.println(model.getDeveloperName());
+			System.out.println(model.getColumnNum());
+			System.out.println();
+		}
+	}
+
 	/**
 	 * TermainalTransactionsDelegate Implementation
 	 * 

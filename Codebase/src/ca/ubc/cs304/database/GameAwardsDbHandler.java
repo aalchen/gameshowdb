@@ -681,4 +681,55 @@ public class GameAwardsDbHandler {
 		}
 		return result.toArray(new VideoGameCountModel[result.size()]);
 	}
+
+	public VideoGameCountModel[] nestedAggregation() {
+		ArrayList<VideoGameCountModel> result = new ArrayList<VideoGameCountModel>();
+
+		try {
+			String query = "SELECT COUNT(Title), Developer_Name FROM VideoGame WHERE Year IN ( SELECT Year FROM VideoGame WHERE Year > 2015 ) GROUP BY Developer_Name";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				VideoGameCountModel model = new VideoGameCountModel(null,
+						INVALID_INPUT,
+						null,
+						rs.getString("developer_name"),
+						rs.getInt("COUNT(Title)"));
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		}
+
+		return result.toArray(new VideoGameCountModel[result.size()]);
+	}
+
+	public VideoGameModel[] division() {
+		ArrayList<VideoGameModel> result = new ArrayList<VideoGameModel>();
+
+		try {
+			String query = "SELECT D.name FROM DeveloperName D WHERE NOT EXISTS ( SELECT G.genre FROM VideoGame G WHERE NOT EXISTS ( SELECT * FROM VideoGame G2 WHERE G2.developer_name = D.name AND G2.genre = G.genre ) GROUP BY G.genre HAVING COUNT(*) = ( SELECT COUNT(DISTINCT genre) FROM VideoGame))";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				VideoGameModel model = new VideoGameModel(null,
+						INVALID_INPUT,
+						null,
+						rs.getString("name"));
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		}
+
+		return result.toArray(new VideoGameModel[result.size()]);
+	}
 }
