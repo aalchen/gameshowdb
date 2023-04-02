@@ -7,11 +7,12 @@ import ca.ubc.cs304.model.VideoGameModel;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The class is only responsible for handling terminal text inputs. 
+ * The class is only responsible for handling terminal text inputs.
  */
 public class TerminalGames {
 	private static final String EXCEPTION_TAG = "[EXCEPTION]";
@@ -24,28 +25,28 @@ public class TerminalGames {
 
 	public TerminalGames() {
 	}
-	
+
 	/**
 	 * Sets up the database to have a branch table with two tuples so we can insert/update/delete from it.
 	 * Refer to the databaseSetup.sql file to determine what tuples are going to be in the table.
 	 */
 	public void setupDatabase(TerminalGamesDelegate delegate) {
 		this.delegate = delegate;
-		
+
 		bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 		int choice = INVALID_INPUT;
-		
+
 		while(choice != 1 && choice != 2) {
 			System.out.println("If you have a table called VideoGame in your database (capitalization of the name does not matter), it will be dropped and a new VideoGame table will be created.\nIf you want to proceed, enter 1; if you want to quit, enter 2.");
-			
+
 			choice = readInteger(false);
-			
+
 			if (choice != INVALID_INPUT) {
 				switch (choice) {
-				case 1:  
-					delegate.databaseSetup(); 
+				case 1:
+					delegate.databaseSetup();
 					break;
-				case 2:  
+				case 2:
 					handleQuitOption();
 					break;
 				default:
@@ -58,13 +59,13 @@ public class TerminalGames {
 
 	/**
 	 * Displays simple text interface
-	 */ 
+	 */
 	public void showMainMenu(TerminalGamesDelegate delegate) throws IOException {
 		this.delegate = delegate;
-		
+
 	    bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 		int choice = INVALID_INPUT;
-		
+
 		while (choice != 5) {
 			System.out.println();
 			System.out.println("1. Insert into VideoGame");
@@ -94,16 +95,16 @@ public class TerminalGames {
 
 			if (choice != INVALID_INPUT) {
 				switch (choice) {
-				case 1:  
-					handleInsertOption(); 
+				case 1:
+					handleInsertOption();
 					break;
-				case 2:  
-					handleDeleteOption(); 
+				case 2:
+					handleDeleteOption();
 					break;
-				case 3: 
+				case 3:
 					handleUpdateOption();
 					break;
-				case 4:  
+				case 4:
 					delegate.showVideoGame();
 					break;
 				case 5:
@@ -147,7 +148,7 @@ public class TerminalGames {
 					break;
 				}
 			}
-		}		
+		}
 	}
 
 	private void handleDivisionOption() {
@@ -331,7 +332,11 @@ public class TerminalGames {
 		}
 
 		if (gameYear != INVALID_INPUT) {
-			delegate.deleteVideoGame(gameTitle, gameYear);
+			try {
+				delegate.deleteVideoGame(gameTitle, gameYear);
+			}catch (SQLException e){
+
+			}
 		}
 	}
 
@@ -339,7 +344,7 @@ public class TerminalGames {
 		System.out.println("Select deletion method: ");
 		bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 		int choice = INVALID_INPUT;
-		
+
 		while (choice != 4) {
 			System.out.println();
 			System.out.println("1. Delete by lead_developer");
@@ -410,7 +415,7 @@ public class TerminalGames {
 		DeveloperNameModel model = new DeveloperNameModel(lead_dev, website, developer_name);
 		delegate.insertDeveloperName(model);
 	}
-	
+
 	private void handleInsertOption() {
 		String title = null;
 		int year = INVALID_INPUT;
@@ -438,12 +443,16 @@ public class TerminalGames {
 		}
 
 		VideoGameModel model = new VideoGameModel(title, year, genre, developer_name);
-		delegate.insertVideoGame(model);
+		try {
+			delegate.insertVideoGame(model);
+		} catch (SQLException e) {
+
+		}
 	}
-	
+
 	private void handleQuitOption() {
 		System.out.println("Good Bye!");
-		
+
 		if (bufferedReader != null) {
 			try {
 				bufferedReader.close();
@@ -451,10 +460,10 @@ public class TerminalGames {
 				System.out.println("IOException!");
 			}
 		}
-		
+
 		delegate.terminalGamesFinished();
 	}
-	
+
 	private void handleUpdateOption() {
 		String oldName = null;
 		while (oldName == null || oldName.length() <= 0) {
