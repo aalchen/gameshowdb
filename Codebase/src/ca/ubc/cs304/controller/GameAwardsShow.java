@@ -87,7 +87,6 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		for (int i = 0; i < models.length; i++) {
 			DeveloperNameModel model = models[i];
 
-			// simplified output formatting; truncation may occur
 			System.out.println(model.getLeadDeveloper());
 			System.out.println(model.getWebsite());
 			System.out.println(model.getName());
