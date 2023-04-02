@@ -3,39 +3,41 @@
 package ca.ubc.cs304.controller;
 
 import ca.ubc.cs304.database.GameAwardsDbHandler;
+import ca.ubc.cs304.delegates.GUIWindowDelegate;
 import ca.ubc.cs304.delegates.LoginWindowDelegate;
 import ca.ubc.cs304.delegates.TerminalGamesDelegate;
 import ca.ubc.cs304.model.DeveloperNameModel;
 import ca.ubc.cs304.model.DeveloperNameVideoGameModel;
 import ca.ubc.cs304.model.VideoGameCountModel;
 import ca.ubc.cs304.model.VideoGameModel;
+import ca.ubc.cs304.ui.MainMenuWindow;
 import ca.ubc.cs304.ui.LoginWindow;
-import ca.ubc.cs304.ui.TerminalGames;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
  * This is the main controller class that will orchestrate everything.
  */
-public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegate {
+public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegate, GUIWindowDelegate {
 	private GameAwardsDbHandler dbHandler = null;
 	private LoginWindow loginWindow = null;
 
 	public GameAwardsShow() {
 		dbHandler = new GameAwardsDbHandler();
 	}
-	
+
 	private void start() {
 		loginWindow = new LoginWindow();
 		loginWindow.showFrame(this);
 	}
-	
+
 	/**
 	 * LoginWindowDelegate Implementation
-	 * 
+	 *
      * connects to Oracle database with supplied username and password
-     */ 
+     */
 	public void login(String username, String password) throws IOException {
 		boolean didConnect = dbHandler.login(username, password);
 
@@ -43,9 +45,9 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			// Once connected, remove login window and start text transaction flow
 			loginWindow.dispose();
 
-			TerminalGames transaction = new TerminalGames();
-			transaction.setupDatabase(this);
-			transaction.showMainMenu(this);
+			MainMenuWindow mainMenuWindow = new MainMenuWindow();
+			databaseSetup();
+			mainMenuWindow.mainMenuHandler(this);
 		} else {
 			loginWindow.handleLoginFailed();
 
@@ -56,13 +58,13 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			}
 		}
 	}
-	
+
 	/**
 	 * TermainalTransactionsDelegate Implementation
-	 * 
+	 *
 	 * Insert a branch with the given info
 	 */
-    public void insertVideoGame(VideoGameModel model) {
+    public void insertVideoGame(VideoGameModel model) throws SQLException {
     	dbHandler.insertVideoGame(model);
     }
 
@@ -79,6 +81,10 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			System.out.println(model.getDeveloperName());
 			System.out.println();
 		}
+	}
+
+	public VideoGameModel[] getVideoGamesObjects() {
+		return dbHandler.getVideoGameInfo();
 	}
 
 	public void showDeveloperName() {
@@ -284,24 +290,28 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 
 	/**
 	 * TermainalTransactionsDelegate Implementation
-	 * 
+	 *
 	 * Delete branch with given branch ID.
-	 */ 
-    public void deleteVideoGame(String gameName, int gameYear) {
+	 */
+    public void deleteVideoGame(String gameName, int gameYear) throws SQLException {
     	dbHandler.deleteVideoGame(gameName, gameYear);
     }
-    
+
     /**
 	 * TerminalTransactionsDelegate Implementation
-	 * 
+	 *
      * The TerminalTransaction instance tells us that the user is fine with dropping any existing table
      * called branch and creating a new one for this project to use
-     */ 
+     */
 	public void databaseSetup() {
-		dbHandler.databaseSetup();;
-		
+		try {
+			dbHandler.databaseSetup();
+		} catch (SQLException e) {
+
+		}
+
 	}
-    
+
 	/**
 	 * Main method called at launch time
 	 */
