@@ -112,7 +112,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			}
 			else if (evt.getSource()== removeVideoGameSubmitButton)
 			{
-				removeVideoGameHandler(delegate);
+				removeVideoGameSubmitHandler(delegate);
 			}
 			else if (evt.getSource()== joinTablesButton)
 			{
@@ -303,7 +303,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		addButton(manageVideoGameButton);
 	}
 
-	private void removeVideoGameHandler(GUIWindowDelegate delegate) {
+	private void removeVideoGameSubmitHandler(GUIWindowDelegate delegate) {
 		String title = titleField.getText();
 		String yearText = yearField.getText();
 		int year = 0;
