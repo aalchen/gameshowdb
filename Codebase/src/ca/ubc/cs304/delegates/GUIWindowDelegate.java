@@ -39,4 +39,5 @@ public interface GUIWindowDelegate {
 	public void aggregateGroupByHaving(String table, String aggregationOp, String toString, List<String> returnVideoGameArray, String toString1, String havingCol, String havingOperator, String havingValue);
 
 	VideoGameModel[] getVideoGamesObjects();
+	DeveloperNameModel[] getDeveloperNamesObjects();
 }

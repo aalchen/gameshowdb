@@ -87,6 +87,10 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		return dbHandler.getVideoGameInfo();
 	}
 
+	public DeveloperNameModel[] getDeveloperNamesObjects() {
+		return dbHandler.getDeveloperNameInfo();
+	}
+
 	public void showDeveloperName() {
 		DeveloperNameModel[] models = dbHandler.getDeveloperNameInfo();
 

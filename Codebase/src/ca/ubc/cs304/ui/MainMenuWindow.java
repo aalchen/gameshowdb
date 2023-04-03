@@ -8,10 +8,9 @@ import java.sql.SQLException;
 import javax.swing.*;
 
 import ca.ubc.cs304.delegates.GUIWindowDelegate;
+import ca.ubc.cs304.model.DeveloperNameTableModel;
 import ca.ubc.cs304.model.VideoGameModel;
 import ca.ubc.cs304.model.VideoGameTableModel;
-
-import static java.lang.Integer.parseInt;
 
 /**
  * The class is only responsible for displaying and handling the login GUI.
@@ -116,11 +115,11 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			} else if (evt.getSource() == addDeveloperButton) {
 				addDeveloperHandler();
 			} else if (evt.getSource() == removeDeveloperButton) {
-
+				removeDeveloperHandler(delegate);
 			} else if (evt.getSource() == updateDeveloperButton) {
 
 			} else if (evt.getSource() == showAllDevelopersButton) {
-
+				showAllDevelopersHandler();
 			} else if (evt.getSource() == addDeveloperSubmitButton) {
 
 			} else if (evt.getSource() == removeDeveloperSubmitButton) {
@@ -469,5 +468,99 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 
 		addButton(addDeveloperSubmitButton);
 		addButton(manageDeveloperNameButton);
+	}
+
+	private void removeDeveloperHandler(GUIWindowDelegate delegate) {
+		String name = nameField.getText();
+		String website = websiteField.getText();
+		String leadDeveloper = leadDeveloperField.getText();
+
+		if (isValidRemoveDeveloperInput(name, website, leadDeveloper)) {
+			try {
+				delegate.deleteDeveloperName(name);
+				// Show a success popup
+				JOptionPane.showMessageDialog(null, "Developer removed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+				manageDevelopers();
+			} catch (Exception e) {
+				// Show the exception message in a popup
+				JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	private boolean isValidRemoveDeveloperInput(String name, String website, String leadDeveloper) {
+		// TODO: Implement this!
+		return false;
+	}
+
+	private void showAllDevelopersHandler() {
+		setUpJpanel();
+
+		DeveloperNameTableModel developerNameTable = new DeveloperNameTableModel(delegate.getDeveloperNamesObjects());
+		JTable table = new JTable(developerNameTable);
+		JScrollPane scrollPane = new JScrollPane(table);
+
+		// Add the JScrollPane to the JPanel with GridBagLayout
+		c.fill = GridBagConstraints.BOTH;
+
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1.0;
+		c.weighty = 1.0;
+		contentPanel.add(scrollPane, c);
+
+		// Create a new JPanel for buttons with FlowLayout
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+
+		// add delete button
+		JButton deleteButton = new JButton("Delete");
+		deleteButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = table.getSelectedRow();
+
+				if (selectedRow != -1) {
+					int modelRow = table.convertRowIndexToModel(selectedRow);
+					String gameName = (String) developerNameTable.getValueAt(modelRow, 0);
+					int gameYear = (int) developerNameTable.getValueAt(modelRow, 1);
+
+					try {
+						delegate.deleteVideoGame(gameName, gameYear);
+					} catch (SQLException error) {
+						JOptionPane.showMessageDialog(null, "Unexpected Error", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+					displayVideoGamesHandler();
+				} else {
+					JOptionPane.showMessageDialog(null, "Please select a row to delete.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+
+		buttonsPanel.add(deleteButton);
+		// Add a 5-pixel spacer between the buttons
+		Dimension spacer = new Dimension(2, 0);
+		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+		buttonsPanel.add(addDeveloperButton);
+
+		// Add a 5-pixel spacer between the buttons
+		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+		buttonsPanel.add(manageDeveloperNameButton);
+
+		// Add the buttonsPanel to the contentPanel with GridBagLayout
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		c.insets = new Insets(0, 5, 5, 5);
+		contentPanel.add(buttonsPanel, c);
+
+		contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
+		revalidate();
+		repaint();
 	}
 }
