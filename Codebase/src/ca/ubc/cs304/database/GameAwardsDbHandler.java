@@ -211,6 +211,7 @@ public class GameAwardsDbHandler {
 					}
 				}
 			}
+			//	https://stackoverflow.com/questions/18129807/in-java-how-do-you-sort-one-list-based-on-another
 			dropTables.sort(Comparator.comparingInt(lowercaseTableNames::indexOf));
 
 			for (int i = 0; i < dropTables.size(); i++) {
