@@ -11,6 +11,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -215,19 +217,24 @@ public class GameAwardsDbHandler {
 		try {
 			String query = "select table_name from user_tables";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			List<String> lowercaseTableNames = new ArrayList<String>(Arrays.asList("communityaward", "sponsoredaward", "staff_awardceremony", "sponsors", "videogame_dlc", "livestreamviewercount", "award", "videogame", "developercountry", "staff", "livestreamurl", "awardceremony", "venue", "company", "developername"));
+			List<String> dropTables = new ArrayList<String>();
 			ResultSet rs = ps.executeQuery();
-
+			String table = "";
 			while (rs.next()) {
-				if (rs.getString(1).toLowerCase().equals("videogame")) {
-					System.out.println(rs.getString(1).toLowerCase());
-					ps.execute("DROP TABLE VideoGame");
-					break;
+				table = rs.getString("table_name").toLowerCase();
+				for (int i = 0; i < lowercaseTableNames.size(); i++) {
+					if (table.equals(lowercaseTableNames.get(i))) {
+						dropTables.add(table);
+					}
 				}
-				if (rs.getString(1).toLowerCase().equals("developername")) {
-					System.out.println(rs.getString(1).toLowerCase());
-					ps.execute("DROP TABLE DeveloperName");
-					break;
-				}
+			}
+
+			dropTables.sort(Comparator.comparingInt(lowercaseTableNames::indexOf));
+
+			for (int i = 0; i < dropTables.size(); i++) {
+				String tableToDrop = dropTables.get(i);
+				ps.execute("DROP TABLE " + tableToDrop);
 			}
 
 			rs.close();
@@ -638,7 +645,7 @@ public class GameAwardsDbHandler {
 		ArrayList<VideoGameModel> result = new ArrayList<VideoGameModel>();
 
 		try {
-			String query = "SELECT D.name FROM DeveloperName D WHERE NOT EXISTS ( SELECT G.genre FROM VideoGame G WHERE NOT EXISTS ( SELECT * FROM VideoGame G2 WHERE G2.developer_name = D.name AND G2.genre = G.genre ) GROUP BY G.genre HAVING COUNT(*) = ( SELECT COUNT(DISTINCT genre) FROM VideoGame))";
+			String query = "SELECT D.name FROM DeveloperName D WHERE NOT EXISTS ( SELECT G1.genre FROM VideoGame G1 WHERE NOT EXISTS ( SELECT * FROM VideoGame G2 WHERE G2.developer_name = D.name AND G2.genre = G1.genre ))";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 			ResultSet rs = ps.executeQuery();
 
