@@ -503,7 +503,14 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	}
 
 	private boolean isValidRemoveDeveloperInput(String name) {
-		// TODO: Implement this!
+		if (name.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Name field is empty. Please enter a valid name.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		} else if (name.length() > 50) {
+			JOptionPane.showMessageDialog(null, "Name is too long. Please enter a title with 50 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
 		return true;
 	}
 
@@ -600,6 +607,27 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	}
 
 	private boolean isValidDeveloperInput(String name, String website, String leadDeveloper) {
+		if (name.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Name field is empty. Please enter a valid name.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		} else if (name.length() > 50) {
+			JOptionPane.showMessageDialog(null, "Name is too long. Please enter a title with 50 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		if (website.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Website field is empty. Please enter a valid website.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		if (leadDeveloper.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Lead Developer field is empty. Please enter a valid lead developer.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		} else if (leadDeveloper.length() > 50) {
+			JOptionPane.showMessageDialog(null, "Lead Developer is too long. Please enter a Lead Developer with 50 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
 		return true;
 	}
 }
