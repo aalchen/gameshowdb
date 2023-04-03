@@ -3,9 +3,6 @@ package ca.ubc.cs304.ui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.BufferedReader;
 import java.sql.SQLException;
 
 import javax.swing.*;
@@ -27,11 +24,14 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 
 	// Buttons
 	private JButton manageVideoGameButton, manageDeveloperNameButton, quitButton, mainMenuButton;
-	private JButton addVideoGameButton, addSubmitButton, removeSubmitButton, removeVideoGameButton, showAllVideoGameButton;
-	private JButton addDeveloperButton, removeDeveloperButton, updateDeveloperButton, showAllDevelopersButton;
+	private JButton addVideoGameButton, addVideoGameSubmitButton, removeVideoGameSubmitButton, removeVideoGameButton,
+			showAllVideoGameButton;
+	private JButton addDeveloperButton, removeDeveloperButton, updateDeveloperButton, showAllDevelopersButton,
+			addDeveloperSubmitButton, removeDeveloperSubmitButton;
 
 	// Text fields
 	private JTextField titleField, yearField, genreField, developerNameField;
+	private JTextField nameField, websiteField, leadDeveloperField;
 
 	// Panel and layout
 	private JPanel contentPanel;
@@ -98,7 +98,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			{
 				displayVideoGamesHandler();
 			}
-			else if (evt.getSource()== addSubmitButton)
+			else if (evt.getSource()== addVideoGameSubmitButton)
 			{
 				addVideoGameSubmitHandler(delegate);
 			}
@@ -106,23 +106,31 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			{
 				displayRemoveVideoGameHandler();
 			}
-			else if (evt.getSource()== removeSubmitButton)
+			else if (evt.getSource()== removeVideoGameSubmitButton)
 			{
 				removeVideoGameHandler(delegate);
 			}
 			else if (evt.getSource()== manageDeveloperNameButton)
 			{
-				//do something
-			}
-			else if (evt.getSource()== manageDeveloperNameButton)
-			{
-				//do something
+				manageDevelopers();
+			} else if (evt.getSource() == addDeveloperButton) {
+				addDeveloperHandler();
+			} else if (evt.getSource() == removeDeveloperButton) {
+
+			} else if (evt.getSource() == updateDeveloperButton) {
+
+			} else if (evt.getSource() == showAllDevelopersButton) {
+
+			} else if (evt.getSource() == addDeveloperSubmitButton) {
+
+			} else if (evt.getSource() == removeDeveloperSubmitButton) {
+
 			}
 		}
 	}
 
 	private void displayRemoveVideoGameHandler() {
-		removeSubmitButton = new JButton("Submit");
+		removeVideoGameSubmitButton = new JButton("Submit");
 		JLabel titleLabel = new JLabel("Videogame Title: ");
 		JLabel yearLabel = new JLabel("Year: ");
 
@@ -137,7 +145,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		addLabel(yearLabel);
 		addField(yearField);
 
-		addButton(removeSubmitButton);
+		addButton(removeVideoGameSubmitButton);
 		addButton(manageVideoGameButton);
 	}
 
@@ -262,7 +270,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	}
 
 	private void AddVideoGameHandler() {
-		addSubmitButton = new JButton("Submit");
+		addVideoGameSubmitButton = new JButton("Submit");
 		JLabel titleLabel = new JLabel("Videogame Title: ");
 		JLabel yearLabel = new JLabel("Year: ");
 		JLabel genreLabel = new JLabel("Genre: ");
@@ -287,7 +295,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		addLabel(developerNameLabel);
 		addField(developerNameField);
 
-		addButton(addSubmitButton);
+		addButton(addVideoGameSubmitButton);
 		addButton(manageVideoGameButton);
 	}
 
@@ -415,5 +423,51 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 
 		contentPanel.setLayout(gb);
 		contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 20, 10));
+	}
+
+	// Developer Handling Section Begins
+	private void manageDevelopers() {
+		this.addDeveloperButton = new JButton("Add developer");
+		this.updateDeveloperButton = new JButton("Find and update developer info");
+		this.removeDeveloperButton = new JButton("Find and remove a developer");
+		this.showAllDevelopersButton = new JButton("Show all developers");
+		this.mainMenuButton = new JButton("Return to Main Menu");
+
+		setUpJpanel();
+
+		addButton(addDeveloperButton);
+		addButton(updateDeveloperButton);
+		addButton(removeDeveloperButton);
+		addButton(showAllDevelopersButton);
+		addButton(mainMenuButton);
+
+		contentPanel.setPreferredSize(new Dimension(FRAME_WIDTH - 20, FRAME_HEIGHT - 30));
+		revalidate();
+		repaint();
+	}
+
+	private void addDeveloperHandler() {
+		addDeveloperSubmitButton = new JButton("Submit");
+		JLabel nameLabel = new JLabel("Name: ");
+		JLabel websiteLabel = new JLabel("Website: ");
+		JLabel leadDeveloperLabel = new JLabel("Lead Developer: ");
+
+		nameField = new JTextField(50);
+		websiteField = new JTextField(50);
+		leadDeveloperField = new JTextField(50);
+
+		setUpJpanel();
+
+		addLabel(nameLabel);
+		addField(nameField);
+
+		addLabel(websiteLabel);
+		addField(websiteField);
+
+		addLabel(leadDeveloperLabel);
+		addField(leadDeveloperField);
+
+		addButton(addDeveloperSubmitButton);
+		addButton(manageDeveloperNameButton);
 	}
 }
