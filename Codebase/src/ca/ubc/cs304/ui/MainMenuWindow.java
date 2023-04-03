@@ -21,7 +21,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 
 	// Buttons
 	private JButton manageVideoGameButton, finderButton, manageDeveloperNameButton, joinSubmitButton, quitButton, mainMenuButton;
-	private JButton joinTablesButton, divisionTablesButton, returnToFinderToolButton;
+	private JButton joinTablesButton, divisionTablesButton, aggregationTablesButton, returnToFinderToolButton;
 	private JButton addVideoGameButton, addVideoGameSubmitButton, removeVideoGameSubmitButton, removeVideoGameButton, showAllVideoGameButton;
 	private JButton addDeveloperButton, removeDeveloperButton, updateDeveloperButton, showAllDevelopersButton,
 			addDeveloperSubmitButton, removeDeveloperSubmitButton, updateDeveloperSubmitButton;
@@ -64,6 +64,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		this.returnToFinderToolButton = new JButton("Return to Finder Tool Menu");
 		this.finderButton = new JButton("Finder Tool");
 		this.divisionTablesButton = new JButton("Find contenders for EveryGenre Award");
+		this.aggregationTablesButton = new JButton("Find Developer Release Count after 2015");
 		this.quitButton = new JButton("Quit");
 		setUpJpanel();
 
@@ -122,6 +123,10 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			{
 				joinTableHandler();
 			}
+			else if (evt.getSource()== aggregationTablesButton)
+			{
+				groupByNumberOfTitlesPerDevAfter2015();
+			}
 			else if (evt.getSource()== finderButton || evt.getSource()== returnToFinderToolButton)
 			{
 				finderWindow();
@@ -148,6 +153,44 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 				removeDeveloperSubmitHandler(delegate);
 			}
 		}
+	}
+
+	private void groupByNumberOfTitlesPerDevAfter2015() {
+		setUpJpanel();
+
+		VideoGameCountModel[] models = delegate.nestedAggregation();
+		VideoGameCountTableModel nestedAggregationTable = new VideoGameCountTableModel(models);
+		setupTable(new JTable(nestedAggregationTable));
+
+		// Create a new JPanel for buttons with FlowLayout
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+
+		// Add a 5-pixel spacer between the buttons
+		Dimension spacer = new Dimension(2, 0);
+		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+		buttonsPanel.add(mainMenuButton);
+
+		// Add a 5-pixel spacer between the buttons
+		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+		buttonsPanel.add(returnToFinderToolButton);
+		returnToFinderToolButton.addActionListener(this);
+
+		// Add the buttonsPanel to the contentPanel with GridBagLayout
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		c.insets = new Insets(0, 5, 5, 5);
+		contentPanel.add(buttonsPanel, c);
+
+		contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
+		revalidate();
+		repaint();
 	}
 
 	private void divisionHandler() {
@@ -195,6 +238,8 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		// add buttons
 		addButton(joinTablesButton);
 		addButton(divisionTablesButton);
+		//TODO ADD PROJECTION
+		addButton(aggregationTablesButton);
 		addButton(mainMenuButton);
 		revalidate();
 		repaint();

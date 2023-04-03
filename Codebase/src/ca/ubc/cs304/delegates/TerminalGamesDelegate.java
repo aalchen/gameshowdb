@@ -2,6 +2,7 @@ package ca.ubc.cs304.delegates;
 
 import ca.ubc.cs304.model.DeveloperNameModel;
 import ca.ubc.cs304.model.DeveloperNameVideoGameModel;
+import ca.ubc.cs304.model.VideoGameCountModel;
 import ca.ubc.cs304.model.VideoGameModel;
 
 import java.sql.SQLException;
@@ -39,5 +40,5 @@ public interface TerminalGamesDelegate {
 	public void aggregateGroupBy();
 	public void aggregateGroupByHaving();
 	public VideoGameModel[] division();
-	public void nestedAggregation();
+	public VideoGameCountModel[] nestedAggregation();
 }
