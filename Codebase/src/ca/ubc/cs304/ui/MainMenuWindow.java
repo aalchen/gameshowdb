@@ -10,8 +10,6 @@ import javax.swing.*;
 import ca.ubc.cs304.delegates.GUIWindowDelegate;
 import ca.ubc.cs304.model.*;
 
-import static java.lang.Integer.parseInt;
-
 /**
  * The class is only responsible for displaying and handling the login GUI.
  */
@@ -24,11 +22,14 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	// Buttons
 	private JButton manageVideoGameButton, finderButton, manageDeveloperNameButton, joinSubmitButton, quitButton, mainMenuButton;
 	private JButton joinTablesButton, divisionTablesButton, returnToFinderToolButton;
-	private JButton addVideoGameButton, addSubmitButton, removeSubmitButton, removeVideoGameButton, showAllVideoGameButton;
-	private JButton addDeveloperButton, removeDeveloperButton, updateDeveloperButton, showAllDevelopersButton;
+	private JButton addVideoGameButton, addVideoGameSubmitButton, removeVideoGameSubmitButton, removeVideoGameButton, showAllVideoGameButton;
+	private JButton addDeveloperButton, removeDeveloperButton, updateDeveloperButton, showAllDevelopersButton,
+			addDeveloperSubmitButton, removeDeveloperSubmitButton, updateDeveloperSubmitButton;
 
 	// Text fields
 	private JTextField titleField, yearField, genreField, developerNameField, devNameJoinField;
+	private JTextField nameField, websiteField, leadDeveloperField, newLeadDeveloperField, newWebsiteField,
+			newDeveloperNameField;
 
 	// Panel and layout
 	private JPanel contentPanel;
@@ -101,7 +102,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			{
 				displayVideoGamesHandler();
 			}
-			else if (evt.getSource()== addSubmitButton)
+			else if (evt.getSource()== addVideoGameSubmitButton)
 			{
 				addVideoGameSubmitHandler(delegate);
 			}
@@ -109,7 +110,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			{
 				displayRemoveVideoGameHandler();
 			}
-			else if (evt.getSource()== removeSubmitButton)
+			else if (evt.getSource()== removeVideoGameSubmitButton)
 			{
 				removeVideoGameHandler(delegate);
 			}
@@ -128,6 +129,23 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			else if (evt.getSource()== divisionTablesButton)
 			{
 				divisionHandler();
+			}
+			else if (evt.getSource()== manageDeveloperNameButton) {
+				manageDevelopers();
+			} else if (evt.getSource() == addDeveloperButton) {
+				addDeveloperHandler();
+			} else if (evt.getSource() == removeDeveloperButton) {
+				removeDeveloperHandler();
+			} else if (evt.getSource() == updateDeveloperButton) {
+				updateDeveloperHandler();
+			} else if (evt.getSource() == updateDeveloperSubmitButton) {
+				updateDeveloperSubmitHandler(delegate);
+			} else if (evt.getSource() == showAllDevelopersButton) {
+				showAllDevelopersHandler();
+			} else if (evt.getSource() == addDeveloperSubmitButton) {
+				addDeveloperSubmitHandler(delegate);
+			} else if (evt.getSource() == removeDeveloperSubmitButton) {
+				removeDeveloperSubmitHandler(delegate);
 			}
 		}
 	}
@@ -266,7 +284,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	}
 
 	private void displayRemoveVideoGameHandler() {
-		removeSubmitButton = new JButton("Submit");
+		removeVideoGameSubmitButton = new JButton("Submit");
 		JLabel titleLabel = new JLabel("Videogame Title: ");
 		JLabel yearLabel = new JLabel("Year: ");
 
@@ -281,7 +299,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		addLabel(yearLabel);
 		addField(yearField);
 
-		addButton(removeSubmitButton);
+		addButton(removeVideoGameSubmitButton);
 		addButton(manageVideoGameButton);
 	}
 
@@ -406,7 +424,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	}
 
 	private void AddVideoGameHandler() {
-		addSubmitButton = new JButton("Submit");
+		addVideoGameSubmitButton = new JButton("Submit");
 		JLabel titleLabel = new JLabel("Videogame Title: ");
 		JLabel yearLabel = new JLabel("Year: ");
 		JLabel genreLabel = new JLabel("Genre: ");
@@ -431,7 +449,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		addLabel(developerNameLabel);
 		addField(developerNameField);
 
-		addButton(addSubmitButton);
+		addButton(addVideoGameSubmitButton);
 		addButton(manageVideoGameButton);
 	}
 
@@ -566,4 +584,298 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		contentPanel.add(scrollPane, c);
 	}
 
+	// Developer Handling Section Begins
+	private void manageDevelopers() {
+		this.addDeveloperButton = new JButton("Add developer");
+		this.updateDeveloperButton = new JButton("Find and update developer info");
+		this.removeDeveloperButton = new JButton("Find and remove a developer");
+		this.showAllDevelopersButton = new JButton("Show all developers");
+		this.mainMenuButton = new JButton("Return to Main Menu");
+
+		setUpJpanel();
+
+		addButton(addDeveloperButton);
+		addButton(updateDeveloperButton);
+		addButton(removeDeveloperButton);
+		addButton(showAllDevelopersButton);
+		addButton(mainMenuButton);
+
+		contentPanel.setPreferredSize(new Dimension(FRAME_WIDTH - 20, FRAME_HEIGHT - 30));
+		revalidate();
+		repaint();
+	}
+
+	private void addDeveloperHandler() {
+		addDeveloperSubmitButton = new JButton("Submit");
+		JLabel nameLabel = new JLabel("Name: ");
+		JLabel websiteLabel = new JLabel("Website: ");
+		JLabel leadDeveloperLabel = new JLabel("Lead Developer: ");
+
+		nameField = new JTextField(50);
+		websiteField = new JTextField(50);
+		leadDeveloperField = new JTextField(50);
+
+		setUpJpanel();
+
+		addLabel(nameLabel);
+		addField(nameField);
+
+		addLabel(websiteLabel);
+		addField(websiteField);
+
+		addLabel(leadDeveloperLabel);
+		addField(leadDeveloperField);
+
+		addButton(addDeveloperSubmitButton);
+		addButton(manageDeveloperNameButton);
+	}
+
+	private void removeDeveloperHandler() {
+		removeDeveloperSubmitButton = new JButton("Submit");
+		JLabel nameLabel = new JLabel("Developer Name: ");
+
+		nameField = new JTextField(50);
+
+		setUpJpanel();
+
+		addLabel(nameLabel);
+		addField(nameField);
+
+		addButton(removeDeveloperSubmitButton);
+		addButton(manageDeveloperNameButton);
+	}
+
+	private void removeDeveloperSubmitHandler(GUIWindowDelegate delegate) {
+		String name = nameField.getText();
+
+		if (isValidRemoveDeveloperInput(name)) {
+			try {
+				delegate.deleteDeveloperName(name);
+				// Show a success popup
+				JOptionPane.showMessageDialog(null, "Developer removed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+				manageDevelopers();
+			} catch (Exception e) {
+				// Show the exception message in a popup
+				JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	private boolean isValidRemoveDeveloperInput(String name) {
+		if (name.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Name field is empty. Please enter a valid name.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		} else if (name.length() > 50) {
+			JOptionPane.showMessageDialog(null, "Name is too long. Please enter a title with 50 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		return true;
+	}
+
+	private void showAllDevelopersHandler() {
+		setUpJpanel();
+
+		DeveloperNameTableModel developerNameTable = new DeveloperNameTableModel(delegate.getDeveloperNamesObjects());
+		JTable table = new JTable(developerNameTable);
+		setupTable(table);
+
+		// Create a new JPanel for buttons with FlowLayout
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+
+		// add delete button
+		JButton deleteButton = new JButton("Delete");
+		deleteButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = table.getSelectedRow();
+
+				if (selectedRow != -1) {
+					int modelRow = table.convertRowIndexToModel(selectedRow);
+					String gameName = (String) developerNameTable.getValueAt(modelRow, 0);
+					int gameYear = (int) developerNameTable.getValueAt(modelRow, 1);
+
+					try {
+						delegate.deleteVideoGame(gameName, gameYear);
+					} catch (SQLException error) {
+						JOptionPane.showMessageDialog(null, "Unexpected Error", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+					displayVideoGamesHandler();
+				} else {
+					JOptionPane.showMessageDialog(null, "Please select a row to delete.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+
+		buttonsPanel.add(deleteButton);
+		// Add a 5-pixel spacer between the buttons
+		Dimension spacer = new Dimension(2, 0);
+		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+		buttonsPanel.add(addDeveloperButton);
+
+		// Add a 5-pixel spacer between the buttons
+		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+		buttonsPanel.add(manageDeveloperNameButton);
+
+		// Add the buttonsPanel to the contentPanel with GridBagLayout
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		c.insets = new Insets(0, 5, 5, 5);
+		contentPanel.add(buttonsPanel, c);
+
+		contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
+		revalidate();
+		repaint();
+	}
+
+	private void addDeveloperSubmitHandler(GUIWindowDelegate delegate) {
+		String name = nameField.getText();
+		String website = websiteField.getText();
+		String leadDeveloper = leadDeveloperField.getText();
+
+		if (isValidDeveloperInput(name, website, leadDeveloper)) {
+			DeveloperNameModel model = new DeveloperNameModel(
+					leadDeveloper,
+					website,
+					name);
+			try {
+				delegate.insertDeveloperName(model);
+				JOptionPane.showMessageDialog(null, "Developer added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+				manageDevelopers();
+			} catch (Exception e) {
+				// Show the exception message in a popup
+				JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	private boolean isValidDeveloperInput(String name, String website, String leadDeveloper) {
+		if (name.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Name field is empty. Please enter a valid name.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		} else if (name.length() > 50) {
+			JOptionPane.showMessageDialog(null, "Name is too long. Please enter a name with 50 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		if (website.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Website field is empty. Please enter a valid website.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		} else if (website.length() > 50) {
+			JOptionPane.showMessageDialog(null, "Website is too long. Please enter a website with 50 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		if (leadDeveloper.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Lead Developer field is empty. Please enter a valid lead developer.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		} else if (leadDeveloper.length() > 50) {
+			JOptionPane.showMessageDialog(null, "Lead Developer is too long. Please enter a Lead Developer with 50 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+
+	private void updateDeveloperHandler() {
+		updateDeveloperSubmitButton = new JButton("Update");
+
+		JLabel nameLabel = new JLabel("Current Name: ");
+		nameField = new JTextField(50);
+
+		JLabel newDeveloperNameLabel = new JLabel("New Name: ");
+		newDeveloperNameField = new JTextField(50);
+
+		JLabel newWebsiteLabel = new JLabel("New Website: ");
+		newWebsiteField = new JTextField(50);
+
+		JLabel newLeadDeveloperLabel = new JLabel("New Lead: ");
+		newLeadDeveloperField = new JTextField(50);
+
+		setUpJpanel();
+
+		addLabel(nameLabel);
+		addField(nameField);
+
+		addLabel(newDeveloperNameLabel);
+		addField(newDeveloperNameField);
+
+		addLabel(newWebsiteLabel);
+		addField(newWebsiteField);
+
+		addLabel(newLeadDeveloperLabel);
+		addField(newLeadDeveloperField);
+
+		addButton(updateDeveloperSubmitButton);
+		addButton(manageDeveloperNameButton);
+	}
+
+	private void updateDeveloperSubmitHandler(GUIWindowDelegate delegate) {
+		String name = nameField.getText();
+		String newName = newDeveloperNameField.getText();
+		String newWebsite = newWebsiteField.getText();
+		String newLeadDeveloper = newLeadDeveloperField.getText();
+
+		if (isValidUpdateDeveloperInput(name, newName, newWebsite, newLeadDeveloper)) {
+			try {
+				if (!newWebsite.isEmpty()) {
+					delegate.updateDeveloperNameWebsite(newWebsite, name);
+				}
+
+				if (!newLeadDeveloper.isEmpty()) {
+					delegate.updateDeveloperNameLead(newLeadDeveloper, name);
+				}
+
+				// Update developer name last
+				if (!newName.isEmpty()) {
+					delegate.updateDeveloperNameName(newName, name);
+				}
+
+				JOptionPane.showMessageDialog(null, "Developer updated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+				manageDevelopers();
+			} catch (Exception e) {
+				// Show the exception message in a popup
+				JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	private boolean isValidUpdateDeveloperInput(String name, String newName, String newWebsite, String newLeadDeveloper) {
+		if (name.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Name field is empty. Please enter a valid name.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		} else if (name.length() > 50) {
+			JOptionPane.showMessageDialog(null, "Name is too long. Please enter a name with 50 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		if (newName.isEmpty() && newWebsite.isEmpty() && newLeadDeveloper.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Update fields are all empty. Please enter an update value.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+
+		if (newName.length() > 50) {
+			JOptionPane.showMessageDialog(null, "New Name is too long. Please enter a name with 50 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		if (newWebsite.length() > 50) {
+			JOptionPane.showMessageDialog(null, "New Website is too long. Please enter a new website with 50 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		if (newLeadDeveloper.length() > 50) {
+			JOptionPane.showMessageDialog(null, "New Lead Developer is too long. Please enter a new lead developer with 50 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
 }
+
