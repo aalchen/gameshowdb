@@ -524,58 +524,22 @@ public class GameAwardsDbHandler {
 		return result.toArray(new DeveloperNameModel[result.size()]);
 	}
 
-	public DeveloperNameVideoGameModel[] joinTables(List<String> colsArray, String joinWhereCol, String joinWhere, String table1, String table2) {
+	public DeveloperNameVideoGameModel[] joinTables(String joinWhere) {
 		ArrayList<DeveloperNameVideoGameModel> result = new ArrayList<DeveloperNameVideoGameModel>();
-		String queryColumns = "";
-		String joinWhereTable = "";
-		for (int i = 0; i < colsArray.size(); i++) {
-			queryColumns = queryColumns + colsArray.get(i) + ", ";
-		}
-		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
-
-		if (joinWhereCol == "Title" || joinWhereCol == "Year" || joinWhereCol == "Genre" || joinWhereCol == "Developer_Name") {
-			joinWhereTable = "VideoGame";
-		}
-		if (joinWhereCol == "Name" || joinWhereCol == "Website" || joinWhereCol == "Lead_Developer") {
-			joinWhereTable = "DeveloperName";
-		}
 
 		try {
-			String query = "SELECT " + queryColumns + " FROM " + table1 + " INNER JOIN " + table2 + " ON VideoGame.Developer_Name = DeveloperName.name WHERE " + joinWhereTable + "." + joinWhereCol + " = '" + joinWhere + "'";
+			String query = "SELECT * FROM VideoGame INNER JOIN DeveloperName ON VideoGame.developer_name = DeveloperName.name WHERE DeveloperName.Lead_Developer = ?";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ps.setString(1, joinWhere);
 			ResultSet rs = ps.executeQuery();
-			String title = "";
-			int year = INVALID_INPUT;
-			String genre = "";
-			String name = "";
-			String lead_dev = "";
-			String website = "";
 
 			while (rs.next()) {
-				if (colsArray.contains("Title")) {
-					title = rs.getString("title");
-				}
-				if (colsArray.contains("Year")) {
-					year = rs.getInt("year");
-				}
-				if (colsArray.contains("Genre")) {
-					genre = rs.getString("genre");
-				}
-				if (colsArray.contains("Developer_Name")) {
-					name = rs.getString("developer_name");
-				}
-				if (colsArray.contains("Lead_Developer")) {
-					lead_dev = rs.getString("lead_developer");
-				}
-				if (colsArray.contains("Website")) {
-					website = rs.getString("website");
-				}
-				DeveloperNameVideoGameModel model = new DeveloperNameVideoGameModel(title,
-						year,
-						genre,
-						name,
-						website,
-						lead_dev);
+				DeveloperNameVideoGameModel model = new DeveloperNameVideoGameModel(rs.getString("title"),
+						rs.getInt("year"),
+						rs.getString("genre"),
+						rs.getString("developer_name"),
+						rs.getString("website"),
+						rs.getString("lead_developer"));
 				result.add(model);
 			}
 
@@ -588,97 +552,107 @@ public class GameAwardsDbHandler {
 		return result.toArray(new DeveloperNameVideoGameModel[result.size()]);
 	}
 
-	public VideoGameCountModel[] aggregateGroupBy(String table, String aggregationOp, String aggregateCol, List<String> otherCol, String groupByCol) {
+	public VideoGameCountModel[] aggregateGroupBy() {
 		ArrayList<VideoGameCountModel> result = new ArrayList<VideoGameCountModel>();
-		String queryColumns = "";
-		for (int i = 0; i < otherCol.size(); i++) {
-			queryColumns = queryColumns + otherCol.get(i) + ", ";
-		}
-		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
-		String selectStatement = aggregationOp + "(" + aggregateCol + "), " + queryColumns;
+
 		try {
-			String query = "SELECT " + selectStatement + " FROM " + table + " GROUP BY " + groupByCol;
+			String query = "SELECT COUNT(Genre), Developer_Name FROM VideoGame GROUP BY Developer_Name";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 			ResultSet rs = ps.executeQuery();
 
-			String title = "";
-			int year = INVALID_INPUT;
-			String genre = "";
-			String name = "";
-
 			while (rs.next()) {
-				if (otherCol.contains("Title")) {
-					title = rs.getString("title");
-				}
-				if (otherCol.contains("Year")) {
-					year = rs.getInt("year");
-				}
-				if (otherCol.contains("Genre")) {
-					genre = rs.getString("genre");
-				}
-				if (otherCol.contains("Developer_Name")) {
-					name = rs.getString("developer_name");
-				}
-
-				VideoGameCountModel model = new VideoGameCountModel(title,
-						year,
-						genre,
-						name,
-						rs.getInt("COUNT(Title)"));
+				VideoGameCountModel model = new VideoGameCountModel(null,
+						INVALID_INPUT,
+						null,
+						rs.getString("developer_name"),
+						rs.getInt("COUNT(Genre)"));
 				result.add(model);
 			}
+
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 		}
+
 		return result.toArray(new VideoGameCountModel[result.size()]);
+
 	}
 
-	public VideoGameCountModel[] aggregateGroupByHaving(String table, String aggregationOp, String aggregateCol, List<String> otherCol, String groupByCol, String havingCol, String havingOperator, String havingValue) {
+	public VideoGameCountModel[] aggregateGroupByHaving() {
 		ArrayList<VideoGameCountModel> result = new ArrayList<VideoGameCountModel>();
-		String queryColumns = "";
-		for (int i = 0; i < otherCol.size(); i++) {
-			queryColumns = queryColumns + otherCol.get(i) + ", ";
-		}
-		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
-		String selectStatement = aggregationOp + "(" + aggregateCol + "), " + queryColumns;
+
 		try {
-			String query = "SELECT " + selectStatement + " FROM " + table + " GROUP BY " + groupByCol + " HAVING " + havingCol + " " + havingOperator + " " + havingValue;
+			String query = "SELECT MAX(Year), Genre, developer_name FROM VideoGame GROUP BY Genre, developer_name HAVING MAX(Year) > 2015";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 			ResultSet rs = ps.executeQuery();
 
-			String title = "";
-			int year = INVALID_INPUT;
-			String genre = "";
-			String name = "";
-
 			while (rs.next()) {
-				if (otherCol.contains("Title")) {
-					title = rs.getString("title");
-				}
-				if (otherCol.contains("Year")) {
-					year = rs.getInt("year");
-				}
-				if (otherCol.contains("Genre")) {
-					genre = rs.getString("genre");
-				}
-				if (otherCol.contains("Developer_Name")) {
-					name = rs.getString("developer_name");
-				}
-
-				VideoGameCountModel model = new VideoGameCountModel(title,
-						year,
-						genre,
-						name,
+				VideoGameCountModel model = new VideoGameCountModel(null,
+						INVALID_INPUT,
+						rs.getString("genre"),
+						rs.getString("developer_name"),
 						rs.getInt("MAX(Year)"));
 				result.add(model);
 			}
+
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 		}
+
 		return result.toArray(new VideoGameCountModel[result.size()]);
+	}
+
+	public VideoGameCountModel[] nestedAggregation() {
+		ArrayList<VideoGameCountModel> result = new ArrayList<VideoGameCountModel>();
+
+		try {
+			String query = "SELECT COUNT(Title), Developer_Name FROM VideoGame WHERE Year IN ( SELECT Year FROM VideoGame WHERE Year > 2015 ) GROUP BY Developer_Name";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				VideoGameCountModel model = new VideoGameCountModel(null,
+						INVALID_INPUT,
+						null,
+						rs.getString("developer_name"),
+						rs.getInt("COUNT(Title)"));
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		}
+
+		return result.toArray(new VideoGameCountModel[result.size()]);
+	}
+
+	public VideoGameModel[] division() {
+		ArrayList<VideoGameModel> result = new ArrayList<VideoGameModel>();
+
+		try {
+			String query = "SELECT D.name FROM DeveloperName D WHERE NOT EXISTS ( SELECT G.genre FROM VideoGame G WHERE NOT EXISTS ( SELECT * FROM VideoGame G2 WHERE G2.developer_name = D.name AND G2.genre = G.genre ) GROUP BY G.genre HAVING COUNT(*) = ( SELECT COUNT(DISTINCT genre) FROM VideoGame))";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				VideoGameModel model = new VideoGameModel(null,
+						INVALID_INPUT,
+						null,
+						rs.getString("name"));
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		}
+
+		return result.toArray(new VideoGameModel[result.size()]);
 	}
 }

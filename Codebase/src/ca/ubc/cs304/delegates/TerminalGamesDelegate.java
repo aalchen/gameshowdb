@@ -33,7 +33,9 @@ public interface TerminalGamesDelegate {
 	public void selectWebsite(String website);
 	public void selectName(String name);
 	public void projectionColumns(List<String> columns);
-	public void joinTables(List<String> colsArray, String joinWhereCol, String joinWhere, String table1, String table2);
-	public void aggregateGroupBy(String table, String aggregationOp, String aggregateCol, List<String> otherCol, String groupByCol);
-	public void aggregateGroupByHaving(String table, String aggregationOp, String toString, List<String> returnVideoGameArray, String toString1, String havingCol, String havingOperator, String havingValue);
+	public void joinTables(String joinWhere);
+	public void aggregateGroupBy();
+	public void aggregateGroupByHaving();
+	public void division();
+	public void nestedAggregation();
 }
