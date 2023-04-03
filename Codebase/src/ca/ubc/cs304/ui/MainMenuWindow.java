@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import javax.swing.*;
 
 import ca.ubc.cs304.delegates.GUIWindowDelegate;
+import ca.ubc.cs304.model.DeveloperNameModel;
 import ca.ubc.cs304.model.DeveloperNameTableModel;
 import ca.ubc.cs304.model.VideoGameModel;
 import ca.ubc.cs304.model.VideoGameTableModel;
@@ -121,7 +122,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			} else if (evt.getSource() == showAllDevelopersButton) {
 				showAllDevelopersHandler();
 			} else if (evt.getSource() == addDeveloperSubmitButton) {
-
+				addDeveloperSubmitHandler(delegate);
 			} else if (evt.getSource() == removeDeveloperSubmitButton) {
 
 			}
@@ -562,5 +563,30 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
 		revalidate();
 		repaint();
+	}
+
+	private void addDeveloperSubmitHandler(GUIWindowDelegate delegate) {
+		String name = nameField.getText();
+		String website = websiteField.getText();
+		String leadDeveloper = leadDeveloperField.getText();
+
+		if (isValidDeveloperInput(name, website, leadDeveloper)) {
+			DeveloperNameModel model = new DeveloperNameModel(
+					name,
+					website,
+					leadDeveloper);
+			try {
+				delegate.insertDeveloperName(model);
+				JOptionPane.showMessageDialog(null, "Developer added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+				manageDevelopers();
+			} catch (Exception e) {
+				// Show the exception message in a popup
+				JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	private boolean isValidDeveloperInput(String name, String website, String leadDeveloper) {
+		return true;
 	}
 }
