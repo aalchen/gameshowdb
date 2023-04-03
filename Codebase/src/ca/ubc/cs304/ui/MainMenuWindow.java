@@ -325,6 +325,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 
 					try {
 						delegate.deleteVideoGame(gameName, gameYear);
+						JOptionPane.showMessageDialog(null, "Video game removed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
 					} catch (SQLException error) {
 						JOptionPane.showMessageDialog(null, "Unexpected Error", "Error", JOptionPane.ERROR_MESSAGE);
 					}
