@@ -219,7 +219,11 @@ public class TerminalGames {
 			joinWhere = readLine().trim();
 		}
 
-		delegate.joinTables(joinWhere);
+		try {
+			delegate.joinTables(joinWhere);
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
 	}
 
 	private void handleProjectionOption() throws IOException {

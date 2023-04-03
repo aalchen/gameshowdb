@@ -208,7 +208,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		}
 	}
 
-	public void joinTables(String joinWhere) {
+	public DeveloperNameVideoGameModel[] joinTables(String joinWhere) throws SQLException {
 		DeveloperNameVideoGameModel[] models = dbHandler.joinTables(joinWhere);
 
 		for (int i = 0; i < models.length; i++) {
@@ -221,6 +221,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			System.out.println(model.getWebsite());
 			System.out.println();
 		}
+		return models;
 	}
 
 	public void aggregateGroupBy() {
@@ -246,7 +247,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		System.out.println();
 	}
 
-	public void division() {
+	public VideoGameModel[] division() {
 		VideoGameModel[] models = dbHandler.division();
 		System.out.println("Division query : developer names who worked in every genre");
 		for (int i = 0; i < models.length; i++) {
@@ -254,6 +255,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			System.out.println(model.getDeveloperName());
 		}
 		System.out.println();
+		return models;
 	}
 
 	public void nestedAggregation() {

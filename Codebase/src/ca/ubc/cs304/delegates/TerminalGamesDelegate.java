@@ -1,6 +1,7 @@
 package ca.ubc.cs304.delegates;
 
 import ca.ubc.cs304.model.DeveloperNameModel;
+import ca.ubc.cs304.model.DeveloperNameVideoGameModel;
 import ca.ubc.cs304.model.VideoGameModel;
 
 import java.sql.SQLException;
@@ -34,9 +35,9 @@ public interface TerminalGamesDelegate {
 	public void selectWebsite(String website);
 	public void selectName(String name);
 	public void projectionColumns(List<String> columns);
-	public void joinTables(String joinWhere);
+	public DeveloperNameVideoGameModel[] joinTables(String joinWhere) throws SQLException;
 	public void aggregateGroupBy();
 	public void aggregateGroupByHaving();
-	public void division();
+	public VideoGameModel[] division();
 	public void nestedAggregation();
 }

@@ -526,7 +526,7 @@ public class GameAwardsDbHandler {
 		return result.toArray(new DeveloperNameModel[result.size()]);
 	}
 
-	public DeveloperNameVideoGameModel[] joinTables(String joinWhere) {
+	public DeveloperNameVideoGameModel[] joinTables(String joinWhere) throws SQLException {
 		ArrayList<DeveloperNameVideoGameModel> result = new ArrayList<DeveloperNameVideoGameModel>();
 
 		try {
@@ -549,6 +549,7 @@ public class GameAwardsDbHandler {
 			ps.close();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
 		}
 
 		return result.toArray(new DeveloperNameVideoGameModel[result.size()]);

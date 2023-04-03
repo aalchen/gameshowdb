@@ -1,6 +1,7 @@
 package ca.ubc.cs304.delegates;
 
 import ca.ubc.cs304.model.DeveloperNameModel;
+import ca.ubc.cs304.model.DeveloperNameVideoGameModel;
 import ca.ubc.cs304.model.VideoGameModel;
 
 import java.sql.SQLException;
@@ -21,7 +22,7 @@ public interface GUIWindowDelegate {
 	public void insertVideoGame(VideoGameModel videoGame) throws SQLException;
 	public void showVideoGame();
 	public void showDeveloperName();
-	public void updateVideoGame(String newTitle, int year, String oldTitle) throws SQLException;
+	public void updateVideoGame(String newTitle, int year, String oldTitle);
 	public void terminalGamesFinished();
 	public void insertDeveloperName(DeveloperNameModel model);
 	public void deleteDeveloperName(String developerName);
@@ -30,13 +31,15 @@ public interface GUIWindowDelegate {
 	public void updateDeveloperNameName(String newDeveloperName, String developerName);
 	public void deleteDeveloperNameLead(String deleteLeadDev);
 	public void deleteDeveloperNameWeb(String deleteWebsite);
-    public void selectLeadDev(String leadDev);
+	public void selectLeadDev(String leadDev);
 	public void selectWebsite(String website);
 	public void selectName(String name);
 	public void projectionColumns(List<String> columns);
-	public void joinTables(List<String> colsArray, String joinWhereCol, String joinWhere, String table1, String table2);
-	public void aggregateGroupBy(String table, String aggregationOp, String aggregateCol, List<String> otherCol, String groupByCol);
-	public void aggregateGroupByHaving(String table, String aggregationOp, String toString, List<String> returnVideoGameArray, String toString1, String havingCol, String havingOperator, String havingValue);
+	public DeveloperNameVideoGameModel[] joinTables(String joinWhere) throws SQLException;
+	public void aggregateGroupBy();
+	public void aggregateGroupByHaving();
+	public VideoGameModel[] division();
+	public void nestedAggregation();
 
 	VideoGameModel[] getVideoGamesObjects();
 }

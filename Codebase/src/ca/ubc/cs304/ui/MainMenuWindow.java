@@ -3,16 +3,12 @@ package ca.ubc.cs304.ui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.BufferedReader;
 import java.sql.SQLException;
 
 import javax.swing.*;
 
 import ca.ubc.cs304.delegates.GUIWindowDelegate;
-import ca.ubc.cs304.model.VideoGameModel;
-import ca.ubc.cs304.model.VideoGameTableModel;
+import ca.ubc.cs304.model.*;
 
 import static java.lang.Integer.parseInt;
 
@@ -26,12 +22,13 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	private static final int TABLE_FRAME_HEIGHT = 500;
 
 	// Buttons
-	private JButton manageVideoGameButton, manageDeveloperNameButton, quitButton, mainMenuButton;
+	private JButton manageVideoGameButton, finderButton, manageDeveloperNameButton, joinSubmitButton, quitButton, mainMenuButton;
+	private JButton joinTablesButton, divisionTablesButton, returnToFinderToolButton;
 	private JButton addVideoGameButton, addSubmitButton, removeSubmitButton, removeVideoGameButton, showAllVideoGameButton;
 	private JButton addDeveloperButton, removeDeveloperButton, updateDeveloperButton, showAllDevelopersButton;
 
 	// Text fields
-	private JTextField titleField, yearField, genreField, developerNameField;
+	private JTextField titleField, yearField, genreField, developerNameField, devNameJoinField;
 
 	// Panel and layout
 	private JPanel contentPanel;
@@ -40,7 +37,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	private GUIWindowDelegate delegate = null;
 
 	public MainMenuWindow() {
-		super("VideoGame Award Manager");
+		super("VideoGame Contender Manager");
 		setSize(FRAME_WIDTH, FRAME_HEIGHT);
 		setUpJpanel();
 		// size the window to obtain a best fit for the components
@@ -59,12 +56,18 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 
 	public void mainMenuHandler(GUIWindowDelegate delegate) {
 		this.delegate = delegate;
-		this.manageVideoGameButton = new JButton("Manage VideoGame Table");
-		this.manageDeveloperNameButton = new JButton("Manage DeveloperName Table");
+		this.manageVideoGameButton = new JButton("Manage VideoGames");
+		this.manageDeveloperNameButton = new JButton("Manage Developers");
+		this.joinTablesButton = new JButton("Find Lead Developers' Games");
+		this.mainMenuButton = new JButton("Return to Main Menu");
+		this.returnToFinderToolButton = new JButton("Return to Finder Tool Menu");
+		this.finderButton = new JButton("Finder Tool");
+		this.divisionTablesButton = new JButton("Find contenders for EveryGenre Award");
 		this.quitButton = new JButton("Quit");
 		setUpJpanel();
 
 		// add buttons
+		addButton(finderButton);
 		addButton(manageVideoGameButton);
 		addButton(manageDeveloperNameButton);
 		addButton(quitButton);
@@ -110,15 +113,156 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			{
 				removeVideoGameHandler(delegate);
 			}
-			else if (evt.getSource()== manageDeveloperNameButton)
+			else if (evt.getSource()== joinTablesButton)
 			{
-				//do something
+				findDevCompanyAndGamesHandler();
 			}
-			else if (evt.getSource()== manageDeveloperNameButton)
+			else if (evt.getSource()== joinSubmitButton)
 			{
-				//do something
+				joinTableHandler();
+			}
+			else if (evt.getSource()== finderButton || evt.getSource()== returnToFinderToolButton)
+			{
+				finderWindow();
+			}
+			else if (evt.getSource()== divisionTablesButton)
+			{
+				divisionHandler();
 			}
 		}
+	}
+
+	private void divisionHandler() {
+		setUpJpanel();
+
+		VideoGameModel[] models = delegate.division();
+		LeadDevTableModel divisionTable = new LeadDevTableModel(models);
+		setupTable(new JTable(divisionTable));
+
+		// Create a new JPanel for buttons with FlowLayout
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+
+		// Add a 5-pixel spacer between the buttons
+		Dimension spacer = new Dimension(2, 0);
+		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+		buttonsPanel.add(mainMenuButton);
+
+		// Add a 5-pixel spacer between the buttons
+		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+		buttonsPanel.add(returnToFinderToolButton);
+		returnToFinderToolButton.addActionListener(this);
+
+		// Add the buttonsPanel to the contentPanel with GridBagLayout
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		c.insets = new Insets(0, 5, 5, 5);
+		contentPanel.add(buttonsPanel, c);
+
+		contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
+		revalidate();
+		repaint();
+	}
+
+	private void finderWindow() {
+		// TODO ADD AGGREGATIONS AND PROJECTIONS
+		setUpJpanel();
+
+		// add buttons
+		addButton(joinTablesButton);
+		addButton(divisionTablesButton);
+		addButton(mainMenuButton);
+		revalidate();
+		repaint();
+	}
+
+	private void joinTableHandler() {
+		String developerName = devNameJoinField.getText();
+
+		if (isValidDeveloperNameInput(developerName)) {
+			try {
+				DeveloperNameVideoGameModel[] table = delegate.joinTables(developerName);
+				if (table.length == 0) {
+					JOptionPane.showMessageDialog(null, "No developers called " + developerName + " found.", "Error", JOptionPane.ERROR_MESSAGE);
+				} else {
+					displayJoinedTables(table);
+				}
+			} catch (Exception e) {
+				// Show the exception message in a popup
+				JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	private boolean isValidDeveloperNameInput(String developerName) {
+		if (developerName.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Name field is empty. Please enter a valid name.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		} else if (developerName.length() > 50) {
+			JOptionPane.showMessageDialog(null, "Name field is too large. Please enter a valid name.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+
+	private void displayJoinedTables(DeveloperNameVideoGameModel[] data) {
+		setUpJpanel();
+
+		DeveloperNameVideoGameTableModel joinedTable = new DeveloperNameVideoGameTableModel(data);
+		setupTable(new JTable(joinedTable));
+
+		// Create a new JPanel for buttons with FlowLayout
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+
+		// add delete button
+		JButton deleteButton = new JButton("Delete");
+
+		// Add a 5-pixel spacer between the buttons
+		Dimension spacer = new Dimension(2, 0);
+		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+		buttonsPanel.add(joinTablesButton);
+
+		// Add a 5-pixel spacer between the buttons
+		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+		buttonsPanel.add(mainMenuButton);
+
+		// Add the buttonsPanel to the contentPanel with GridBagLayout
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		c.insets = new Insets(0, 5, 5, 5);
+		contentPanel.add(buttonsPanel, c);
+
+		contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
+		revalidate();
+		repaint();
+	}
+
+	private void findDevCompanyAndGamesHandler() {
+		joinSubmitButton = new JButton("Find Games and Company");
+		JLabel fieldLabel = new JLabel("Lead Developer: ");
+
+		devNameJoinField = new JTextField(20);
+
+		setUpJpanel();
+
+		addLabel(fieldLabel);
+		addField(devNameJoinField);
+
+		addButton(joinSubmitButton);
+		addButton(returnToFinderToolButton);
 	}
 
 	private void displayRemoveVideoGameHandler() {
@@ -166,7 +310,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		if (title.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Title field is empty. Please enter a valid title.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
-		} else if (title.length() > 20) {
+		} else if (title.length() > 50) {
 			JOptionPane.showMessageDialog(null, "Title is too long. Please enter a title with 20 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
@@ -220,7 +364,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		if (title.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Title field is empty. Please enter a valid title.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
-		} else if (title.length() > 20) {
+		} else if (title.length() > 50) {
 			JOptionPane.showMessageDialog(null, "Title is too long. Please enter a title with 20 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
@@ -245,7 +389,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		if (genre.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Genre field is empty. Please enter a valid genre.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
-		} else if (genre.length() > 20) {
+		} else if (genre.length() > 50) {
 			JOptionPane.showMessageDialog(null, "Genre is too long. Please enter a genre with 20 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
@@ -253,7 +397,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		if (name.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Developer name field is empty. Please enter a valid name.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
-		} else if (name.length() > 20) {
+		} else if (name.length() > 50) {
 			JOptionPane.showMessageDialog(null, "Developer name is too long. Please enter a name with 20 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
@@ -296,16 +440,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 
 		VideoGameTableModel videogameTable = new VideoGameTableModel(delegate.getVideoGamesObjects());
 		JTable table = new JTable(videogameTable);
-		JScrollPane scrollPane = new JScrollPane(table);
-
-		// Add the JScrollPane to the JPanel with GridBagLayout
-		c.fill = GridBagConstraints.BOTH;
-
-		c.gridx = 0;
-		c.gridy = 0;
-		c.weightx = 1.0;
-		c.weighty = 1.0;
-		contentPanel.add(scrollPane, c);
+		setupTable(table);
 
 		// Create a new JPanel for buttons with FlowLayout
 		JPanel buttonsPanel = new JPanel();
@@ -367,7 +502,6 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		this.addVideoGameButton = new JButton("Add video game");
 		this.removeVideoGameButton = new JButton("Find and remove video game");
 		this.showAllVideoGameButton = new JButton("Show all video game");
-		this.mainMenuButton = new JButton("Return to Main Menu");
 
 		setUpJpanel();
 
@@ -383,7 +517,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 
 	private void addButton(JButton button) {
 			Dimension currentPreferredSize = button.getPreferredSize();
-			button.setPreferredSize(new Dimension(250, currentPreferredSize.height));
+			button.setPreferredSize(new Dimension(300, currentPreferredSize.height));
 			c.gridwidth = GridBagConstraints.REMAINDER;
 			c.insets = new Insets(2, 10, 2, 10);
 			c.anchor = GridBagConstraints.CENTER;
@@ -417,4 +551,19 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		contentPanel.setLayout(gb);
 		contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 20, 10));
 	}
+
+	private void setupTable(JTable divisionTable) {
+		JTable table = divisionTable;
+		JScrollPane scrollPane = new JScrollPane(table);
+
+		// Add the JScrollPane to the JPanel with GridBagLayout
+		c.fill = GridBagConstraints.BOTH;
+
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1.0;
+		c.weighty = 1.0;
+		contentPanel.add(scrollPane, c);
+	}
+
 }
