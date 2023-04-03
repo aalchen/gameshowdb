@@ -6,7 +6,7 @@ public class DeveloperNameModel {
 	private final String website;
 	private final String name;
 	
-	public DeveloperNameModel(String name, String website, String lead_developer) {
+	public DeveloperNameModel(String lead_developer, String website, String name) {
 		this.lead_developer = lead_developer;
 		this.website = website;
 		this.name = name;
