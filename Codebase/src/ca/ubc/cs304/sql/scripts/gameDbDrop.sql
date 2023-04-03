@@ -1,0 +1,15 @@
+DROP TABLE CommunityAward;
+DROP TABLE SponsoredAward;
+DROP TABLE Staff_AwardCeremony;
+DROP TABLE Sponsors;
+DROP TABLE VideoGame_DLC;
+DROP TABLE LivestreamViewerCount;
+DROP TABLE Award;
+DROP TABLE VideoGame;
+DROP TABLE DeveloperCountry;
+DROP TABLE Staff;
+DROP TABLE LivestreamUrl;
+DROP TABLE AwardCeremony;
+DROP TABLE Venue;
+DROP TABLE Company;
+DROP TABLE DeveloperName;

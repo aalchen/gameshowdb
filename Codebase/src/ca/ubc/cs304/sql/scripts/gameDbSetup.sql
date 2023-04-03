@@ -208,6 +208,9 @@ INSERT INTO DeveloperName VALUES ('Andree Cossette', 'https://quebec.ubisoft.com
 INSERT INTO DeveloperName VALUES ('Jason Vandenberghe', 'https://montreal.ubisoft.com/en/', 'Ubisoft Montreal');
 
 INSERT INTO VideoGame VALUES ('Skyrim', 2013, 'Action role-playing', 'Bethesda Game Studios');
+INSERT INTO VideoGame VALUES ('Elder Scrolls', 2017, 'Action-adventure', 'Bethesda Game Studios');
+INSERT INTO VideoGame VALUES ('DOOM Eternal', 2020, 'Action', 'Bethesda Game Studios');
+INSERT INTO VideoGame VALUES ('Quake', 2000, 'First-person shooter', 'Bethesda Game Studios');
 INSERT INTO VideoGame VALUES ('Sekiro: Shadows Die Twice', 2019, 'Action-adventure', 'FromSoftware');
 INSERT INTO VideoGame VALUES ('Death Stranding', 2021, 'Action', 'Kojima Productions');
 INSERT INTO VideoGame VALUES ('The Legend of Zelda: Breath of the Wild', 2018, 'Action-adventure', 'Nintendo EPD');
@@ -294,20 +297,3 @@ INSERT INTO Staff_AwardCeremony VALUES (12245, '2022-12-11');
 INSERT INTO Staff_AwardCeremony VALUES (12431, '2022-12-11');
 INSERT INTO Staff_AwardCeremony VALUES (12456, '2022-12-11');
 INSERT INTO Staff_AwardCeremony VALUES (12436, '2022-12-11');
-
--- DROP TABLE CommunityAward;
--- DROP TABLE SponsoredAward;
--- DROP TABLE Staff_AwardCeremony;
--- DROP TABLE Sponsors;
--- DROP TABLE VideoGame_DLC;
--- DROP TABLE LivestreamViewerCount;
--- DROP TABLE Award;
--- DROP TABLE VideoGame;
--- DROP TABLE DeveloperCountry;
--- DROP TABLE Staff;
--- DROP TABLE LivestreamUrl;
--- DROP TABLE AwardCeremony;
--- DROP TABLE Venue;
--- DROP TABLE Company;
--- DROP TABLE DeveloperName;
-
