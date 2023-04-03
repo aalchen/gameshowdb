@@ -15,7 +15,7 @@ public class DeveloperNameTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 4;
+        return 3;
     }
 
     @Override

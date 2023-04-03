@@ -738,15 +738,14 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 
 				if (selectedRow != -1) {
 					int modelRow = table.convertRowIndexToModel(selectedRow);
-					String gameName = (String) developerNameTable.getValueAt(modelRow, 0);
-					int gameYear = (int) developerNameTable.getValueAt(modelRow, 1);
+					String developerName = (String) developerNameTable.getValueAt(modelRow, 0);
 
 					try {
-						delegate.deleteVideoGame(gameName, gameYear);
+						delegate.deleteDeveloperName(developerName);
 					} catch (SQLException error) {
 						JOptionPane.showMessageDialog(null, "Unexpected Error", "Error", JOptionPane.ERROR_MESSAGE);
 					}
-					displayVideoGamesHandler();
+					showAllDevelopersHandler();
 				} else {
 					JOptionPane.showMessageDialog(null, "Please select a row to delete.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
