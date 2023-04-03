@@ -97,7 +97,6 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		for (int i = 0; i < models.length; i++) {
 			DeveloperNameModel model = models[i];
 
-			// simplified output formatting; truncation may occur
 			System.out.println(model.getLeadDeveloper());
 			System.out.println(model.getWebsite());
 			System.out.println(model.getName());
@@ -213,80 +212,62 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		}
 	}
 
-	public void joinTables(List<String> colsArray, String joinWhereCol, String joinWhere, String table1, String table2) {
-		DeveloperNameVideoGameModel[] models = dbHandler.joinTables(colsArray, joinWhereCol, joinWhere, table1, table2);
+	public DeveloperNameVideoGameModel[] joinTables(String joinWhere) throws SQLException {
+		DeveloperNameVideoGameModel[] models = dbHandler.joinTables(joinWhere);
 
 		for (int i = 0; i < models.length; i++) {
 			DeveloperNameVideoGameModel model = models[i];
-
-			if (colsArray.contains("Title")) {
-				System.out.println(model.getTitle());
-			}
-			if (colsArray.contains("Year")) {
-				System.out.println(model.getYear());
-			}
-			if (colsArray.contains("Genre")) {
-				System.out.println(model.getGenre());
-			}
-			if (colsArray.contains("Developer_Name")) {
-				System.out.println(model.getDeveloperName());
-			}
-			if (colsArray.contains("Lead_Developer")) {
-				System.out.println(model.getLeadDeveloper());
-			}
-			if (colsArray.contains("Website")) {
-				System.out.println(model.getWebsite());
-			}
-
+			System.out.println(model.getTitle());
+			System.out.println(model.getYear());
+			System.out.println(model.getGenre());
+			System.out.println(model.getDeveloperName());
+			System.out.println(model.getLeadDeveloper());
+			System.out.println(model.getWebsite());
 			System.out.println();
 		}
+		return models;
 	}
 
-	public void aggregateGroupBy(String table, String aggregationOp, String aggregateCol, List<String> otherCol, String groupByCol) {
-		VideoGameCountModel[] models = dbHandler.aggregateGroupBy(table, aggregationOp, aggregateCol, otherCol, groupByCol);
-		List<String> colsArray = otherCol;
-
+	public void aggregateGroupBy() {
+		VideoGameCountModel[] models = dbHandler.aggregateGroupBy();
+		System.out.println("Aggregate Group By query : number of genres per developer");
 		for (int i = 0; i < models.length; i++) {
 			VideoGameCountModel model = models[i];
-
-			if (colsArray.contains("Title")) {
-				System.out.println(model.getTitle());
-			}
-			if (colsArray.contains("Year")) {
-				System.out.println(model.getYear());
-			}
-			if (colsArray.contains("Genre")) {
-				System.out.println(model.getGenre());
-			}
-			if (colsArray.contains("Developer_Name")) {
-				System.out.println(model.getDeveloperName());
-			}
-
+			System.out.println(model.getDeveloperName());
 			System.out.println(model.getColumnNum());
-			System.out.println();
 		}
+		System.out.println();
 	}
 
-	public void aggregateGroupByHaving(String table, String aggregationOp, String aggregateCol, List<String> otherCol, String groupByCol, String havingCol, String havingOperator, String havingValue) {
-		VideoGameCountModel[] models = dbHandler.aggregateGroupByHaving(table, aggregationOp, aggregateCol, otherCol, groupByCol, havingCol, havingOperator, havingValue);
-		List<String> colsArray = otherCol;
-
+	public void aggregateGroupByHaving() {
+		VideoGameCountModel[] models = dbHandler.aggregateGroupByHaving();
+		System.out.println("Aggregate Group By Having query : find most recent releases after 2015, by genre and developer");
 		for (int i = 0; i < models.length; i++) {
 			VideoGameCountModel model = models[i];
+			System.out.println(model.getGenre());
+			System.out.println(model.getDeveloperName());
+			System.out.println(model.getColumnNum());
+		}
+		System.out.println();
+	}
 
-			if (colsArray.contains("Title")) {
-				System.out.println(model.getTitle());
-			}
-			if (colsArray.contains("Year")) {
-				System.out.println(model.getYear());
-			}
-			if (colsArray.contains("Genre")) {
-				System.out.println(model.getGenre());
-			}
-			if (colsArray.contains("Developer_Name")) {
-				System.out.println(model.getDeveloperName());
-			}
+	public VideoGameModel[] division() {
+		VideoGameModel[] models = dbHandler.division();
+		System.out.println("Division query : developer names who worked in every genre");
+		for (int i = 0; i < models.length; i++) {
+			VideoGameModel model = models[i];
+			System.out.println(model.getDeveloperName());
+		}
+		System.out.println();
+		return models;
+	}
 
+	public void nestedAggregation() {
+		VideoGameCountModel[] models = dbHandler.nestedAggregation();
+		System.out.println("Nested Aggregation query : number of titles per developer where game was released after 2015");
+		for (int i = 0; i < models.length; i++) {
+			VideoGameCountModel model = models[i];
+			System.out.println(model.getDeveloperName());
 			System.out.println(model.getColumnNum());
 			System.out.println();
 		}
