@@ -108,7 +108,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			}
 			else if (evt.getSource()== removeVideoGameSubmitButton)
 			{
-				removeVideoGameHandler(delegate);
+				removeVideoGameSubmitHandler(delegate);
 			}
 			else if (evt.getSource()== manageDeveloperNameButton)
 			{
@@ -116,7 +116,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			} else if (evt.getSource() == addDeveloperButton) {
 				addDeveloperHandler();
 			} else if (evt.getSource() == removeDeveloperButton) {
-				removeDeveloperHandler(delegate);
+				removeDeveloperHandler();
 			} else if (evt.getSource() == updateDeveloperButton) {
 
 			} else if (evt.getSource() == showAllDevelopersButton) {
@@ -124,7 +124,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			} else if (evt.getSource() == addDeveloperSubmitButton) {
 				addDeveloperSubmitHandler(delegate);
 			} else if (evt.getSource() == removeDeveloperSubmitButton) {
-
+				removeDeveloperSubmitHandler(delegate);
 			}
 		}
 	}
@@ -149,7 +149,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		addButton(manageVideoGameButton);
 	}
 
-	private void removeVideoGameHandler(GUIWindowDelegate delegate) {
+	private void removeVideoGameSubmitHandler(GUIWindowDelegate delegate) {
 		String title = titleField.getText();
 		String yearText = yearField.getText();
 		int year = 0;
@@ -471,12 +471,25 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		addButton(manageDeveloperNameButton);
 	}
 
-	private void removeDeveloperHandler(GUIWindowDelegate delegate) {
-		String name = nameField.getText();
-		String website = websiteField.getText();
-		String leadDeveloper = leadDeveloperField.getText();
+	private void removeDeveloperHandler() {
+		removeDeveloperSubmitButton = new JButton("Submit");
+		JLabel nameLabel = new JLabel("Developer Name: ");
 
-		if (isValidRemoveDeveloperInput(name, website, leadDeveloper)) {
+		nameField = new JTextField(50);
+
+		setUpJpanel();
+
+		addLabel(nameLabel);
+		addField(nameField);
+
+		addButton(removeDeveloperSubmitButton);
+		addButton(manageDeveloperNameButton);
+	}
+
+	private void removeDeveloperSubmitHandler(GUIWindowDelegate delegate) {
+		String name = nameField.getText();
+
+		if (isValidRemoveDeveloperInput(name)) {
 			try {
 				delegate.deleteDeveloperName(name);
 				// Show a success popup
@@ -489,9 +502,9 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		}
 	}
 
-	private boolean isValidRemoveDeveloperInput(String name, String website, String leadDeveloper) {
+	private boolean isValidRemoveDeveloperInput(String name) {
 		// TODO: Implement this!
-		return false;
+		return true;
 	}
 
 	private void showAllDevelopersHandler() {
