@@ -16,7 +16,7 @@ import java.util.List;
  * TerminalTransactions calls the methods that we have listed below but
  * Bank is the actual class that will implement the methods.
  */
-public interface TerminalGamesDelegate {
+public interface GUIWindowDelegate {
 	public void databaseSetup();
 	public void deleteVideoGame(String title, int year) throws SQLException;
 	public void insertVideoGame(VideoGameModel videoGame) throws SQLException;
@@ -31,7 +31,7 @@ public interface TerminalGamesDelegate {
 	public void updateDeveloperNameName(String newDeveloperName, String developerName);
 	public void deleteDeveloperNameLead(String deleteLeadDev);
 	public void deleteDeveloperNameWeb(String deleteWebsite);
-    public void selectLeadDev(String leadDev);
+	public void selectLeadDev(String leadDev);
 	public void selectWebsite(String website);
 	public void selectName(String name);
 	public void projectionColumns(List<String> columns);
@@ -40,4 +40,6 @@ public interface TerminalGamesDelegate {
 	public void aggregateGroupByHaving();
 	public VideoGameModel[] division();
 	public void nestedAggregation();
+
+	VideoGameModel[] getVideoGamesObjects();
 }
