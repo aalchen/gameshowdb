@@ -289,8 +289,9 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			dbHandler.databaseSetup();
 		} catch (SQLException e) {
 
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-
 	}
 
 	/**

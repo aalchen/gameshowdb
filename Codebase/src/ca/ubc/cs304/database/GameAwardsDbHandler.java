@@ -6,6 +6,8 @@ import ca.ubc.cs304.model.VideoGameCountModel;
 import ca.ubc.cs304.model.VideoGameModel;
 import ca.ubc.cs304.util.PrintablePreparedStatement;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -181,36 +183,16 @@ public class GameAwardsDbHandler {
 		}
 	}
 
-	public void databaseSetup() throws SQLException {
+	public void databaseSetup() throws Exception {
 		dropBranchTableIfExists();
-
-		try {
-			// removed ON UPDATE CASCADE as it's not supported in Oracle
-			// https://stackoverflow.com/questions/48399874/oracle-on-delete-on-update
-			String query0 = "CREATE TABLE DeveloperName(lead_developer VARCHAR(50), website VARCHAR(50), name VARCHAR(50) PRIMARY KEY)";
-			String query1 = "CREATE TABLE VideoGame(title VARCHAR(128), year INTEGER, genre VARCHAR(50), developer_name VARCHAR(50), CONSTRAINT pk_game PRIMARY KEY (title, year), CONSTRAINT fk_devname FOREIGN KEY (developer_name) REFERENCES DeveloperName(name) ON DELETE CASCADE)";
-			PrintablePreparedStatement ps0 = new PrintablePreparedStatement(connection.prepareStatement(query0), query0, false);
-			ps0.executeUpdate();
-			ps0.close();
-
-			PrintablePreparedStatement ps2 = new PrintablePreparedStatement(connection.prepareStatement(query1), query1, false);
-			ps2.executeUpdate();
-			ps2.close();
-		} catch (SQLException e) {
-			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		// https://stackoverflow.com/questions/326390/how-do-i-create-a-java-string-from-the-contents-of-a-file
+		String sqlString = new String(Files.readAllBytes(Paths.get("../project_c9p6e_d0c3b_f2x4t/Codebase/src/ca/ubc/cs304/sql/scripts/gameDbSetup.sql")));
+		String[] sqlArray = sqlString.split(";");
+		for (String statement : sqlArray) {
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(statement), statement, false);
+			ps.executeUpdate();
+			ps.close();
 		}
-
-		DeveloperNameModel devName1 = new DeveloperNameModel("Todd Howard", "https://bethesdagamestudios.com/", "Bethesda Game Studio");
-		insertDeveloperName(devName1);
-
-		DeveloperNameModel devName2 = new DeveloperNameModel("Hidetaka Miyazaki", "https://www.fromsoftware.jp/ww/", "FromSoftware");
-		insertDeveloperName(devName2);
-
-		VideoGameModel game1 = new VideoGameModel("Skyrim", 2013, "Action role-playing", "Bethesda Game Studio");
-		insertVideoGame(game1);
-
-		VideoGameModel game2 = new VideoGameModel("Sekiro: Shadows Die Twice", 2019, "Action-adventure", "FromSoftware");
-		insertVideoGame(game2);
 	}
 
 	private void dropBranchTableIfExists() {
@@ -229,7 +211,6 @@ public class GameAwardsDbHandler {
 					}
 				}
 			}
-
 			dropTables.sort(Comparator.comparingInt(lowercaseTableNames::indexOf));
 
 			for (int i = 0; i < dropTables.size(); i++) {
