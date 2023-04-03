@@ -208,6 +208,9 @@ INSERT INTO DeveloperName VALUES ('Andree Cossette', 'https://quebec.ubisoft.com
 INSERT INTO DeveloperName VALUES ('Jason Vandenberghe', 'https://montreal.ubisoft.com/en/', 'Ubisoft Montreal');
 
 INSERT INTO VideoGame VALUES ('Skyrim', 2013, 'Action role-playing', 'Bethesda Game Studios');
+INSERT INTO VideoGame VALUES ('Elder Scrolls', 2017, 'Action-adventure', 'Bethesda Game Studios');
+INSERT INTO VideoGame VALUES ('DOOM Eternal', 2020, 'Action', 'Bethesda Game Studios');
+INSERT INTO VideoGame VALUES ('Quake', 2000, 'First-person shooter', 'Bethesda Game Studios');
 INSERT INTO VideoGame VALUES ('Sekiro: Shadows Die Twice', 2019, 'Action-adventure', 'FromSoftware');
 INSERT INTO VideoGame VALUES ('Death Stranding', 2021, 'Action', 'Kojima Productions');
 INSERT INTO VideoGame VALUES ('The Legend of Zelda: Breath of the Wild', 2018, 'Action-adventure', 'Nintendo EPD');
