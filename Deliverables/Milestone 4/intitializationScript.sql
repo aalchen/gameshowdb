@@ -159,7 +159,7 @@ INSERT INTO Staff VALUES (1232224511, 'Sam Cho', 23122, 'Security and Safety');
 INSERT INTO Staff VALUES (2234422455, 'Arjun Dhaliwal', 12245, 'Internal Jury');
 INSERT INTO Staff VALUES (4122320485, 'Olivia Moon', 12431, 'Internal Jury');
 INSERT INTO Staff VALUES (1344422123, 'Sam Person', 12456, 'Internal Jury');
-INSERT INTO Staff VALUES (141-212-0435, 'Chris Amongus', 12436, 'Internal Jury');
+INSERT INTO Staff VALUES (1412120435, 'Chris Amongus', 12436, 'Internal Jury');
 
 INSERT INTO Company VALUES ('Red Bull Inc', 'sponsor@redbull.com');
 INSERT INTO Company VALUES ('Nintendo of America', 'nintendoSponsor@ntdsponsor.com');
@@ -294,20 +294,3 @@ INSERT INTO Staff_AwardCeremony VALUES (12245, '2022-12-11');
 INSERT INTO Staff_AwardCeremony VALUES (12431, '2022-12-11');
 INSERT INTO Staff_AwardCeremony VALUES (12456, '2022-12-11');
 INSERT INTO Staff_AwardCeremony VALUES (12436, '2022-12-11');
-
--- DROP TABLE CommunityAward;
--- DROP TABLE SponsoredAward;
--- DROP TABLE Staff_AwardCeremony;
--- DROP TABLE Sponsors;
--- DROP TABLE VideoGame_DLC;
--- DROP TABLE LivestreamViewerCount;
--- DROP TABLE Award;
--- DROP TABLE VideoGame;
--- DROP TABLE DeveloperCountry;
--- DROP TABLE Staff;
--- DROP TABLE LivestreamUrl;
--- DROP TABLE AwardCeremony;
--- DROP TABLE Venue;
--- DROP TABLE Company;
--- DROP TABLE DeveloperName;
-
