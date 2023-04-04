@@ -38,7 +38,7 @@ public interface GUIWindowDelegate {
 	public VideoGameModel[] projectionColumns(List<String> columns);
 	public DeveloperNameVideoGameModel[] joinTables(String joinWhere) throws SQLException;
 	public VideoGameCountModel[] aggregateGroupBy();
-	public void aggregateGroupByHaving();
+	public VideoGameCountModel[] aggregateGroupByHaving();
 	public VideoGameModel[] division();
 	public VideoGameCountModel[] nestedAggregation();
 
