@@ -514,7 +514,7 @@ public class GameAwardsDbHandler {
 		return result.toArray(new DeveloperNameModel[result.size()]);
 	}
 
-	public VideoGameModel[] projectionColumns(List<String> projectionColumns) throws SQLException {
+	public VideoGameModel[] projectionVideoGame(List<String> projectionColumns) throws SQLException {
 		ArrayList<VideoGameModel> result = new ArrayList<VideoGameModel>();
 		String queryColumns = "";
 		for (int i = 0; i < projectionColumns.size(); i++) {
@@ -532,16 +532,16 @@ public class GameAwardsDbHandler {
 			String name = "";
 
 			while (rs.next()) {
-				if (projectionColumns.contains("Title")) {
+				if (projectionColumns.contains("title")) {
 					title = rs.getString("title");
 				}
-				if (projectionColumns.contains("Year")) {
+				if (projectionColumns.contains("year")) {
 					year = rs.getInt("year");
 				}
-				if (projectionColumns.contains("Genre")) {
+				if (projectionColumns.contains("genre")) {
 					genre = rs.getString("genre");
 				}
-				if (projectionColumns.contains("Developer_Name")) {
+				if (projectionColumns.contains("developer_name")) {
 					name = rs.getString("developer_name");
 				}
 				VideoGameModel model = new VideoGameModel(title,
@@ -768,5 +768,46 @@ public class GameAwardsDbHandler {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 		}
 		return existingColumns;
+	}
+
+	public VenueModel[] projectionVenue(List<String> projectionColumns) throws SQLException {
+		ArrayList<VenueModel> result = new ArrayList<VenueModel>();
+		String queryColumns = "";
+		for (int i = 0; i < projectionColumns.size(); i++) {
+			queryColumns = queryColumns + projectionColumns.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
+
+		try {
+			String query = "SELECT " + queryColumns + " FROM Venue";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			String name = "";
+			int capacity = INVALID_INPUT;
+			String address = "";
+
+			while (rs.next()) {
+				if (projectionColumns.contains("name")) {
+					name = rs.getString("name");
+				}
+				if (projectionColumns.contains("capacity")) {
+					capacity = rs.getInt("capacity");
+				}
+				if (projectionColumns.contains("address")) {
+					address = rs.getString("address");
+				}
+				VenueModel model = new VenueModel(name, address, capacity);
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+
+		}
+
+		return result.toArray(new VenueModel[result.size()]);
 	}
 }

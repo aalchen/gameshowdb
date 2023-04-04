@@ -6,10 +6,7 @@ import ca.ubc.cs304.database.GameAwardsDbHandler;
 import ca.ubc.cs304.delegates.GUIWindowDelegate;
 import ca.ubc.cs304.delegates.LoginWindowDelegate;
 import ca.ubc.cs304.delegates.TerminalGamesDelegate;
-import ca.ubc.cs304.model.DeveloperNameModel;
-import ca.ubc.cs304.model.DeveloperNameVideoGameModel;
-import ca.ubc.cs304.model.VideoGameCountModel;
-import ca.ubc.cs304.model.VideoGameModel;
+import ca.ubc.cs304.model.*;
 import ca.ubc.cs304.ui.MainMenuWindow;
 import ca.ubc.cs304.ui.LoginWindow;
 
@@ -198,29 +195,35 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		return models;
 	}
 
-	public VideoGameModel[] projectionColumns(List<String> columns) throws SQLException {
-		VideoGameModel[] models = dbHandler.projectionColumns(columns);
+	public VideoGameModel[] projectionVideoGame(List<String> columns) throws SQLException {
+		VideoGameModel[] models = dbHandler.projectionVideoGame(columns);
 
-		for (int i = 0; i < models.length; i++) {
-			VideoGameModel model = models[i];
-
-			if (columns.contains("Title")) {
-				System.out.println(model.getTitle());
-			}
-			if (columns.contains("Year")) {
-				System.out.println(model.getYear());
-			}
-			if (columns.contains("Genre")) {
-				System.out.println(model.getGenre());
-			}
-			if (columns.contains("Developer_Name")) {
-				System.out.println(model.getDeveloperName());
-			}
-
-			System.out.println();
-		}
+//		for (int i = 0; i < models.length; i++) {
+//			VideoGameModel model = models[i];
+//
+//			if (columns.contains("Title")) {
+//				System.out.println(model.getTitle());
+//			}
+//			if (columns.contains("Year")) {
+//				System.out.println(model.getYear());
+//			}
+//			if (columns.contains("Genre")) {
+//				System.out.println(model.getGenre());
+//			}
+//			if (columns.contains("Developer_Name")) {
+//				System.out.println(model.getDeveloperName());
+//			}
+//
+//			System.out.println();
+//		}
 		return models;
 	}
+
+	public VenueModel[] projectionVenue(List<String> columns) throws SQLException {
+		VenueModel[] models = dbHandler.projectionVenue(columns);
+		return models;
+	}
+
 
 	public DeveloperNameVideoGameModel[] joinTables(String joinWhere) throws SQLException {
 		DeveloperNameVideoGameModel[] models = dbHandler.joinTables(joinWhere);

@@ -320,14 +320,15 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		for (int i = 0; i < tableColumns.size(); i++) {
 			JCheckBox column = tableColumns.get(i);
 			if (column.isSelected()) {
-				columns.add(column.getText());
+				columns.add(column.getText().toLowerCase());
 			}
 		}
 
 		try {
 			Model[] models = null;
 			AbstractTableModel projectionTable = null;
-			switch (((String) tableDropDown.getSelectedItem()).toLowerCase()){
+			String tableName = ((String) tableDropDown.getSelectedItem()).toLowerCase();
+			switch (tableName){
 				case "award":
 					projectionTable = new AwardProjectionTableModel(models, columns);
 					break;
@@ -365,19 +366,21 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 					projectionTable = new StaffAwardCeremonyProjectionTableModel(models, columns);
 					break;
 				case "venue":
+					models = delegate.projectionVenue(columns);
 					projectionTable = new VenueProjectionTableModel(models, columns);
 					break;
 				case "videogamedlc":
 					projectionTable = new VideoGameDLCProjectionTableModel(models, columns);
 					break;
 				case "videogame":
-					models = delegate.projectionColumns(columns);
+					models = delegate.projectionVideoGame(columns);
 					projectionTable = new VideoGameProjectionTableModel(models, columns);
 					break;
 				default:
 					System.out.println("invalid table selected");
 					break;
 			}
+
 			setupTable(new JTable(projectionTable));
 
 			// Create a new JPanel for buttons with FlowLayout

@@ -35,7 +35,7 @@ public interface TerminalGamesDelegate {
     public DeveloperNameModel[] selectLeadDev(String leadDev) throws SQLException;
 	public DeveloperNameModel[] selectWebsite(String website);
 	public DeveloperNameModel[] selectName(String name) throws SQLException;
-	public VideoGameModel[] projectionColumns(List<String> columns) throws SQLException;
+	public VideoGameModel[] projectionVideoGame(List<String> columns) throws SQLException;
 	public DeveloperNameVideoGameModel[] joinTables(String joinWhere) throws SQLException;
 	public VideoGameCountModel[] aggregateGroupBy() throws SQLException;
 	public VideoGameCountModel[] aggregateGroupByHaving() throws SQLException;

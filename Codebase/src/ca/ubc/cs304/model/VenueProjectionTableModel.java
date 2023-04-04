@@ -24,24 +24,18 @@ public class VenueProjectionTableModel extends AbstractTableModel {
 
     @Override
     public String getColumnName(int columnIndex) {
-        switch (columnNames.get(columnIndex)) {
-            case "NAME":
-                return "Name";
-            case "ADDRESS":
-                return "Address";
-            case "CAPACITY":
-                return "Capacity";
-        }
-        return null;
+        String result = columnNames.get(columnIndex);
+        return result;
     }
+
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (getColumnName(columnIndex)) {
-            case "Name":
+            case "name":
                 return venueModels[rowIndex].getName();
-            case "Address":
+            case "address":
                 return venueModels[rowIndex].getAddress();
-            case "Capacity":
+            case "capacity":
                 return venueModels[rowIndex].getCapacity();
         }
         return null;

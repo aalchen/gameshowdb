@@ -25,21 +25,18 @@ public class VideoGameProjectionTableModel extends AbstractTableModel {
     @Override
     public String getColumnName(int columnIndex) {
         String result = columnNames.get(columnIndex);
-        if (result == "Developer_Name") {
-            return "Developer Name";
-        }
         return result;
     }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (getColumnName(columnIndex)) {
-            case "Title":
+            case "title":
                 return videoGameModels[rowIndex].getTitle();
-            case "Year":
+            case "year":
                 return videoGameModels[rowIndex].getYear();
-            case "Genre":
+            case "genre":
                 return videoGameModels[rowIndex].getGenre();
-            case "Developer Name":
+            case "developer_Name":
                 return videoGameModels[rowIndex].getDeveloperName();
         }
         return null;
