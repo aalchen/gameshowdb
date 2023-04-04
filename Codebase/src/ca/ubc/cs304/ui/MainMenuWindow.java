@@ -57,10 +57,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		this.setVisible(true);
 		this.setSize(500, 300);
 
-	}
-
-	public void mainMenuHandler(GUIWindowDelegate delegate) {
-		this.delegate = delegate;
+		this.joinSubmitButton = new JButton("Find Games and Company");
 		this.manageVideoGameButton = new JButton("Manage VideoGames");
 		this.manageDeveloperNameButton = new JButton("Manage Developers");
 		this.joinTablesButton = new JButton("Find Lead Developers' Games");
@@ -73,6 +70,47 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		this.aggregationGroupByHavingButton = new JButton("View Most Recent Genre Release for Developer after 2015");
 		this.projectionButton = new JButton("View Selected Columns for Video Games");
 		this.quitButton = new JButton("Quit");
+		this.removeVideoGameSubmitButton = new JButton("Submit");
+		this.addDeveloperButton = new JButton("Add developer");
+		this.updateDeveloperButton = new JButton("Find and update developer info");
+		this.removeDeveloperButton = new JButton("Find and remove a developer");
+		this.showAllDevelopersButton = new JButton("Show all developers");
+		this.mainMenuButton = new JButton("Return to Main Menu");
+		this.addVideoGameSubmitButton = new JButton("Submit");
+		this.addVideoGameButton = new JButton("Add video game");
+		this.removeVideoGameButton = new JButton("Find and remove video game");
+		this.showAllVideoGameButton = new JButton("Show all video game");
+		this.updateDeveloperSubmitButton = new JButton("Update");
+		this.addDeveloperSubmitButton = new JButton("Submit");
+		this.removeDeveloperSubmitButton = new JButton("Submit");
+		this.joinSubmitButton.addActionListener(this);
+		this.manageVideoGameButton.addActionListener(this);
+		this.manageDeveloperNameButton.addActionListener(this);
+		this.joinTablesButton.addActionListener(this);
+		this.mainMenuButton.addActionListener(this);
+		this.returnToFinderToolButton.addActionListener(this);
+		this.finderButton.addActionListener(this);
+		this.divisionTablesButton.addActionListener(this);
+		this.aggregationTablesButton.addActionListener(this);
+		this.quitButton.addActionListener(this);
+		this.removeVideoGameSubmitButton.addActionListener(this);
+		this.addDeveloperButton.addActionListener(this);
+		this.updateDeveloperButton.addActionListener(this);
+		this.removeDeveloperButton.addActionListener(this);
+		this.showAllDevelopersButton.addActionListener(this);
+		this.mainMenuButton.addActionListener(this);
+		this.addVideoGameSubmitButton.addActionListener(this);
+		this.addVideoGameButton.addActionListener(this);
+		this.removeVideoGameButton.addActionListener(this);
+		this.showAllVideoGameButton.addActionListener(this);
+		this.updateDeveloperSubmitButton.addActionListener(this);
+		this.addDeveloperSubmitButton.addActionListener(this);
+		this.removeDeveloperSubmitButton.addActionListener(this);
+	}
+
+	public void mainMenuHandler(GUIWindowDelegate delegate) {
+		this.delegate = delegate;
+
 		setUpJpanel();
 
 		// add buttons
@@ -493,7 +531,6 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	}
 
 	private void findDevCompanyAndGamesHandler() {
-		joinSubmitButton = new JButton("Find Games and Company");
 		JLabel fieldLabel = new JLabel("Lead Developer: ");
 
 		devNameJoinField = new JTextField(20);
@@ -508,7 +545,6 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	}
 
 	private void displayRemoveVideoGameHandler() {
-		removeVideoGameSubmitButton = new JButton("Submit");
 		JLabel titleLabel = new JLabel("Videogame Title: ");
 		JLabel yearLabel = new JLabel("Year: ");
 
@@ -648,7 +684,6 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	}
 
 	private void AddVideoGameHandler() {
-		addVideoGameSubmitButton = new JButton("Submit");
 		JLabel titleLabel = new JLabel("Videogame Title: ");
 		JLabel yearLabel = new JLabel("Year: ");
 		JLabel genreLabel = new JLabel("Genre: ");
@@ -741,10 +776,6 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	}
 
 	private void manageVideoGames() {
-		this.addVideoGameButton = new JButton("Add video game");
-		this.removeVideoGameButton = new JButton("Find and remove video game");
-		this.showAllVideoGameButton = new JButton("Show all video game");
-
 		setUpJpanel();
 
 		addButton(addVideoGameButton);
@@ -765,7 +796,6 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			c.anchor = GridBagConstraints.CENTER;
 			gb.setConstraints(button, c);
 			contentPanel.add(button);
-			button.addActionListener(this);
 	}
 
 	private void addCheckBox(JCheckBox checkBox) {
@@ -821,12 +851,6 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 
 	// Developer Handling Section Begins
 	private void manageDevelopers() {
-		this.addDeveloperButton = new JButton("Add developer");
-		this.updateDeveloperButton = new JButton("Find and update developer info");
-		this.removeDeveloperButton = new JButton("Find and remove a developer");
-		this.showAllDevelopersButton = new JButton("Show all developers");
-		this.mainMenuButton = new JButton("Return to Main Menu");
-
 		setUpJpanel();
 
 		addButton(addDeveloperButton);
@@ -841,7 +865,6 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	}
 
 	private void addDeveloperHandler() {
-		addDeveloperSubmitButton = new JButton("Submit");
 		JLabel nameLabel = new JLabel("Name: ");
 		JLabel websiteLabel = new JLabel("Website: ");
 		JLabel leadDeveloperLabel = new JLabel("Lead Developer: ");
@@ -866,7 +889,6 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	}
 
 	private void removeDeveloperHandler() {
-		removeDeveloperSubmitButton = new JButton("Submit");
 		JLabel nameLabel = new JLabel("Developer Name: ");
 
 		nameField = new JTextField(50);
@@ -919,6 +941,49 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
 
+		// Add text fields for filtering
+		JTextField leadDevFilter = new JTextField(30);
+		JTextField websiteFilter = new JTextField(30);
+		JTextField nameFilter = new JTextField(30);
+
+		// Set minimum size for the text fields
+		Dimension minTextFieldSize = new Dimension(200, leadDevFilter.getPreferredSize().height);
+		leadDevFilter.setMinimumSize(minTextFieldSize);
+		websiteFilter.setMinimumSize(minTextFieldSize);
+		nameFilter.setMinimumSize(minTextFieldSize);
+
+		buttonsPanel.add(new JLabel("Lead Developer:"));
+		buttonsPanel.add(leadDevFilter);
+		buttonsPanel.add(new JLabel("Website:"));
+		buttonsPanel.add(websiteFilter);
+		buttonsPanel.add(new JLabel("Name:"));
+		buttonsPanel.add(nameFilter);
+
+		// Add filter button
+		JButton filterButton = new JButton("Filter");
+		filterButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String leadDev = leadDevFilter.getText().trim();
+				String website = websiteFilter.getText().trim();
+				String name = nameFilter.getText().trim();
+
+				try {
+					DeveloperNameModel[] filteredDevelopers = delegate.filterDevelopers(leadDev, website, name);
+
+					if (filteredDevelopers != null) {
+						developerNameTable.updateData(filteredDevelopers);
+					} else {
+						JOptionPane.showMessageDialog(null, "An error occurred while filtering developers. Please check your input and try again.", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (SQLException error) {
+					JOptionPane.showMessageDialog(null, "An error occurred while filtering developers. Please check your input and try again.", "Error", JOptionPane.ERROR_MESSAGE);
+
+				}
+			}
+		});
+
+		buttonsPanel.add(filterButton);
 		// add delete button
 		JButton deleteButton = new JButton("Delete");
 		deleteButton.addActionListener(new ActionListener() {
@@ -1018,8 +1083,6 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	}
 
 	private void updateDeveloperHandler() {
-		updateDeveloperSubmitButton = new JButton("Update");
-
 		JLabel nameLabel = new JLabel("Current Name: ");
 		nameField = new JTextField(50);
 
