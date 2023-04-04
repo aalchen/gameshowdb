@@ -4,6 +4,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class SponsoredAwardProjectionTableModel extends AbstractTableModel {
+    private String tableName = "SponsoredAward";
     private SponsoredAwardModel[] sponsoredAwardModels;
     private List<String> columnNames;
 
@@ -44,5 +45,9 @@ public class SponsoredAwardProjectionTableModel extends AbstractTableModel {
                 return sponsoredAwardModels[rowIndex].getAwardDate();
         }
         return null;
+    }
+
+    public String getTableName() {
+        return this.tableName;
     }
 }

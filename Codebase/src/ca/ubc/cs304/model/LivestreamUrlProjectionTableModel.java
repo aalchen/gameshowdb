@@ -4,6 +4,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class LivestreamUrlProjectionTableModel extends AbstractTableModel {
+    private String tableName = "LivestreamUrl";
     private LivestreamUrlModel[] livestreamUrlModels;
     private List<String> columnNames;
 
@@ -48,5 +49,9 @@ public class LivestreamUrlProjectionTableModel extends AbstractTableModel {
                 return livestreamUrlModels[rowIndex].getAwardCeremonyDate();
         }
         return null;
+    }
+
+    public String getTableName() {
+        return this.tableName;
     }
 }

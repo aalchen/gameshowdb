@@ -4,6 +4,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class VenueProjectionTableModel extends AbstractTableModel {
+    private String tableName = "Venue";
     private VenueModel[] venueModels;
     private List<String> columnNames;
 
@@ -44,5 +45,9 @@ public class VenueProjectionTableModel extends AbstractTableModel {
                 return venueModels[rowIndex].getCapacity();
         }
         return null;
+    }
+
+    public String getTableName() {
+        return this.tableName;
     }
 }

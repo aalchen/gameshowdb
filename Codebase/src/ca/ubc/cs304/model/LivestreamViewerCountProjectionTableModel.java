@@ -4,6 +4,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class LivestreamViewerCountProjectionTableModel extends AbstractTableModel {
+    private String tableName = "LivestreamViewerCount";
     private LivestreamViewerCountModel[] livestreamViewerCountModels;
     private List<String> columnNames;
 
@@ -48,5 +49,9 @@ public class LivestreamViewerCountProjectionTableModel extends AbstractTableMode
                 return livestreamViewerCountModels[rowIndex].getAwardCeremonyDate();
         }
         return null;
+    }
+
+    public String getTableName() {
+        return this.tableName;
     }
 }

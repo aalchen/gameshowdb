@@ -4,6 +4,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class CompanyProjectionTableModel extends AbstractTableModel {
+    private String tableName = "Company";
     private CompanyModel[] companyModels;
     private List<String> columnNames;
 
@@ -40,5 +41,9 @@ public class CompanyProjectionTableModel extends AbstractTableModel {
                 return companyModels[rowIndex].getContactInfo();
         }
         return null;
+    }
+
+    public String getTableName() {
+        return this.tableName;
     }
 }

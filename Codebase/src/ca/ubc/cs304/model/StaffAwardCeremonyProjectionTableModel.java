@@ -4,6 +4,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class StaffAwardCeremonyProjectionTableModel extends AbstractTableModel {
+    private String tableName = "StaffAwardCeremony";
     private StaffAwardCeremonyModel[] staffAwardCeremonyModels;
     private List<String> columnNames;
 
@@ -40,5 +41,9 @@ public class StaffAwardCeremonyProjectionTableModel extends AbstractTableModel {
                 return staffAwardCeremonyModels[rowIndex].getAwardCeremonyDate();
         }
         return null;
+    }
+
+    public String getTableName() {
+        return this.tableName;
     }
 }

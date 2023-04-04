@@ -4,6 +4,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class StaffProjectionTableModel extends AbstractTableModel {
+    private String tableName = "Staff";
     private StaffModel[] staffModels;
     private List<String> columnNames;
 
@@ -48,5 +49,9 @@ public class StaffProjectionTableModel extends AbstractTableModel {
                 return staffModels[rowIndex].getRole();
         }
         return null;
+    }
+
+    public String getTableName() {
+        return this.tableName;
     }
 }
