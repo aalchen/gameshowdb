@@ -44,4 +44,7 @@ public interface GUIWindowDelegate {
 	public List<String> projectionColList(String table);
 	public Model[] projectionVenue(List<String> columns) throws SQLException;
 	public Model[] projectionVideoGame(List<String> columns) throws SQLException;
+	public Model[] projectionAward(List<String> columns) throws SQLException;
+	public Model[] projectionAwardCeremony(List<String> columns) throws SQLException;
+	public Model[] projectionCommunityAward(List<String> columns) throws SQLException;
 }

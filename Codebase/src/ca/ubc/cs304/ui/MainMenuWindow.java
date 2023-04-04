@@ -330,12 +330,15 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			String tableName = ((String) tableDropDown.getSelectedItem()).toLowerCase();
 			switch (tableName){
 				case "award":
+					models = delegate.projectionAward(columns);
 					projectionTable = new AwardProjectionTableModel(models, columns);
 					break;
 				case "awardceremony":
+					models = delegate.projectionAwardCeremony(columns);
 					projectionTable = new AwardCeremonyProjectionTableModel(models, columns);
 					break;
 				case "communityaward":
+					models = delegate.projectionCommunityAward(columns);
 					projectionTable = new CommunityAwardProjectionTableModel(models, columns);
 					break;
 				case "company":
@@ -377,7 +380,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 					projectionTable = new VideoGameProjectionTableModel(models, columns);
 					break;
 				default:
-					System.out.println("invalid table selected");
+					System.out.println("Invalid table selected");
 					break;
 			}
 

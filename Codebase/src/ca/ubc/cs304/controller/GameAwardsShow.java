@@ -197,25 +197,21 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 
 	public VideoGameModel[] projectionVideoGame(List<String> columns) throws SQLException {
 		VideoGameModel[] models = dbHandler.projectionVideoGame(columns);
+		return models;
+	}
 
-//		for (int i = 0; i < models.length; i++) {
-//			VideoGameModel model = models[i];
-//
-//			if (columns.contains("Title")) {
-//				System.out.println(model.getTitle());
-//			}
-//			if (columns.contains("Year")) {
-//				System.out.println(model.getYear());
-//			}
-//			if (columns.contains("Genre")) {
-//				System.out.println(model.getGenre());
-//			}
-//			if (columns.contains("Developer_Name")) {
-//				System.out.println(model.getDeveloperName());
-//			}
-//
-//			System.out.println();
-//		}
+	public AwardModel[] projectionAward(List<String> columns) throws SQLException {
+		AwardModel[] models = dbHandler.projectionAward(columns);
+		return models;
+	}
+
+	public AwardCeremonyModel[] projectionAwardCeremony(List<String> columns) throws SQLException {
+		AwardCeremonyModel[] models = dbHandler.projectionAwardCeremony(columns);
+		return models;
+	}
+
+	public CommunityAwardModel[] projectionCommunityAward(List<String> columns) throws SQLException {
+		CommunityAwardModel[] models = dbHandler.projectionCommunityAward(columns);
 		return models;
 	}
 
@@ -223,7 +219,6 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		VenueModel[] models = dbHandler.projectionVenue(columns);
 		return models;
 	}
-
 
 	public DeveloperNameVideoGameModel[] joinTables(String joinWhere) throws SQLException {
 		DeveloperNameVideoGameModel[] models = dbHandler.joinTables(joinWhere);

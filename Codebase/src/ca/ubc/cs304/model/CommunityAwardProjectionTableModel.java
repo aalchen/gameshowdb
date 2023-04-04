@@ -24,28 +24,19 @@ public class CommunityAwardProjectionTableModel extends AbstractTableModel {
 
     @Override
     public String getColumnName(int columnIndex) {
-        switch (columnNames.get(columnIndex)) {
-            case "VOTES":
-                return "Votes";
-            case "DEADLINE":
-                return "Deadline";
-            case "AWARD_NAME":
-                return "Award Name";
-            case "AWARD_DATE":
-                return "Award Date";
-        }
-        return null;
+        String result = columnNames.get(columnIndex);
+        return result;
     }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (getColumnName(columnIndex)) {
-            case "Votes":
+            case "votes":
                 return communityAwardModels[rowIndex].getVotes();
-            case "Deadline":
+            case "deadline":
                 return communityAwardModels[rowIndex].getDeadline();
-            case "Award Name":
+            case "award_name":
                 return communityAwardModels[rowIndex].getAwardName();
-            case "Award Date":
+            case "award_date":
                 return communityAwardModels[rowIndex].getAwardDate();
         }
         return null;

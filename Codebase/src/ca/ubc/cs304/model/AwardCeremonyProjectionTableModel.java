@@ -24,24 +24,17 @@ public class AwardCeremonyProjectionTableModel extends AbstractTableModel {
 
     @Override
     public String getColumnName(int columnIndex) {
-        switch (columnNames.get(columnIndex)) {
-            case "VIEWER_COUNT":
-                return "Viewer Count";
-            case "AWARD_CEREMONY_DATE":
-                return "Award Ceremony Date";
-            case "VENUE_NAME":
-                return "Venue Name";
-        }
-        return null;
+        String result = columnNames.get(columnIndex);
+        return result;
     }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (getColumnName(columnIndex)) {
-            case "Viewer Count":
+            case "viewer_count":
                 return awardCeremonyModels[rowIndex].getViewerCount();
-            case "Award Ceremony Date":
+            case "award_ceremony_date":
                 return awardCeremonyModels[rowIndex].getDate();
-            case "Venue Name":
+            case "venue_name":
                 return awardCeremonyModels[rowIndex].getVenueName();
         }
         return null;

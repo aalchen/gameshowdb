@@ -24,32 +24,21 @@ public class AwardProjectionTableModel extends AbstractTableModel {
 
     @Override
     public String getColumnName(int columnIndex) {
-        switch (columnNames.get(columnIndex)) {
-            case "Name":
-                return "Name";
-            case "PRIZE":
-                return "Prize";
-            case "AWARD_DATE":
-                return "Award Date";
-            case "VIDEOGAME_TITLE":
-                return "Video Game Title";
-            case "VIDEOGAME_YEAR":
-                return "Video Game Year";
-        }
-        return null;
+        String result = columnNames.get(columnIndex);
+        return result;
     }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (getColumnName(columnIndex)) {
-            case "Name":
+            case "name":
                 return awardModels[rowIndex].getName();
-            case "Prize":
+            case "prize":
                 return awardModels[rowIndex].getPrize();
-            case "Award Date":
+            case "date":
                 return awardModels[rowIndex].getDate();
-            case "Video Game Title":
+            case "videogame_title":
                 return awardModels[rowIndex].getVideoGameTitle();
-            case "Video Game Year":
+            case "videogame_year":
                 return awardModels[rowIndex].getVideoGameYear();
         }
         return null;
