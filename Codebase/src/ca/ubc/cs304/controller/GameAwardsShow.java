@@ -229,7 +229,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		return models;
 	}
 
-	public void aggregateGroupBy() {
+	public VideoGameCountModel[] aggregateGroupBy() {
 		VideoGameCountModel[] models = dbHandler.aggregateGroupBy();
 		System.out.println("Aggregate Group By query : number of genres per developer");
 		for (int i = 0; i < models.length; i++) {
@@ -238,6 +238,8 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			System.out.println(model.getColumnNum());
 		}
 		System.out.println();
+
+		return models;
 	}
 
 	public void aggregateGroupByHaving() {

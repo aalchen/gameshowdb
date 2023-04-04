@@ -23,7 +23,8 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 
 	// Buttons
 	private JButton manageVideoGameButton, finderButton, manageDeveloperNameButton, joinSubmitButton, quitButton, mainMenuButton;
-	private JButton joinTablesButton, divisionTablesButton, aggregationTablesButton, projectionButton, returnToFinderToolButton;
+	private JButton joinTablesButton, divisionTablesButton, aggregationGroupByButton, nestedAggregationButton,
+			projectionButton, returnToFinderToolButton;
 	private JButton addVideoGameButton, addVideoGameSubmitButton, removeVideoGameSubmitButton, removeVideoGameButton, showAllVideoGameButton;
 	private JButton addDeveloperButton, removeDeveloperButton, updateDeveloperButton, showAllDevelopersButton,
 			addDeveloperSubmitButton, removeDeveloperSubmitButton, updateDeveloperSubmitButton, projectionSubmitButton;
@@ -67,7 +68,8 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		this.returnToFinderToolButton = new JButton("Return to Finder Tool Menu");
 		this.finderButton = new JButton("Finder Tool");
 		this.divisionTablesButton = new JButton("Find contenders for EveryGenre Award");
-		this.aggregationTablesButton = new JButton("Find Developer Release Count after 2015");
+		this.nestedAggregationButton = new JButton("Find Developer Release Count after 2015");
+		this.aggregationGroupByButton = new JButton("View Number of Genres per Developer");
 		this.projectionButton = new JButton("View Selected Columns for Video Games");
 		this.quitButton = new JButton("Quit");
 		setUpJpanel();
@@ -127,7 +129,11 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			{
 				joinTableHandler();
 			}
-			else if (evt.getSource()== aggregationTablesButton)
+			else if (evt.getSource()== aggregationGroupByButton)
+			{
+				aggregationGroupByHandler(delegate);
+			}
+			else if (evt.getSource()== nestedAggregationButton)
 			{
 				groupByNumberOfTitlesPerDevAfter2015(delegate);
 			}
@@ -165,6 +171,44 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 				removeDeveloperSubmitHandler(delegate);
 			}
 		}
+	}
+
+	private void aggregationGroupByHandler(GUIWindowDelegate delegate) {
+		setUpJpanel();
+
+		VideoGameCountModel[] models = delegate.aggregateGroupBy();
+		VideoGameCountTableModel nestedAggregationTable = new VideoGameCountTableModel(models);
+		setupTable(new JTable(nestedAggregationTable));
+
+		// Create a new JPanel for buttons with FlowLayout
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+
+		// Add a 5-pixel spacer between the buttons
+		Dimension spacer = new Dimension(2, 0);
+		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+		buttonsPanel.add(mainMenuButton);
+
+		// Add a 5-pixel spacer between the buttons
+		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+		buttonsPanel.add(returnToFinderToolButton);
+		returnToFinderToolButton.addActionListener(this);
+
+		// Add the buttonsPanel to the contentPanel with GridBagLayout
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		c.insets = new Insets(0, 5, 5, 5);
+		contentPanel.add(buttonsPanel, c);
+
+		contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
+		revalidate();
+		repaint();
 	}
 
 	private void projectionSubmitHandler(GUIWindowDelegate delegate) {
@@ -329,7 +373,8 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		addButton(joinTablesButton);
 		addButton(divisionTablesButton);
 		addButton(projectionButton);
-		addButton(aggregationTablesButton);
+		addButton(aggregationGroupByButton);
+		addButton(nestedAggregationButton);
 		addButton(mainMenuButton);
 		revalidate();
 		repaint();
