@@ -1,7 +1,7 @@
 package ca.ubc.cs304.model;
 
-public class StaffModel {
-
+public class StaffModel implements Model {
+	private String tableName = "Staff";
 	private final int phone_number;
 	private final String name;
 	private final int id;
@@ -28,5 +28,10 @@ public class StaffModel {
 
 	public String getRole() {
 		return role;
+	}
+
+	@Override
+	public String getTableName() {
+		return this.tableName;
 	}
 }

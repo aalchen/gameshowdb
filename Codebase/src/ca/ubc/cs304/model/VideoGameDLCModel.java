@@ -1,7 +1,7 @@
 package ca.ubc.cs304.model;
 
-public class VideoGameDLCModel {
-
+public class VideoGameDLCModel implements Model {
+	private String tableName = "VideoGameDLC";
 	private final String title;
 	private final int year;
 	private final String videogame_title;
@@ -28,5 +28,10 @@ public class VideoGameDLCModel {
 
 	public int getVideoGameYear() {
 		return videogame_year;
+	}
+
+	@Override
+	public String getTableName() {
+		return this.tableName;
 	}
 }

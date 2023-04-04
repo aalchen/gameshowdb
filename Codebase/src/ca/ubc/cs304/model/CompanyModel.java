@@ -1,6 +1,7 @@
 package ca.ubc.cs304.model;
 
-public class CompanyModel {
+public class CompanyModel implements Model {
+	private String tableName = "Company";
 	private final String name;
 	private final String contact_info;
 	
@@ -15,5 +16,10 @@ public class CompanyModel {
 
 	public String getContactInfo() {
 		return contact_info;
+	}
+
+	@Override
+	public String getTableName() {
+		return this.tableName;
 	}
 }

@@ -1,6 +1,7 @@
 package ca.ubc.cs304.model;
 
-public class VideoGameModel {
+public class VideoGameModel implements Model {
+	private String tableName = "VideoGame";
 	private final String title;
 	private final int year;
 	private final String genre;
@@ -27,5 +28,10 @@ public class VideoGameModel {
 
 	public String getDeveloperName() {
 		return developer_name;
+	}
+
+	@Override
+	public String getTableName() {
+		return this.tableName;
 	}
 }

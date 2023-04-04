@@ -2,8 +2,8 @@ package ca.ubc.cs304.model;
 
 import java.util.Date;
 
-public class LivestreamUrlModel {
-
+public class LivestreamUrlModel implements Model {
+	private String tableName = "LivestreamUrl";
 	private final String url;
 	private final String language;
 	private final String name;
@@ -30,5 +30,10 @@ public class LivestreamUrlModel {
 
 	public Date getAwardCeremonyDate() {
 		return awardceremony_date;
+	}
+
+	@Override
+	public String getTableName() {
+		return this.tableName;
 	}
 }
