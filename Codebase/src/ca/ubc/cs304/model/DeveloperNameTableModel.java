@@ -42,4 +42,9 @@ public class DeveloperNameTableModel extends AbstractTableModel {
         }
         return null;
     }
+
+    public void updateData(DeveloperNameModel[] newData) {
+        this.developerNameModels = newData;
+        fireTableDataChanged();
+    }
 }
