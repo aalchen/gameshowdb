@@ -501,6 +501,9 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		} else if (genre.length() > 50) {
 			JOptionPane.showMessageDialog(null, "Genre is too long. Please enter a genre with 20 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
+		} else if (!genre.matches("^[a-zA-Z\\s]+$")) {
+			JOptionPane.showMessageDialog(null, "Genre must contain all alphabetical characters.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
 		}
 
 		if (name.isEmpty()) {
@@ -889,6 +892,9 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		} else if (name.length() > 50) {
 			JOptionPane.showMessageDialog(null, "Name is too long. Please enter a name with 50 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
+		} else if (!name.matches(".*[a-zA-Z].*")) {
+			JOptionPane.showMessageDialog(null, "Name must contain some alphabetical characters.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
 		}
 
 		if (website.isEmpty()) {
@@ -897,6 +903,9 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		} else if (website.length() > 50) {
 			JOptionPane.showMessageDialog(null, "Website is too long. Please enter a website with 50 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
+		} else if (!website.matches(".*[a-zA-Z].*")) {
+			JOptionPane.showMessageDialog(null, "Website must contain some alphabetical characters.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
 		}
 
 		if (leadDeveloper.isEmpty()) {
@@ -904,6 +913,9 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			return false;
 		} else if (leadDeveloper.length() > 50) {
 			JOptionPane.showMessageDialog(null, "Lead Developer is too long. Please enter a Lead Developer with 50 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		} else if (!leadDeveloper.matches("^[a-zA-Z\\s]+$")) {
+			JOptionPane.showMessageDialog(null, "Lead Developer must contain all alphabetical characters.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		return true;
