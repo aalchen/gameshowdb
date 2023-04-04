@@ -71,7 +71,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		this.nestedAggregationButton = new JButton("Find Developer Release Count after 2015");
 		this.aggregationGroupByButton = new JButton("View Number of Genres per Developer");
 		this.aggregationGroupByHavingButton = new JButton("View Most Recent Genre Release for Developer after 2015");
-		this.projectionTableSelectButton = new JButton("View Selected Columns for Video Games");
+		this.projectionTableSelectButton = new JButton("View Tables");
 		this.projectionButton = new JButton("Select Table");
 		this.projectionSubmitButton = new JButton("Submit");
 		this.quitButton = new JButton("Quit");
@@ -320,45 +320,63 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		for (int i = 0; i < tableColumns.size(); i++) {
 			JCheckBox column = tableColumns.get(i);
 			if (column.isSelected()) {
-				columns.add(column.getName());
+				columns.add(column.getText());
 			}
 		}
 
 		try {
-			Model[] models = delegate.projectionColumns(columns);
+			Model[] models = null;
 			AbstractTableModel projectionTable = null;
-			switch (models[0].getTableName()){
-				case "Award":
+			switch (((String) tableDropDown.getSelectedItem()).toLowerCase()){
+				case "award":
 					projectionTable = new AwardProjectionTableModel(models, columns);
-				case "AwardCeremony":
+					break;
+				case "awardceremony":
 					projectionTable = new AwardCeremonyProjectionTableModel(models, columns);
-				case "CommunityAward":
+					break;
+				case "communityaward":
 					projectionTable = new CommunityAwardProjectionTableModel(models, columns);
-				case "Company":
+					break;
+				case "company":
 					projectionTable = new CompanyProjectionTableModel(models, columns);
-				case "DeveloperCountry":
+					break;
+				case "developercountry":
 					projectionTable = new DeveloperCountryProjectionTableModel(models, columns);
-				case "DeveloperName":
+					break;
+				case "developername":
 					projectionTable = new DeveloperNameProjectionTableModel(models, columns);
-				case "LivestreamUrl":
+					break;
+				case "livestreamurl":
 					projectionTable = new LivestreamUrlProjectionTableModel(models, columns);
-				case "LivestreamViewerCount":
+					break;
+				case "livestreamviewercount":
 					projectionTable = new LivestreamViewerCountProjectionTableModel(models, columns);
-				case "SponsoredAward":
+					break;
+				case "sponsoredaward":
 					projectionTable = new SponsoredAwardProjectionTableModel(models, columns);
-				case "Sponsors":
+					break;
+				case "sponsors":
 					projectionTable = new SponsorsProjectionTableModel(models, columns);
-				case "Staff":
+					break;
+				case "staff":
 					projectionTable = new StaffProjectionTableModel(models, columns);
-				case "StaffAwardCeremony":
+					break;
+				case "staffawardceremony":
 					projectionTable = new StaffAwardCeremonyProjectionTableModel(models, columns);
-				case "Venue":
+					break;
+				case "venue":
 					projectionTable = new VenueProjectionTableModel(models, columns);
-				case "VideoGameDLC":
+					break;
+				case "videogamedlc":
 					projectionTable = new VideoGameDLCProjectionTableModel(models, columns);
-				case "VideoGame":
+					break;
+				case "videogame":
+					models = delegate.projectionColumns(columns);
 					projectionTable = new VideoGameProjectionTableModel(models, columns);
-
+					break;
+				default:
+					System.out.println("invalid table selected");
+					break;
 			}
 			setupTable(new JTable(projectionTable));
 
