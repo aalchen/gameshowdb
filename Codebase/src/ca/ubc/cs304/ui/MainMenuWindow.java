@@ -102,6 +102,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		this.projectionTableSelectButton.addActionListener(this);
 		this.projectionSubmitButton.addActionListener(this);
 		this.nestedAggregationButton.addActionListener(this);
+		this.aggregationTablesButton.addActionListener(this);
 		this.quitButton.addActionListener(this);
 		this.removeVideoGameSubmitButton.addActionListener(this);
 		this.addDeveloperButton.addActionListener(this);
@@ -489,7 +490,6 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			repaint();
 		}catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-
 		}
 	}
 

@@ -230,14 +230,13 @@ public class TerminalGames {
 		}
 	}
 
-	private void handleProjectionOption() throws IOException {
+	private void handleProjectionOption() throws IOException, SQLException {
 		// output all current tables, allow user to select one
 		// output all cols corresponding to that one
 		// allow user to select one or many columns
 		// output the final projection result
 
 		List<String> currentTables = delegate.tableList();
-
 		String table = null;
 
 		System.out.println("Current tables: ");

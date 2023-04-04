@@ -32,7 +32,7 @@ public interface TerminalGamesDelegate {
 	public void updateDeveloperNameName(String newDeveloperName, String developerName) throws SQLException;
 	public void deleteDeveloperNameLead(String deleteLeadDev) throws SQLException;
 	public void deleteDeveloperNameWeb(String deleteWebsite) throws SQLException;
-    public DeveloperNameModel[] selectLeadDev(String leadDev) throws SQLException;
+  public DeveloperNameModel[] selectLeadDev(String leadDev) throws SQLException;
 	public DeveloperNameModel[] selectWebsite(String website);
 	public DeveloperNameModel[] selectName(String name) throws SQLException;
 	public VideoGameModel[] projectionVideoGame(List<String> columns) throws SQLException;
