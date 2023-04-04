@@ -46,4 +46,7 @@ public interface GUIWindowDelegate {
 	DeveloperNameModel[] getDeveloperNamesObjects() throws SQLException;
 
 	DeveloperNameModel[] filterDevelopers(String leadDev, String website, String name) throws SQLException;
+
+	public List<String> tableList();
+	public List<String> projectionColList(String table);
 }

@@ -731,4 +731,45 @@ public class GameAwardsDbHandler {
 
 		return result.toArray(new VideoGameModel[result.size()]);
 	}
+
+	public List<String> tableList() {
+		List<String> existingTables = new ArrayList<>();
+		try {
+			String query = "select table_name from user_tables";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			String table = "";
+			while (rs.next()) {
+				table = rs.getString("table_name");
+				existingTables.add(table);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		}
+		return existingTables;
+	}
+
+	public List<String> projectionColList(String table) {
+		List<String> existingColumns = new ArrayList<>();
+		try {
+			String query = "select column_name from ALL_TAB_COLUMNS where table_name = ?";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ps.setString(1, table);
+			ResultSet rs = ps.executeQuery();
+			String column = "";
+			while (rs.next()) {
+				column = rs.getString("column_name");
+				existingColumns.add(column);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		}
+		return existingColumns;
+	}
 }

@@ -136,7 +136,7 @@ public class LoginWindow extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
-			delegate.login("ora_jchow97", "a14941158");
+			delegate.login(usernameField.getText(), String.valueOf(passwordField.getPassword()));
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}

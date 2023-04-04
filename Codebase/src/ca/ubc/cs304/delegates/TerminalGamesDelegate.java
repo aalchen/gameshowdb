@@ -41,4 +41,6 @@ public interface TerminalGamesDelegate {
 	public VideoGameCountModel[] aggregateGroupByHaving() throws SQLException;
 	public VideoGameModel[] division() throws SQLException;
 	public VideoGameCountModel[] nestedAggregation() throws SQLException;
+	public List<String> tableList();
+	public List<String> projectionColList(String table);
 }

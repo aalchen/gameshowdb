@@ -27,8 +27,10 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			nestedAggregationButton, projectionButton, returnToFinderToolButton;
 	private JButton addVideoGameButton, addVideoGameSubmitButton, removeVideoGameSubmitButton, removeVideoGameButton, showAllVideoGameButton;
 	private JButton addDeveloperButton, removeDeveloperButton, updateDeveloperButton, showAllDevelopersButton,
-			addDeveloperSubmitButton, removeDeveloperSubmitButton, updateDeveloperSubmitButton, projectionSubmitButton;
-	private JCheckBox titleCheckBox, yearCheckBox, genreCheckBox, developerNameCheckBox;
+			addDeveloperSubmitButton, removeDeveloperSubmitButton, updateDeveloperSubmitButton, projectionSubmitButton,
+			projectionTableSelectButton;
+	private List<JCheckBox> tableColumns;
+	private JComboBox<String> tableDropDown;
 
 	// Text fields
 	private JTextField titleField, yearField, genreField, developerNameField, devNameJoinField;
@@ -68,7 +70,8 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		this.nestedAggregationButton = new JButton("Find Developer Release Count after 2015");
 		this.aggregationGroupByButton = new JButton("View Number of Genres per Developer");
 		this.aggregationGroupByHavingButton = new JButton("View Most Recent Genre Release for Developer after 2015");
-		this.projectionButton = new JButton("View Selected Columns for Video Games");
+		this.projectionTableSelectButton = new JButton("View Selected Columns for Video Games");
+		this.projectionButton = new JButton("Select Table");
 		this.projectionSubmitButton = new JButton("Submit");
 		this.quitButton = new JButton("Quit");
 		this.removeVideoGameSubmitButton = new JButton("Submit");
@@ -95,6 +98,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		this.aggregationGroupByButton.addActionListener(this);
 		this.aggregationGroupByHavingButton.addActionListener(this);
 		this.projectionButton.addActionListener(this);
+		this.projectionTableSelectButton.addActionListener(this);
 		this.projectionSubmitButton.addActionListener(this);
 		this.nestedAggregationButton.addActionListener(this);
 		this.quitButton.addActionListener(this);
@@ -185,9 +189,13 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			{
 				groupByNumberOfTitlesPerDevAfter2015(delegate);
 			}
+			else if (evt.getSource()== projectionTableSelectButton)
+			{
+				projectionTableHandler(delegate);
+			}
 			else if (evt.getSource()== projectionButton)
 			{
-				projectionHandler();
+				projectionHandler(delegate);
 			}
 			else if (evt.getSource()== projectionSubmitButton)
 			{
@@ -308,17 +316,11 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		setUpJpanel();
 		List<String> columns = new ArrayList<>();
 
-		if (titleCheckBox.isSelected()){
-			columns.add("Title");
-		}
-		if (yearCheckBox.isSelected()){
-			columns.add("Year");
-		}
-		if (genreCheckBox.isSelected()){
-			columns.add("Genre");
-		}
-		if (developerNameCheckBox.isSelected()){
-			columns.add("Developer_Name");
+		for (int i = 0; i < tableColumns.size(); i++) {
+			JCheckBox column = tableColumns.get(i);
+			if (column.isSelected()) {
+				columns.add(column.getName());
+			}
 		}
 
 		try {
@@ -360,24 +362,30 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		}
 	}
 
-	private void projectionHandler() {
+	private void projectionTableHandler(GUIWindowDelegate delegate) {
 		setUpJpanel();
 
-		titleCheckBox = new JCheckBox("Title");
-		titleCheckBox.setSelected(false);
-		addCheckBox(titleCheckBox);
+		String[] tableList = delegate.tableList().toArray(new String[0]);
 
-		yearCheckBox = new JCheckBox("Year");
-		yearCheckBox.setSelected(false);
-		addCheckBox(yearCheckBox);
+		tableDropDown = new JComboBox<String>(tableList);
+		addDropDown(tableDropDown);
 
-		genreCheckBox = new JCheckBox("Genre");
-		genreCheckBox.setSelected(false);
-		addCheckBox(genreCheckBox);
+		addButton(projectionButton);
+		addButton(finderButton);
+		addButton(mainMenuButton);
+	}
 
-		developerNameCheckBox = new JCheckBox("Developer Name");
-		developerNameCheckBox.setSelected(false);
-		addCheckBox(developerNameCheckBox);
+	private void projectionHandler(GUIWindowDelegate delegate) {
+		setUpJpanel();
+
+		String[] columns = delegate.projectionColList(tableDropDown.getSelectedItem().toString()).toArray(new String[0]);
+		tableColumns = new ArrayList<>();
+		for (int i = 0; i < columns.length; i++) {
+			JCheckBox newCheckBox = new JCheckBox(columns[i]);
+			newCheckBox.setSelected(false);
+			addCheckBox(newCheckBox);
+			tableColumns.add(newCheckBox);
+		}
 
 		addButton(projectionSubmitButton);
 		addButton(finderButton);
@@ -476,7 +484,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		// add buttons
 		addButton(joinTablesButton);
 		addButton(divisionTablesButton);
-		addButton(projectionButton);
+		addButton(projectionTableSelectButton);
 		addButton(aggregationGroupByButton);
 		addButton(aggregationGroupByHavingButton);
 		addButton(nestedAggregationButton);
@@ -834,6 +842,17 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		gb.setConstraints(checkBox, c);
 		contentPanel.add(checkBox);
 		checkBox.addActionListener(this);
+	}
+
+	private void addDropDown(JComboBox<String> comboBox) {
+		Dimension currentPreferredSize = comboBox.getPreferredSize();
+		comboBox.setPreferredSize(new Dimension(300, currentPreferredSize.height));
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		c.insets = new Insets(2, 10, 2, 10);
+		c.anchor = GridBagConstraints.CENTER;
+		gb.setConstraints(comboBox, c);
+		contentPanel.add(comboBox);
+		comboBox.addActionListener(this);
 	}
 
 	private void addLabel(JLabel label) {

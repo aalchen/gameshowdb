@@ -314,6 +314,14 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		}
 	}
 
+	public List<String> tableList() {
+		return dbHandler.tableList();
+	}
+
+	public List<String> projectionColList(String table) {
+		return dbHandler.projectionColList(table);
+	}
+
 	/**
 	 * Main method called at launch time
 	 */
