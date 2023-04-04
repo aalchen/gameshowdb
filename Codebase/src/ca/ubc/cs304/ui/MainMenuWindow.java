@@ -44,14 +44,14 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		// size the window to obtain a best fit for the components
 		this.pack();
 
-		// center the frame
-		Dimension d = this.getToolkit().getScreenSize();
-		Rectangle r = this.getBounds();
-		this.setLocation((d.width - r.width) / 2, (d.height - r.height) / 2);
-
 		// make the window visible
 		this.setVisible(true);
-		this.setSize(500, 300);
+		this.setSize(1500, 500);
+		Dimension d = this.getToolkit().getScreenSize();
+		Rectangle r = this.getBounds();
+
+		this.setLocation((d.width - r.width) / 2, (d.height - r.height) / 2);
+
 
 		this.joinSubmitButton = new JButton("Find Games and Company");
 		this.manageVideoGameButton = new JButton("Manage VideoGames");
@@ -196,45 +196,52 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	private void groupByNumberOfTitlesPerDevAfter2015() {
 		setUpJpanel();
 
-		VideoGameCountModel[] models = delegate.nestedAggregation();
-		VideoGameCountTableModel nestedAggregationTable = new VideoGameCountTableModel(models);
-		setupTable(new JTable(nestedAggregationTable));
+		try {
+			VideoGameCountModel[] models = delegate.nestedAggregation();
+			VideoGameCountTableModel nestedAggregationTable = new VideoGameCountTableModel(models);
+			setupTable(new JTable(nestedAggregationTable));
 
-		// Create a new JPanel for buttons with FlowLayout
-		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+			// Create a new JPanel for buttons with FlowLayout
+			JPanel buttonsPanel = new JPanel();
+			buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
 
-		// Add a 5-pixel spacer between the buttons
-		Dimension spacer = new Dimension(2, 0);
-		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+			// Add a 5-pixel spacer between the buttons
+			Dimension spacer = new Dimension(2, 0);
+			buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
 
-		buttonsPanel.add(mainMenuButton);
+			buttonsPanel.add(mainMenuButton);
 
-		// Add a 5-pixel spacer between the buttons
-		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+			// Add a 5-pixel spacer between the buttons
+			buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
 
-		buttonsPanel.add(returnToFinderToolButton);
-		returnToFinderToolButton.addActionListener(this);
+			buttonsPanel.add(returnToFinderToolButton);
+			returnToFinderToolButton.addActionListener(this);
 
-		// Add the buttonsPanel to the contentPanel with GridBagLayout
-		c.gridx = 0;
-		c.gridy = 1;
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		c.fill = GridBagConstraints.NONE;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
-		c.insets = new Insets(0, 5, 5, 5);
-		contentPanel.add(buttonsPanel, c);
+			// Add the buttonsPanel to the contentPanel with GridBagLayout
+			c.gridx = 0;
+			c.gridy = 1;
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			c.fill = GridBagConstraints.NONE;
+			c.weightx = 0.0;
+			c.weighty = 0.0;
+			c.insets = new Insets(0, 5, 5, 5);
+			contentPanel.add(buttonsPanel, c);
 
-		contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
-		revalidate();
-		repaint();
+			contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
+			revalidate();
+			repaint();
+		}catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
+		}
 	}
 
 	private void divisionHandler() {
 		setUpJpanel();
 
-		VideoGameModel[] models = delegate.division();
+		try {
+			VideoGameModel[] models = delegate.division();
+
 		LeadDevTableModel divisionTable = new LeadDevTableModel(models);
 		setupTable(new JTable(divisionTable));
 
@@ -267,6 +274,9 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
 		revalidate();
 		repaint();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private void finderWindow() {
@@ -536,64 +546,68 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	private void displayVideoGamesHandler() {
 		setUpJpanel();
 
-		VideoGameTableModel videogameTable = new VideoGameTableModel(delegate.getVideoGamesObjects());
-		JTable table = new JTable(videogameTable);
-		setupTable(table);
+		try {
+			VideoGameTableModel videogameTable = new VideoGameTableModel(delegate.getVideoGamesObjects());
+			JTable table = new JTable(videogameTable);
+			setupTable(table);
 
-		// Create a new JPanel for buttons with FlowLayout
-		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+			// Create a new JPanel for buttons with FlowLayout
+			JPanel buttonsPanel = new JPanel();
+			buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
 
-		// add delete button
-		JButton deleteButton = new JButton("Delete");
-		deleteButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int selectedRow = table.getSelectedRow();
+			// add delete button
+			JButton deleteButton = new JButton("Delete");
+			deleteButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					int selectedRow = table.getSelectedRow();
 
-				if (selectedRow != -1) {
-					int modelRow = table.convertRowIndexToModel(selectedRow);
-					String gameName = (String) videogameTable.getValueAt(modelRow, 0);
-					int gameYear = (int) videogameTable.getValueAt(modelRow, 1);
+					if (selectedRow != -1) {
+						int modelRow = table.convertRowIndexToModel(selectedRow);
+						String gameName = (String) videogameTable.getValueAt(modelRow, 0);
+						int gameYear = (int) videogameTable.getValueAt(modelRow, 1);
 
-					try {
-						delegate.deleteVideoGame(gameName, gameYear);
-						JOptionPane.showMessageDialog(null, "Video game removed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-					} catch (SQLException error) {
-						JOptionPane.showMessageDialog(null, "Unexpected Error", "Error", JOptionPane.ERROR_MESSAGE);
+						try {
+							delegate.deleteVideoGame(gameName, gameYear);
+							JOptionPane.showMessageDialog(null, "Video game removed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+						} catch (SQLException error) {
+							JOptionPane.showMessageDialog(null, "Unexpected Error", "Error", JOptionPane.ERROR_MESSAGE);
+						}
+						displayVideoGamesHandler();
+					} else {
+						JOptionPane.showMessageDialog(null, "Please select a row to delete.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
-					displayVideoGamesHandler();
-				} else {
-					JOptionPane.showMessageDialog(null, "Please select a row to delete.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
-			}
-		});
+			});
 
-		buttonsPanel.add(deleteButton);
-		// Add a 5-pixel spacer between the buttons
-		Dimension spacer = new Dimension(2, 0);
-		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+			buttonsPanel.add(deleteButton);
+			// Add a 5-pixel spacer between the buttons
+			Dimension spacer = new Dimension(2, 0);
+			buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
 
-		buttonsPanel.add(addVideoGameButton);
+			buttonsPanel.add(addVideoGameButton);
 
-		// Add a 5-pixel spacer between the buttons
-		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+			// Add a 5-pixel spacer between the buttons
+			buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
 
-		buttonsPanel.add(manageVideoGameButton);
+			buttonsPanel.add(manageVideoGameButton);
 
-		// Add the buttonsPanel to the contentPanel with GridBagLayout
-		c.gridx = 0;
-		c.gridy = 1;
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		c.fill = GridBagConstraints.NONE;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
-		c.insets = new Insets(0, 5, 5, 5);
-		contentPanel.add(buttonsPanel, c);
+			// Add the buttonsPanel to the contentPanel with GridBagLayout
+			c.gridx = 0;
+			c.gridy = 1;
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			c.fill = GridBagConstraints.NONE;
+			c.weightx = 0.0;
+			c.weighty = 0.0;
+			c.insets = new Insets(0, 5, 5, 5);
+			contentPanel.add(buttonsPanel, c);
 
-		contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
-		revalidate();
-		repaint();
+			contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
+			revalidate();
+			repaint();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private void manageVideoGames() {
@@ -742,106 +756,109 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 
 	private void showAllDevelopersHandler() {
 		setUpJpanel();
+		try {
+			DeveloperNameTableModel developerNameTable = new DeveloperNameTableModel(delegate.getDeveloperNamesObjects());
+			JTable table = new JTable(developerNameTable);
+			setupTable(table);
 
-		DeveloperNameTableModel developerNameTable = new DeveloperNameTableModel(delegate.getDeveloperNamesObjects());
-		JTable table = new JTable(developerNameTable);
-		setupTable(table);
+			// Create a new JPanel for buttons with FlowLayout
+			JPanel buttonsPanel = new JPanel();
+			buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
 
-		// Create a new JPanel for buttons with FlowLayout
-		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+			// Add text fields for filtering
+			JTextField leadDevFilter = new JTextField(30);
+			JTextField websiteFilter = new JTextField(30);
+			JTextField nameFilter = new JTextField(30);
 
-		// Add text fields for filtering
-		JTextField leadDevFilter = new JTextField(30);
-		JTextField websiteFilter = new JTextField(30);
-		JTextField nameFilter = new JTextField(30);
+			// Set minimum size for the text fields
+			Dimension minTextFieldSize = new Dimension(200, leadDevFilter.getPreferredSize().height);
+			leadDevFilter.setMinimumSize(minTextFieldSize);
+			websiteFilter.setMinimumSize(minTextFieldSize);
+			nameFilter.setMinimumSize(minTextFieldSize);
 
-		// Set minimum size for the text fields
-		Dimension minTextFieldSize = new Dimension(200, leadDevFilter.getPreferredSize().height);
-		leadDevFilter.setMinimumSize(minTextFieldSize);
-		websiteFilter.setMinimumSize(minTextFieldSize);
-		nameFilter.setMinimumSize(minTextFieldSize);
+			buttonsPanel.add(new JLabel("Lead Developer:"));
+			buttonsPanel.add(leadDevFilter);
+			buttonsPanel.add(new JLabel("Website:"));
+			buttonsPanel.add(websiteFilter);
+			buttonsPanel.add(new JLabel("Name:"));
+			buttonsPanel.add(nameFilter);
 
-		buttonsPanel.add(new JLabel("Lead Developer:"));
-		buttonsPanel.add(leadDevFilter);
-		buttonsPanel.add(new JLabel("Website:"));
-		buttonsPanel.add(websiteFilter);
-		buttonsPanel.add(new JLabel("Name:"));
-		buttonsPanel.add(nameFilter);
-
-		// Add filter button
-		JButton filterButton = new JButton("Filter");
-		filterButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String leadDev = leadDevFilter.getText().trim();
-				String website = websiteFilter.getText().trim();
-				String name = nameFilter.getText().trim();
-
-				try {
-					DeveloperNameModel[] filteredDevelopers = delegate.filterDevelopers(leadDev, website, name);
-
-					if (filteredDevelopers != null) {
-						developerNameTable.updateData(filteredDevelopers);
-					} else {
-						JOptionPane.showMessageDialog(null, "An error occurred while filtering developers. Please check your input and try again.", "Error", JOptionPane.ERROR_MESSAGE);
-					}
-				} catch (SQLException error) {
-					JOptionPane.showMessageDialog(null, "An error occurred while filtering developers. Please check your input and try again.", "Error", JOptionPane.ERROR_MESSAGE);
-
-				}
-			}
-		});
-
-		buttonsPanel.add(filterButton);
-		// add delete button
-		JButton deleteButton = new JButton("Delete");
-		deleteButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int selectedRow = table.getSelectedRow();
-
-				if (selectedRow != -1) {
-					int modelRow = table.convertRowIndexToModel(selectedRow);
-					String developerName = (String) developerNameTable.getValueAt(modelRow, 0);
+			// Add filter button
+			JButton filterButton = new JButton("Filter");
+			filterButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String leadDev = leadDevFilter.getText().trim();
+					String website = websiteFilter.getText().trim();
+					String name = nameFilter.getText().trim();
 
 					try {
-						delegate.deleteDeveloperName(developerName);
+						DeveloperNameModel[] filteredDevelopers = delegate.filterDevelopers(leadDev, website, name);
+
+						if (filteredDevelopers != null) {
+							developerNameTable.updateData(filteredDevelopers);
+						} else {
+							JOptionPane.showMessageDialog(null, "An error occurred while filtering developers. Please check your input and try again.", "Error", JOptionPane.ERROR_MESSAGE);
+						}
 					} catch (SQLException error) {
-						JOptionPane.showMessageDialog(null, "Unexpected Error", "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "An error occurred while filtering developers. Please check your input and try again.", "Error", JOptionPane.ERROR_MESSAGE);
+
 					}
-					showAllDevelopersHandler();
-				} else {
-					JOptionPane.showMessageDialog(null, "Please select a row to delete.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
-			}
-		});
+			});
 
-		buttonsPanel.add(deleteButton);
-		// Add a 5-pixel spacer between the buttons
-		Dimension spacer = new Dimension(2, 0);
-		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+			buttonsPanel.add(filterButton);
+			// add delete button
+			JButton deleteButton = new JButton("Delete");
+			deleteButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					int selectedRow = table.getSelectedRow();
 
-		buttonsPanel.add(addDeveloperButton);
+					if (selectedRow != -1) {
+						int modelRow = table.convertRowIndexToModel(selectedRow);
+						String developerName = (String) developerNameTable.getValueAt(modelRow, 0);
 
-		// Add a 5-pixel spacer between the buttons
-		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+						try {
+							delegate.deleteDeveloperName(developerName);
+						} catch (SQLException error) {
+							JOptionPane.showMessageDialog(null, "Unexpected Error", "Error", JOptionPane.ERROR_MESSAGE);
+						}
+						showAllDevelopersHandler();
+					} else {
+						JOptionPane.showMessageDialog(null, "Please select a row to delete.", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			});
 
-		buttonsPanel.add(manageDeveloperNameButton);
+			buttonsPanel.add(deleteButton);
+			// Add a 5-pixel spacer between the buttons
+			Dimension spacer = new Dimension(2, 0);
+			buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
 
-		// Add the buttonsPanel to the contentPanel with GridBagLayout
-		c.gridx = 0;
-		c.gridy = 1;
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		c.fill = GridBagConstraints.NONE;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
-		c.insets = new Insets(0, 5, 5, 5);
-		contentPanel.add(buttonsPanel, c);
+			buttonsPanel.add(addDeveloperButton);
 
-		contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
-		revalidate();
-		repaint();
+			// Add a 5-pixel spacer between the buttons
+			buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+			buttonsPanel.add(manageDeveloperNameButton);
+
+			// Add the buttonsPanel to the contentPanel with GridBagLayout
+			c.gridx = 0;
+			c.gridy = 1;
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			c.fill = GridBagConstraints.NONE;
+			c.weightx = 0.0;
+			c.weighty = 0.0;
+			c.insets = new Insets(0, 5, 5, 5);
+			contentPanel.add(buttonsPanel, c);
+
+			contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
+			revalidate();
+			repaint();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private void addDeveloperSubmitHandler(GUIWindowDelegate delegate) {
