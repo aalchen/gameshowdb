@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 
 import ca.ubc.cs304.delegates.GUIWindowDelegate;
 import ca.ubc.cs304.model.*;
@@ -324,8 +325,41 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		}
 
 		try {
-			VideoGameModel[] models = delegate.projectionColumns(columns);
-			VideoGameProjectionTableModel projectionTable = new VideoGameProjectionTableModel(models, columns);
+			Model[] models = delegate.projectionColumns(columns);
+			AbstractTableModel projectionTable = null;
+			switch (models[0].getTableName()){
+				case "Award":
+					projectionTable = new AwardProjectionTableModel(models, columns);
+				case "AwardCeremony":
+					projectionTable = new AwardCeremonyProjectionTableModel(models, columns);
+				case "CommunityAward":
+					projectionTable = new CommunityAwardProjectionTableModel(models, columns);
+				case "Company":
+					projectionTable = new CompanyProjectionTableModel(models, columns);
+				case "DeveloperCountry":
+					projectionTable = new DeveloperCountryProjectionTableModel(models, columns);
+				case "DeveloperName":
+					projectionTable = new DeveloperNameProjectionTableModel(models, columns);
+				case "LivestreamUrl":
+					projectionTable = new LivestreamUrlProjectionTableModel(models, columns);
+				case "LivestreamViewerCount":
+					projectionTable = new LivestreamViewerCountProjectionTableModel(models, columns);
+				case "SponsoredAward":
+					projectionTable = new SponsoredAwardProjectionTableModel(models, columns);
+				case "Sponsors":
+					projectionTable = new SponsorsProjectionTableModel(models, columns);
+				case "Staff":
+					projectionTable = new StaffProjectionTableModel(models, columns);
+				case "StaffAwardCeremony":
+					projectionTable = new StaffAwardCeremonyProjectionTableModel(models, columns);
+				case "Venue":
+					projectionTable = new VenueProjectionTableModel(models, columns);
+				case "VideoGameDLC":
+					projectionTable = new VideoGameDLCProjectionTableModel(models, columns);
+				case "VideoGame":
+					projectionTable = new VideoGameProjectionTableModel(models, columns);
+
+			}
 			setupTable(new JTable(projectionTable));
 
 			// Create a new JPanel for buttons with FlowLayout

@@ -1,9 +1,6 @@
 package ca.ubc.cs304.database;
 
-import ca.ubc.cs304.model.DeveloperNameModel;
-import ca.ubc.cs304.model.DeveloperNameVideoGameModel;
-import ca.ubc.cs304.model.VideoGameCountModel;
-import ca.ubc.cs304.model.VideoGameModel;
+import ca.ubc.cs304.model.*;
 import ca.ubc.cs304.util.PrintablePreparedStatement;
 
 import java.nio.file.Files;
