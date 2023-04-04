@@ -8,10 +8,7 @@ import ca.ubc.cs304.util.PrintablePreparedStatement;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -391,6 +388,64 @@ public class GameAwardsDbHandler {
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 			rollbackConnection();
+		}
+	}
+
+	public DeveloperNameModel[] filterDevelopers(String leadDev, String website, String name) throws SQLException {
+		StringBuilder sql = new StringBuilder("SELECT * FROM DeveloperName");
+
+		boolean hasCondition = false;
+		if (!leadDev.isEmpty() || !website.isEmpty() || !name.isEmpty()) {
+			sql.append(" WHERE ");
+		}
+
+		if (!leadDev.isEmpty()) {
+			sql.append("lead_developer = ? ");
+			hasCondition = true;
+		}
+
+		if (!website.isEmpty()) {
+			if (hasCondition) {
+				sql.append("AND ");
+			}
+			sql.append("website = ? ");
+			hasCondition = true;
+		}
+
+		if (!name.isEmpty()) {
+			if (hasCondition) {
+				sql.append("AND ");
+			}
+			sql.append("name = ?");
+		}
+
+		try {
+			PreparedStatement stmt = connection.prepareStatement(sql.toString());
+			int paramIndex = 1;
+			if (!leadDev.isEmpty()) {
+				stmt.setString(paramIndex++, leadDev);
+			}
+			if (!website.isEmpty()) {
+				stmt.setString(paramIndex++, website);
+			}
+			if (!name.isEmpty()) {
+				stmt.setString(paramIndex, name);
+			}
+
+			ResultSet rs = stmt.executeQuery();
+			ArrayList<DeveloperNameModel> developerNameModels = new ArrayList<>();
+
+			while (rs.next()) {
+				developerNameModels.add(new DeveloperNameModel(rs.getString("lead_developer"), rs.getString("website"), rs.getString("name")));
+			}
+
+			DeveloperNameModel[] modelsArray = new DeveloperNameModel[developerNameModels.size()];
+			return developerNameModels.toArray(modelsArray);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			rollbackConnection();
+			throw e;
 		}
 	}
 

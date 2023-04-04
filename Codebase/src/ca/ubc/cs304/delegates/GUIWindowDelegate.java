@@ -32,9 +32,9 @@ public interface GUIWindowDelegate {
 	public void updateDeveloperNameName(String newDeveloperName, String developerName);
 	public void deleteDeveloperNameLead(String deleteLeadDev);
 	public void deleteDeveloperNameWeb(String deleteWebsite);
-	public void selectLeadDev(String leadDev);
-	public void selectWebsite(String website);
-	public void selectName(String name);
+	public DeveloperNameModel[] selectLeadDev(String leadDev);
+	public DeveloperNameModel[] selectWebsite(String website);
+	public DeveloperNameModel[] selectName(String name);
 	public void projectionColumns(List<String> columns);
 	public DeveloperNameVideoGameModel[] joinTables(String joinWhere) throws SQLException;
 	public void aggregateGroupBy();
@@ -44,4 +44,6 @@ public interface GUIWindowDelegate {
 
 	VideoGameModel[] getVideoGamesObjects();
 	DeveloperNameModel[] getDeveloperNamesObjects();
+
+	DeveloperNameModel[] filterDevelopers(String leadDev, String website, String name) throws SQLException;
 }

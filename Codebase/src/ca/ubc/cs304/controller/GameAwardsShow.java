@@ -147,7 +147,11 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		dbHandler.deleteDeveloperNameWeb(deleteWebsite);
 	}
 
-	public void selectLeadDev(String leadDev) {
+	public DeveloperNameModel[] filterDevelopers(String leadDev, String website, String name) throws SQLException {
+		return dbHandler.filterDevelopers(leadDev, website, name);
+	}
+
+		public DeveloperNameModel[] selectLeadDev(String leadDev) {
 		DeveloperNameModel[] models = dbHandler.selectLeadDev(leadDev);
 
 		for (int i = 0; i < models.length; i++) {
@@ -159,9 +163,11 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			System.out.println(model.getName());
 			System.out.println();
 		}
+		return models;
+
 	}
 
-	public void selectWebsite(String website) {
+	public DeveloperNameModel[] selectWebsite(String website) {
 		DeveloperNameModel[] models = dbHandler.selectWebsite(website);
 
 		for (int i = 0; i < models.length; i++) {
@@ -173,9 +179,11 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			System.out.println(model.getName());
 			System.out.println();
 		}
+		return models;
+
 	}
 
-	public void selectName(String name) {
+	public DeveloperNameModel[] selectName(String name) {
 		DeveloperNameModel[] models = dbHandler.selectName(name);
 
 		for (int i = 0; i < models.length; i++) {
@@ -187,6 +195,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			System.out.println(model.getName());
 			System.out.println();
 		}
+		return models;
 	}
 
 	public void projectionColumns(List<String> columns) {
