@@ -91,7 +91,10 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		this.returnToFinderToolButton.addActionListener(this);
 		this.finderButton.addActionListener(this);
 		this.divisionTablesButton.addActionListener(this);
-		this.aggregationTablesButton.addActionListener(this);
+		this.aggregationGroupByButton.addActionListener(this);
+		this.aggregationGroupByHavingButton.addActionListener(this);
+		this.projectionButton.addActionListener(this);
+		this.projectionSubmitButton.addActionListener(this);
 		this.quitButton.addActionListener(this);
 		this.removeVideoGameSubmitButton.addActionListener(this);
 		this.addDeveloperButton.addActionListener(this);
