@@ -87,6 +87,10 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		return dbHandler.getVideoGameInfo();
 	}
 
+	public DeveloperNameModel[] getDeveloperNamesObjects() {
+		return dbHandler.getDeveloperNameInfo();
+	}
+
 	public void showDeveloperName() {
 		DeveloperNameModel[] models = dbHandler.getDeveloperNameInfo();
 
@@ -258,7 +262,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		return models;
 	}
 
-	public void nestedAggregation() {
+	public VideoGameCountModel[] nestedAggregation() {
 		VideoGameCountModel[] models = dbHandler.nestedAggregation();
 		System.out.println("Nested Aggregation query : number of titles per developer where game was released after 2015");
 		for (int i = 0; i < models.length; i++) {
@@ -267,6 +271,8 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			System.out.println(model.getColumnNum());
 			System.out.println();
 		}
+
+		return models;
 	}
 
 	/**

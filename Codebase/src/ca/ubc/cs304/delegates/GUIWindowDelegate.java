@@ -2,6 +2,7 @@ package ca.ubc.cs304.delegates;
 
 import ca.ubc.cs304.model.DeveloperNameModel;
 import ca.ubc.cs304.model.DeveloperNameVideoGameModel;
+import ca.ubc.cs304.model.VideoGameCountModel;
 import ca.ubc.cs304.model.VideoGameModel;
 
 import java.sql.SQLException;
@@ -25,7 +26,7 @@ public interface GUIWindowDelegate {
 	public void updateVideoGame(String newTitle, int year, String oldTitle);
 	public void terminalGamesFinished();
 	public void insertDeveloperName(DeveloperNameModel model);
-	public void deleteDeveloperName(String developerName);
+	public void deleteDeveloperName(String developerName) throws SQLException;
 	public void updateDeveloperNameLead(String newLeadDev, String developerName);
 	public void updateDeveloperNameWebsite(String website, String developerName);
 	public void updateDeveloperNameName(String newDeveloperName, String developerName);
@@ -39,7 +40,8 @@ public interface GUIWindowDelegate {
 	public void aggregateGroupBy();
 	public void aggregateGroupByHaving();
 	public VideoGameModel[] division();
-	public void nestedAggregation();
+	public VideoGameCountModel[] nestedAggregation();
 
 	VideoGameModel[] getVideoGamesObjects();
+	DeveloperNameModel[] getDeveloperNamesObjects();
 }
