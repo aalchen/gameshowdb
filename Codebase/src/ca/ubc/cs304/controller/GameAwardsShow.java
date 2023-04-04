@@ -189,7 +189,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		}
 	}
 
-	public void projectionColumns(List<String> columns) {
+	public VideoGameModel[] projectionColumns(List<String> columns) {
 		VideoGameModel[] models = dbHandler.projectionColumns(columns);
 
 		for (int i = 0; i < models.length; i++) {
@@ -210,6 +210,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 
 			System.out.println();
 		}
+		return models;
 	}
 
 	public DeveloperNameVideoGameModel[] joinTables(String joinWhere) throws SQLException {

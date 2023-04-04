@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -21,10 +23,11 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 
 	// Buttons
 	private JButton manageVideoGameButton, finderButton, manageDeveloperNameButton, joinSubmitButton, quitButton, mainMenuButton;
-	private JButton joinTablesButton, divisionTablesButton, aggregationTablesButton, returnToFinderToolButton;
+	private JButton joinTablesButton, divisionTablesButton, aggregationTablesButton, projectionButton, returnToFinderToolButton;
 	private JButton addVideoGameButton, addVideoGameSubmitButton, removeVideoGameSubmitButton, removeVideoGameButton, showAllVideoGameButton;
 	private JButton addDeveloperButton, removeDeveloperButton, updateDeveloperButton, showAllDevelopersButton,
-			addDeveloperSubmitButton, removeDeveloperSubmitButton, updateDeveloperSubmitButton;
+			addDeveloperSubmitButton, removeDeveloperSubmitButton, updateDeveloperSubmitButton, projectionSubmitButton;
+	private JCheckBox titleCheckBox, yearCheckBox, genreCheckBox, developerNameCheckBox;
 
 	// Text fields
 	private JTextField titleField, yearField, genreField, developerNameField, devNameJoinField;
@@ -65,6 +68,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		this.finderButton = new JButton("Finder Tool");
 		this.divisionTablesButton = new JButton("Find contenders for EveryGenre Award");
 		this.aggregationTablesButton = new JButton("Find Developer Release Count after 2015");
+		this.projectionButton = new JButton("View Selected Columns for Video Games");
 		this.quitButton = new JButton("Quit");
 		setUpJpanel();
 
@@ -125,7 +129,15 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			}
 			else if (evt.getSource()== aggregationTablesButton)
 			{
-				groupByNumberOfTitlesPerDevAfter2015();
+				groupByNumberOfTitlesPerDevAfter2015(delegate);
+			}
+			else if (evt.getSource()== projectionButton)
+			{
+				projectionHandler();
+			}
+			else if (evt.getSource()== projectionSubmitButton)
+			{
+				projectionSubmitHandler(delegate);
 			}
 			else if (evt.getSource()== finderButton || evt.getSource()== returnToFinderToolButton)
 			{
@@ -155,7 +167,85 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		}
 	}
 
-	private void groupByNumberOfTitlesPerDevAfter2015() {
+	private void projectionSubmitHandler(GUIWindowDelegate delegate) {
+		setUpJpanel();
+		List<String> columns = new ArrayList<>();
+
+		if (titleCheckBox.isSelected()){
+			columns.add("Title");
+		}
+		if (yearCheckBox.isSelected()){
+			columns.add("Year");
+		}
+		if (genreCheckBox.isSelected()){
+			columns.add("Genre");
+		}
+		if (developerNameCheckBox.isSelected()){
+			columns.add("Developer_Name");
+		}
+
+		VideoGameModel[] models = delegate.projectionColumns(columns);
+		VideoGameProjectionTableModel projectionTable = new VideoGameProjectionTableModel(models, columns);
+		setupTable(new JTable(projectionTable));
+
+		// Create a new JPanel for buttons with FlowLayout
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+
+		// Add a 5-pixel spacer between the buttons
+		Dimension spacer = new Dimension(2, 0);
+		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+		buttonsPanel.add(mainMenuButton);
+
+		// Add a 5-pixel spacer between the buttons
+		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+		buttonsPanel.add(returnToFinderToolButton);
+		returnToFinderToolButton.addActionListener(this);
+
+		// Add the buttonsPanel to the contentPanel with GridBagLayout
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		c.insets = new Insets(0, 5, 5, 5);
+		contentPanel.add(buttonsPanel, c);
+
+		contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
+		revalidate();
+		repaint();
+	}
+
+	private void projectionHandler() {
+		setUpJpanel();
+
+		titleCheckBox = new JCheckBox("Title");
+		titleCheckBox.setSelected(false);
+		addCheckBox(titleCheckBox);
+
+		yearCheckBox = new JCheckBox("Year");
+		yearCheckBox.setSelected(false);
+		addCheckBox(yearCheckBox);
+
+		genreCheckBox = new JCheckBox("Genre");
+		genreCheckBox.setSelected(false);
+		addCheckBox(genreCheckBox);
+
+		developerNameCheckBox = new JCheckBox("Developer Name");
+		developerNameCheckBox.setSelected(false);
+		addCheckBox(developerNameCheckBox);
+
+		projectionSubmitButton = new JButton("Submit");
+
+		addButton(projectionSubmitButton);
+		addButton(finderButton);
+		addButton(mainMenuButton);
+	}
+
+	private void groupByNumberOfTitlesPerDevAfter2015(GUIWindowDelegate delegate) {
 		setUpJpanel();
 
 		VideoGameCountModel[] models = delegate.nestedAggregation();
@@ -238,7 +328,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		// add buttons
 		addButton(joinTablesButton);
 		addButton(divisionTablesButton);
-		//TODO ADD PROJECTION
+		addButton(projectionButton);
 		addButton(aggregationTablesButton);
 		addButton(mainMenuButton);
 		revalidate();
@@ -587,6 +677,17 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			gb.setConstraints(button, c);
 			contentPanel.add(button);
 			button.addActionListener(this);
+	}
+
+	private void addCheckBox(JCheckBox checkBox) {
+		Dimension currentPreferredSize = checkBox.getPreferredSize();
+		checkBox.setPreferredSize(new Dimension(300, currentPreferredSize.height));
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		c.insets = new Insets(2, 10, 2, 10);
+		c.anchor = GridBagConstraints.CENTER;
+		gb.setConstraints(checkBox, c);
+		contentPanel.add(checkBox);
+		checkBox.addActionListener(this);
 	}
 
 	private void addLabel(JLabel label) {
