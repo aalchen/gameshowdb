@@ -231,41 +231,26 @@ public class TerminalGames {
 	}
 
 	private void handleProjectionOption() throws IOException, SQLException {
+		// output all current tables, allow user to select one
+		// output all cols corresponding to that one
+		// allow user to select one or many columns
+		// output the final projection result
+
+		List<String> currentTables = delegate.tableList();
 		String table = null;
 
+		System.out.println("Current tables: ");
+		for (int i=0; i<currentTables.size(); i++) {
+			System.out.println(i + ". " + currentTables.get(i));
+		}
+
 		while (table == null || table.length() <= 0) {
-			System.out.println("Please enter the TABLE name for Projection: ");
+			System.out.println("Please choose a number corresponding to the TABLE name for Projection: ");
 			table = readLine().trim();
 		}
 
-		if (table.equals("VideoGame")) {
-			System.out.println("Table selected is: " + table);
-
-			System.out.println("Select columns to view - Enter a space separated list (ex. 1 OR 1 2 3): ");
-			bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-			int choice = INVALID_INPUT;
-
-			while (choice != 5) {
-				List<String> colsArray = new ArrayList<>();
-				System.out.println();
-				System.out.println("1. Title");
-				System.out.println("2. Year");
-				System.out.println("3. Genre");
-				System.out.println("4. Developer Name");
-				System.out.println("5. Return to Main Menu");
-				System.out.print("Please choose one of the above 5 options: ");
-
-				String separatedInput = bufferedReader.readLine();
-				System.out.println(separatedInput);
-
-				if (separatedInput.contains("5")) {
-					showMainMenu(delegate);
-				}
-
-				colsArray = returnVideoGameArray(separatedInput);
-				delegate.projectionColumns(colsArray);
-			}
-		}
+		table = currentTables.get(Integer.parseInt(table));
+		List<String> projectionColumns = delegate.projectionColList(table);
 	}
 
 	private void handleSelectionOption() throws IOException, SQLException {

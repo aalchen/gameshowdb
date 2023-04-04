@@ -32,13 +32,15 @@ public interface TerminalGamesDelegate {
 	public void updateDeveloperNameName(String newDeveloperName, String developerName) throws SQLException;
 	public void deleteDeveloperNameLead(String deleteLeadDev) throws SQLException;
 	public void deleteDeveloperNameWeb(String deleteWebsite) throws SQLException;
-    public DeveloperNameModel[] selectLeadDev(String leadDev) throws SQLException;
+  public DeveloperNameModel[] selectLeadDev(String leadDev) throws SQLException;
 	public DeveloperNameModel[] selectWebsite(String website);
 	public DeveloperNameModel[] selectName(String name) throws SQLException;
-	public void projectionColumns(List<String> columns) throws SQLException;
+	public VideoGameModel[] projectionVideoGame(List<String> columns) throws SQLException;
 	public DeveloperNameVideoGameModel[] joinTables(String joinWhere) throws SQLException;
-	public void aggregateGroupBy() throws SQLException;
-	public void aggregateGroupByHaving() throws SQLException;
+	public VideoGameCountModel[] aggregateGroupBy() throws SQLException;
+	public VideoGameCountModel[] aggregateGroupByHaving() throws SQLException;
 	public VideoGameModel[] division() throws SQLException;
 	public VideoGameCountModel[] nestedAggregation() throws SQLException;
+	public List<String> tableList();
+	public List<String> projectionColList(String table);
 }

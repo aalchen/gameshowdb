@@ -4,8 +4,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 
 import ca.ubc.cs304.delegates.GUIWindowDelegate;
 import ca.ubc.cs304.model.*;
@@ -21,10 +24,14 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 
 	// Buttons
 	private JButton manageVideoGameButton, finderButton, manageDeveloperNameButton, joinSubmitButton, quitButton, mainMenuButton;
-	private JButton joinTablesButton, divisionTablesButton, aggregationTablesButton, returnToFinderToolButton;
+	private JButton joinTablesButton, divisionTablesButton, aggregationGroupByButton, aggregationGroupByHavingButton,
+			nestedAggregationButton, projectionButton, returnToFinderToolButton;
 	private JButton addVideoGameButton, addVideoGameSubmitButton, removeVideoGameSubmitButton, removeVideoGameButton, showAllVideoGameButton;
 	private JButton addDeveloperButton, removeDeveloperButton, updateDeveloperButton, showAllDevelopersButton,
-			addDeveloperSubmitButton, removeDeveloperSubmitButton, updateDeveloperSubmitButton;
+			addDeveloperSubmitButton, removeDeveloperSubmitButton, updateDeveloperSubmitButton, projectionSubmitButton,
+			projectionTableSelectButton;
+	private List<JCheckBox> tableColumns;
+	private JComboBox<String> tableDropDown;
 
 	// Text fields
 	private JTextField titleField, yearField, genreField, developerNameField, devNameJoinField;
@@ -61,7 +68,12 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		this.returnToFinderToolButton = new JButton("Return to Finder Tool Menu");
 		this.finderButton = new JButton("Finder Tool");
 		this.divisionTablesButton = new JButton("Find contenders for EveryGenre Award");
-		this.aggregationTablesButton = new JButton("Find Developer Release Count after 2015");
+		this.nestedAggregationButton = new JButton("Find Developer Release Count after 2015");
+		this.aggregationGroupByButton = new JButton("View Number of Genres per Developer");
+		this.aggregationGroupByHavingButton = new JButton("View Most Recent Genre Release for Developer after 2015");
+		this.projectionTableSelectButton = new JButton("View Tables");
+		this.projectionButton = new JButton("Select Table");
+		this.projectionSubmitButton = new JButton("Submit");
 		this.quitButton = new JButton("Quit");
 		this.removeVideoGameSubmitButton = new JButton("Submit");
 		this.addDeveloperButton = new JButton("Add developer");
@@ -84,7 +96,12 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		this.returnToFinderToolButton.addActionListener(this);
 		this.finderButton.addActionListener(this);
 		this.divisionTablesButton.addActionListener(this);
-		this.aggregationTablesButton.addActionListener(this);
+		this.aggregationGroupByButton.addActionListener(this);
+		this.aggregationGroupByHavingButton.addActionListener(this);
+		this.projectionButton.addActionListener(this);
+		this.projectionTableSelectButton.addActionListener(this);
+		this.projectionSubmitButton.addActionListener(this);
+		this.nestedAggregationButton.addActionListener(this);
 		this.quitButton.addActionListener(this);
 		this.removeVideoGameSubmitButton.addActionListener(this);
 		this.addDeveloperButton.addActionListener(this);
@@ -161,9 +178,29 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			{
 				joinTableHandler();
 			}
-			else if (evt.getSource()== aggregationTablesButton)
+			else if (evt.getSource()== aggregationGroupByButton)
 			{
-				groupByNumberOfTitlesPerDevAfter2015();
+				aggregationGroupByHandler(delegate);
+			}
+			else if (evt.getSource()== aggregationGroupByHavingButton)
+			{
+				aggregationGroupByHavingHandler(delegate);
+			}
+			else if (evt.getSource()== nestedAggregationButton)
+			{
+				groupByNumberOfTitlesPerDevAfter2015(delegate);
+			}
+			else if (evt.getSource()== projectionTableSelectButton)
+			{
+				projectionTableHandler(delegate);
+			}
+			else if (evt.getSource()== projectionButton)
+			{
+				projectionHandler(delegate);
+			}
+			else if (evt.getSource()== projectionSubmitButton)
+			{
+				projectionSubmitHandler(delegate);
 			}
 			else if (evt.getSource()== finderButton || evt.getSource()== returnToFinderToolButton)
 			{
@@ -193,7 +230,227 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		}
 	}
 
-	private void groupByNumberOfTitlesPerDevAfter2015() {
+	private void aggregationGroupByHavingHandler(GUIWindowDelegate delegate) {
+		setUpJpanel();
+
+		try {
+			VideoGameCountModel[] models = delegate.aggregateGroupByHaving();
+			VideoGameMaxTableModel nestedAggregationTable = new VideoGameMaxTableModel(models);
+			setupTable(new JTable(nestedAggregationTable));
+
+			// Create a new JPanel for buttons with FlowLayout
+			JPanel buttonsPanel = new JPanel();
+			buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+
+			// Add a 5-pixel spacer between the buttons
+			Dimension spacer = new Dimension(2, 0);
+			buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+			buttonsPanel.add(mainMenuButton);
+
+			// Add a 5-pixel spacer between the buttons
+			buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+			buttonsPanel.add(returnToFinderToolButton);
+			returnToFinderToolButton.addActionListener(this);
+
+			// Add the buttonsPanel to the contentPanel with GridBagLayout
+			c.gridx = 0;
+			c.gridy = 1;
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			c.fill = GridBagConstraints.NONE;
+			c.weightx = 0.0;
+			c.weighty = 0.0;
+			c.insets = new Insets(0, 5, 5, 5);
+			contentPanel.add(buttonsPanel, c);
+
+			contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
+			revalidate();
+			repaint();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private void aggregationGroupByHandler(GUIWindowDelegate delegate) {
+		setUpJpanel();
+		try {
+			VideoGameCountModel[] models = delegate.aggregateGroupBy();
+			VideoGameCountTableModel nestedAggregationTable = new VideoGameCountTableModel(models);
+			setupTable(new JTable(nestedAggregationTable));
+
+			// Create a new JPanel for buttons with FlowLayout
+			JPanel buttonsPanel = new JPanel();
+			buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+
+			// Add a 5-pixel spacer between the buttons
+			Dimension spacer = new Dimension(2, 0);
+			buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+			buttonsPanel.add(mainMenuButton);
+
+			// Add a 5-pixel spacer between the buttons
+			buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+			buttonsPanel.add(returnToFinderToolButton);
+			returnToFinderToolButton.addActionListener(this);
+
+			// Add the buttonsPanel to the contentPanel with GridBagLayout
+			c.gridx = 0;
+			c.gridy = 1;
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			c.fill = GridBagConstraints.NONE;
+			c.weightx = 0.0;
+			c.weighty = 0.0;
+			c.insets = new Insets(0, 5, 5, 5);
+			contentPanel.add(buttonsPanel, c);
+
+			contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
+			revalidate();
+			repaint();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private void projectionSubmitHandler(GUIWindowDelegate delegate) {
+		setUpJpanel();
+		List<String> columns = new ArrayList<>();
+
+		for (int i = 0; i < tableColumns.size(); i++) {
+			JCheckBox column = tableColumns.get(i);
+			if (column.isSelected()) {
+				columns.add(column.getText().toLowerCase());
+			}
+		}
+
+		try {
+			Model[] models = null;
+			AbstractTableModel projectionTable = null;
+			String tableName = ((String) tableDropDown.getSelectedItem()).toLowerCase();
+			switch (tableName){
+				case "award":
+					models = delegate.projectionAward(columns);
+					projectionTable = new AwardProjectionTableModel(models, columns);
+					break;
+				case "awardceremony":
+					models = delegate.projectionAwardCeremony(columns);
+					projectionTable = new AwardCeremonyProjectionTableModel(models, columns);
+					break;
+				case "communityaward":
+					models = delegate.projectionCommunityAward(columns);
+					projectionTable = new CommunityAwardProjectionTableModel(models, columns);
+					break;
+				case "company":
+					projectionTable = new CompanyProjectionTableModel(models, columns);
+					break;
+				case "developercountry":
+					projectionTable = new DeveloperCountryProjectionTableModel(models, columns);
+					break;
+				case "developername":
+					projectionTable = new DeveloperNameProjectionTableModel(models, columns);
+					break;
+				case "livestreamurl":
+					projectionTable = new LivestreamUrlProjectionTableModel(models, columns);
+					break;
+				case "livestreamviewercount":
+					projectionTable = new LivestreamViewerCountProjectionTableModel(models, columns);
+					break;
+				case "sponsoredaward":
+					projectionTable = new SponsoredAwardProjectionTableModel(models, columns);
+					break;
+				case "sponsors":
+					projectionTable = new SponsorsProjectionTableModel(models, columns);
+					break;
+				case "staff":
+					projectionTable = new StaffProjectionTableModel(models, columns);
+					break;
+				case "staffawardceremony":
+					projectionTable = new StaffAwardCeremonyProjectionTableModel(models, columns);
+					break;
+				case "venue":
+					models = delegate.projectionVenue(columns);
+					projectionTable = new VenueProjectionTableModel(models, columns);
+					break;
+				case "videogamedlc":
+					projectionTable = new VideoGameDLCProjectionTableModel(models, columns);
+					break;
+				case "videogame":
+					models = delegate.projectionVideoGame(columns);
+					projectionTable = new VideoGameProjectionTableModel(models, columns);
+					break;
+				default:
+					System.out.println("Invalid table selected");
+					break;
+			}
+
+			setupTable(new JTable(projectionTable));
+
+			// Create a new JPanel for buttons with FlowLayout
+			JPanel buttonsPanel = new JPanel();
+			buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+
+			// Add a 5-pixel spacer between the buttons
+			Dimension spacer = new Dimension(2, 0);
+			buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+			buttonsPanel.add(mainMenuButton);
+
+			// Add a 5-pixel spacer between the buttons
+			buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+
+			buttonsPanel.add(returnToFinderToolButton);
+			returnToFinderToolButton.addActionListener(this);
+
+			// Add the buttonsPanel to the contentPanel with GridBagLayout
+			c.gridx = 0;
+			c.gridy = 1;
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			c.fill = GridBagConstraints.NONE;
+			c.weightx = 0.0;
+			c.weighty = 0.0;
+			c.insets = new Insets(0, 5, 5, 5);
+			contentPanel.add(buttonsPanel, c);
+
+			contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
+			revalidate();
+			repaint();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private void projectionTableHandler(GUIWindowDelegate delegate) {
+		setUpJpanel();
+
+		String[] tableList = delegate.tableList().toArray(new String[0]);
+
+		tableDropDown = new JComboBox<String>(tableList);
+		addDropDown(tableDropDown);
+
+		addButton(projectionButton);
+		addButton(finderButton);
+		addButton(mainMenuButton);
+	}
+
+	private void projectionHandler(GUIWindowDelegate delegate) {
+		setUpJpanel();
+
+		String[] columns = delegate.projectionColList(tableDropDown.getSelectedItem().toString()).toArray(new String[0]);
+		tableColumns = new ArrayList<>();
+		for (int i = 0; i < columns.length; i++) {
+			JCheckBox newCheckBox = new JCheckBox(columns[i]);
+			newCheckBox.setSelected(false);
+			addCheckBox(newCheckBox);
+			tableColumns.add(newCheckBox);
+		}
+
+		addButton(projectionSubmitButton);
+		addButton(finderButton);
+		addButton(mainMenuButton);
+	}
+
+	private void groupByNumberOfTitlesPerDevAfter2015(GUIWindowDelegate delegate) {
 		setUpJpanel();
 
 		try {
@@ -232,7 +489,6 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			repaint();
 		}catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-
 		}
 	}
 
@@ -280,14 +536,15 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	}
 
 	private void finderWindow() {
-		// TODO ADD AGGREGATIONS AND PROJECTIONS
 		setUpJpanel();
 
 		// add buttons
 		addButton(joinTablesButton);
 		addButton(divisionTablesButton);
-		//TODO ADD PROJECTION
-		addButton(aggregationTablesButton);
+		addButton(projectionTableSelectButton);
+		addButton(aggregationGroupByButton);
+		addButton(aggregationGroupByHavingButton);
+		addButton(nestedAggregationButton);
 		addButton(mainMenuButton);
 		revalidate();
 		repaint();
@@ -631,6 +888,28 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			c.anchor = GridBagConstraints.CENTER;
 			gb.setConstraints(button, c);
 			contentPanel.add(button);
+	}
+
+	private void addCheckBox(JCheckBox checkBox) {
+		Dimension currentPreferredSize = checkBox.getPreferredSize();
+		checkBox.setPreferredSize(new Dimension(300, currentPreferredSize.height));
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		c.insets = new Insets(2, 10, 2, 10);
+		c.anchor = GridBagConstraints.CENTER;
+		gb.setConstraints(checkBox, c);
+		contentPanel.add(checkBox);
+		checkBox.addActionListener(this);
+	}
+
+	private void addDropDown(JComboBox<String> comboBox) {
+		Dimension currentPreferredSize = comboBox.getPreferredSize();
+		comboBox.setPreferredSize(new Dimension(300, currentPreferredSize.height));
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		c.insets = new Insets(2, 10, 2, 10);
+		c.anchor = GridBagConstraints.CENTER;
+		gb.setConstraints(comboBox, c);
+		contentPanel.add(comboBox);
+		comboBox.addActionListener(this);
 	}
 
 	private void addLabel(JLabel label) {

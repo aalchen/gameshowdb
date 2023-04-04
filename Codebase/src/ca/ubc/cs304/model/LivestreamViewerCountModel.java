@@ -2,7 +2,9 @@ package ca.ubc.cs304.model;
 
 import java.util.Date;
 
-public class LivestreamViewerCountModel {
+public class LivestreamViewerCountModel implements Model {
+
+	private String tableName = "LivestreamViewerCount";
 
 	private final String language;
 	private final int viewer_count;
@@ -30,5 +32,10 @@ public class LivestreamViewerCountModel {
 
 	public Date getAwardCeremonyDate() {
 		return awardceremony_date;
+	}
+
+	@Override
+	public String getTableName() {
+		return this.tableName;
 	}
 }

@@ -2,7 +2,8 @@ package ca.ubc.cs304.model;
 
 import java.util.Date;
 
-public class SponsorsModel {
+public class SponsorsModel implements Model {
+	private String tableName = "Sponsors";
 
 	private final String company_name;
 	private final Date awardceremony_date;
@@ -24,5 +25,10 @@ public class SponsorsModel {
 
 	public int getMoney() {
 		return money;
+	}
+
+	@Override
+	public String getTableName() {
+		return this.tableName;
 	}
 }

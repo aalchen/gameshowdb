@@ -1,9 +1,6 @@
 package ca.ubc.cs304.database;
 
-import ca.ubc.cs304.model.DeveloperNameModel;
-import ca.ubc.cs304.model.DeveloperNameVideoGameModel;
-import ca.ubc.cs304.model.VideoGameCountModel;
-import ca.ubc.cs304.model.VideoGameModel;
+import ca.ubc.cs304.model.*;
 import ca.ubc.cs304.util.PrintablePreparedStatement;
 
 import java.nio.file.Files;
@@ -517,7 +514,7 @@ public class GameAwardsDbHandler {
 		return result.toArray(new DeveloperNameModel[result.size()]);
 	}
 
-	public VideoGameModel[] projectionColumns(List<String> projectionColumns) throws SQLException {
+	public VideoGameModel[] projectionVideoGame(List<String> projectionColumns) throws SQLException {
 		ArrayList<VideoGameModel> result = new ArrayList<VideoGameModel>();
 		String queryColumns = "";
 		for (int i = 0; i < projectionColumns.size(); i++) {
@@ -535,16 +532,16 @@ public class GameAwardsDbHandler {
 			String name = "";
 
 			while (rs.next()) {
-				if (projectionColumns.contains("Title")) {
+				if (projectionColumns.contains("title")) {
 					title = rs.getString("title");
 				}
-				if (projectionColumns.contains("Year")) {
+				if (projectionColumns.contains("year")) {
 					year = rs.getInt("year");
 				}
-				if (projectionColumns.contains("Genre")) {
+				if (projectionColumns.contains("genre")) {
 					genre = rs.getString("genre");
 				}
-				if (projectionColumns.contains("Developer_Name")) {
+				if (projectionColumns.contains("developer_name")) {
 					name = rs.getString("developer_name");
 				}
 				VideoGameModel model = new VideoGameModel(title,
@@ -730,5 +727,222 @@ public class GameAwardsDbHandler {
 		}
 
 		return result.toArray(new VideoGameModel[result.size()]);
+	}
+
+	public List<String> tableList() {
+		List<String> existingTables = new ArrayList<>();
+		try {
+			String query = "select table_name from user_tables";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			String table = "";
+			while (rs.next()) {
+				table = rs.getString("table_name");
+				existingTables.add(table);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		}
+		return existingTables;
+	}
+
+	public List<String> projectionColList(String table) {
+		List<String> existingColumns = new ArrayList<>();
+		try {
+			String query = "select column_name from ALL_TAB_COLUMNS where table_name = ?";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ps.setString(1, table);
+			ResultSet rs = ps.executeQuery();
+			String column = "";
+			while (rs.next()) {
+				column = rs.getString("column_name");
+				existingColumns.add(column);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		}
+		return existingColumns;
+	}
+
+	public VenueModel[] projectionVenue(List<String> projectionColumns) throws SQLException {
+		ArrayList<VenueModel> result = new ArrayList<VenueModel>();
+		String queryColumns = "";
+		for (int i = 0; i < projectionColumns.size(); i++) {
+			queryColumns = queryColumns + projectionColumns.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
+
+		try {
+			String query = "SELECT " + queryColumns + " FROM Venue";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			String name = "";
+			int capacity = INVALID_INPUT;
+			String address = "";
+
+			while (rs.next()) {
+				if (projectionColumns.contains("name")) {
+					name = rs.getString("name");
+				}
+				if (projectionColumns.contains("capacity")) {
+					capacity = rs.getInt("capacity");
+				}
+				if (projectionColumns.contains("address")) {
+					address = rs.getString("address");
+				}
+				VenueModel model = new VenueModel(name, address, capacity);
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+
+		}
+
+		return result.toArray(new VenueModel[result.size()]);
+	}
+
+	public AwardModel[] projectionAward(List<String> projectionColumns) throws SQLException {
+		ArrayList<AwardModel> result = new ArrayList<AwardModel>();
+		String queryColumns = "";
+		for (int i = 0; i < projectionColumns.size(); i++) {
+			queryColumns = queryColumns + projectionColumns.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
+
+		try {
+			String query = "SELECT " + queryColumns + " FROM Award";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			String name = "";
+			int prize = INVALID_INPUT;
+			Date date = null;
+			String videogame_title = "";
+			int videogame_year = INVALID_INPUT;
+
+			while (rs.next()) {
+				if (projectionColumns.contains("name")) {
+					name = rs.getString("name");
+				}
+				if (projectionColumns.contains("prize")) {
+					prize = rs.getInt("prize");
+				}
+				if (projectionColumns.contains("date")) {
+					date = rs.getDate("date");
+				}
+				if (projectionColumns.contains("videogame_title")) {
+					videogame_title = rs.getString("videogame_title");
+				}
+				if (projectionColumns.contains("videogame_year")) {
+					videogame_year = rs.getInt("videogame_year");
+				}
+				AwardModel model = new AwardModel(name, prize, date, videogame_title, videogame_year);
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+
+		}
+
+		return result.toArray(new AwardModel[result.size()]);
+	}
+
+	public AwardCeremonyModel[] projectionAwardCeremony(List<String> projectionColumns) throws SQLException {
+		ArrayList<AwardCeremonyModel> result = new ArrayList<AwardCeremonyModel>();
+		String queryColumns = "";
+		for (int i = 0; i < projectionColumns.size(); i++) {
+			queryColumns = queryColumns + projectionColumns.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
+
+		try {
+			String query = "SELECT " + queryColumns + " FROM AwardCeremony";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			String venue_name = "";
+			int viewer_count = INVALID_INPUT;
+			Date award_ceremony_date = null;
+
+			while (rs.next()) {
+				if (projectionColumns.contains("venue_name")) {
+					venue_name = rs.getString("venue_name");
+				}
+				if (projectionColumns.contains("award_ceremony_date")) {
+					award_ceremony_date = rs.getDate("award_ceremony_date");
+				}
+				if (projectionColumns.contains("viewer_count")) {
+					viewer_count = rs.getInt("viewer_count");
+				}
+				AwardCeremonyModel model = new AwardCeremonyModel(viewer_count, award_ceremony_date, venue_name);
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+
+		}
+
+		return result.toArray(new AwardCeremonyModel[result.size()]);
+	}
+
+	public CommunityAwardModel[] projectionCommunityAward(List<String> projectionColumns) throws SQLException {
+		ArrayList<CommunityAwardModel> result = new ArrayList<CommunityAwardModel>();
+		String queryColumns = "";
+		for (int i = 0; i < projectionColumns.size(); i++) {
+			queryColumns = queryColumns + projectionColumns.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
+
+		try {
+			String query = "SELECT " + queryColumns + " FROM CommunityAward";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			String award_name = "";
+			int votes = INVALID_INPUT;
+			Date deadline = null;
+			Date award_date = null;
+
+			while (rs.next()) {
+				if (projectionColumns.contains("award_name")) {
+					award_name = rs.getString("award_name");
+				}
+				if (projectionColumns.contains("deadline")) {
+					deadline = rs.getDate("deadline");
+				}
+				if (projectionColumns.contains("award_date")) {
+					award_date = rs.getDate("award_date");
+				}
+				if (projectionColumns.contains("votes")) {
+					votes = rs.getInt("votes");
+				}
+				CommunityAwardModel model = new CommunityAwardModel(votes, deadline, award_name, award_date);
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+
+		}
+
+		return result.toArray(new CommunityAwardModel[result.size()]);
 	}
 }

@@ -1,9 +1,6 @@
 package ca.ubc.cs304.delegates;
 
-import ca.ubc.cs304.model.DeveloperNameModel;
-import ca.ubc.cs304.model.DeveloperNameVideoGameModel;
-import ca.ubc.cs304.model.VideoGameCountModel;
-import ca.ubc.cs304.model.VideoGameModel;
+import ca.ubc.cs304.model.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -35,15 +32,19 @@ public interface GUIWindowDelegate {
 	public DeveloperNameModel[] selectLeadDev(String leadDev) throws SQLException;
 	public DeveloperNameModel[] selectWebsite(String website);
 	public DeveloperNameModel[] selectName(String name) throws SQLException;
-	public void projectionColumns(List<String> columns) throws SQLException;
 	public DeveloperNameVideoGameModel[] joinTables(String joinWhere) throws SQLException;
-	public void aggregateGroupBy() throws SQLException;
-	public void aggregateGroupByHaving() throws SQLException;
+	public VideoGameCountModel[] aggregateGroupBy() throws SQLException;
+	public VideoGameCountModel[] aggregateGroupByHaving() throws SQLException;
 	public VideoGameModel[] division() throws SQLException;
 	public VideoGameCountModel[] nestedAggregation() throws SQLException;
-
-	VideoGameModel[] getVideoGamesObjects() throws SQLException;
-	DeveloperNameModel[] getDeveloperNamesObjects() throws SQLException;
-
-	DeveloperNameModel[] filterDevelopers(String leadDev, String website, String name) throws SQLException;
+	public VideoGameModel[] getVideoGamesObjects() throws SQLException;
+	public DeveloperNameModel[] getDeveloperNamesObjects() throws SQLException;
+	public DeveloperNameModel[] filterDevelopers(String leadDev, String website, String name) throws SQLException;
+	public List<String> tableList();
+	public List<String> projectionColList(String table);
+	public Model[] projectionVenue(List<String> columns) throws SQLException;
+	public Model[] projectionVideoGame(List<String> columns) throws SQLException;
+	public Model[] projectionAward(List<String> columns) throws SQLException;
+	public Model[] projectionAwardCeremony(List<String> columns) throws SQLException;
+	public Model[] projectionCommunityAward(List<String> columns) throws SQLException;
 }

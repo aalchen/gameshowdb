@@ -2,8 +2,8 @@ package ca.ubc.cs304.model;
 
 import java.util.Date;
 
-public class CommunityAwardModel {
-
+public class CommunityAwardModel implements Model {
+	private String tableName = "Community";
 	private final int votes;
 	private final Date deadline;
 	private final String award_name;
@@ -30,6 +30,11 @@ public class CommunityAwardModel {
 
 	public Date getAwardDate() {
 		return award_date;
+	}
+
+	@Override
+	public String getTableName() {
+		return this.tableName;
 	}
 
 }

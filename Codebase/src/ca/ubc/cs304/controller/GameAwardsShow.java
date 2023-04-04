@@ -6,10 +6,7 @@ import ca.ubc.cs304.database.GameAwardsDbHandler;
 import ca.ubc.cs304.delegates.GUIWindowDelegate;
 import ca.ubc.cs304.delegates.LoginWindowDelegate;
 import ca.ubc.cs304.delegates.TerminalGamesDelegate;
-import ca.ubc.cs304.model.DeveloperNameModel;
-import ca.ubc.cs304.model.DeveloperNameVideoGameModel;
-import ca.ubc.cs304.model.VideoGameCountModel;
-import ca.ubc.cs304.model.VideoGameModel;
+import ca.ubc.cs304.model.*;
 import ca.ubc.cs304.ui.MainMenuWindow;
 import ca.ubc.cs304.ui.LoginWindow;
 
@@ -198,27 +195,29 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		return models;
 	}
 
-	public void projectionColumns(List<String> columns) throws SQLException {
-		VideoGameModel[] models = dbHandler.projectionColumns(columns);
+	public VideoGameModel[] projectionVideoGame(List<String> columns) throws SQLException {
+		VideoGameModel[] models = dbHandler.projectionVideoGame(columns);
+		return models;
+	}
 
-		for (int i = 0; i < models.length; i++) {
-			VideoGameModel model = models[i];
+	public AwardModel[] projectionAward(List<String> columns) throws SQLException {
+		AwardModel[] models = dbHandler.projectionAward(columns);
+		return models;
+	}
 
-			if (columns.contains("Title")) {
-				System.out.println(model.getTitle());
-			}
-			if (columns.contains("Year")) {
-				System.out.println(model.getYear());
-			}
-			if (columns.contains("Genre")) {
-				System.out.println(model.getGenre());
-			}
-			if (columns.contains("Developer_Name")) {
-				System.out.println(model.getDeveloperName());
-			}
+	public AwardCeremonyModel[] projectionAwardCeremony(List<String> columns) throws SQLException {
+		AwardCeremonyModel[] models = dbHandler.projectionAwardCeremony(columns);
+		return models;
+	}
 
-			System.out.println();
-		}
+	public CommunityAwardModel[] projectionCommunityAward(List<String> columns) throws SQLException {
+		CommunityAwardModel[] models = dbHandler.projectionCommunityAward(columns);
+		return models;
+	}
+
+	public VenueModel[] projectionVenue(List<String> columns) throws SQLException {
+		VenueModel[] models = dbHandler.projectionVenue(columns);
+		return models;
 	}
 
 	public DeveloperNameVideoGameModel[] joinTables(String joinWhere) throws SQLException {
@@ -237,7 +236,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		return models;
 	}
 
-	public void aggregateGroupBy() throws SQLException {
+	public VideoGameCountModel[] aggregateGroupBy() throws SQLException {
 		VideoGameCountModel[] models = dbHandler.aggregateGroupBy();
 		System.out.println("Aggregate Group By query : number of genres per developer");
 		for (int i = 0; i < models.length; i++) {
@@ -246,9 +245,11 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			System.out.println(model.getColumnNum());
 		}
 		System.out.println();
+
+		return models;
 	}
 
-	public void aggregateGroupByHaving() throws SQLException {
+	public VideoGameCountModel[] aggregateGroupByHaving() throws SQLException {
 		VideoGameCountModel[] models = dbHandler.aggregateGroupByHaving();
 		System.out.println("Aggregate Group By Having query : find most recent releases after 2015, by genre and developer");
 		for (int i = 0; i < models.length; i++) {
@@ -258,6 +259,8 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 			System.out.println(model.getColumnNum());
 		}
 		System.out.println();
+
+		return models;
 	}
 
 	public VideoGameModel[] division() throws SQLException {
@@ -307,6 +310,14 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public List<String> tableList() {
+		return dbHandler.tableList();
+	}
+
+	public List<String> projectionColList(String table) {
+		return dbHandler.projectionColList(table);
 	}
 
 	/**

@@ -1,7 +1,7 @@
 package ca.ubc.cs304.model;
 
-public class DeveloperNameModel {
-
+public class DeveloperNameModel implements Model {
+	private String tableName = "DeveloperName";
 	private final String lead_developer;
 	private final String website;
 	private final String name;
@@ -22,5 +22,10 @@ public class DeveloperNameModel {
 
 	public String getName() {
 		return name;
+	}
+
+	@Override
+	public String getTableName() {
+		return this.tableName;
 	}
 }
