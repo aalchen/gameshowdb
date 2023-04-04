@@ -68,7 +68,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
     	dbHandler.insertVideoGame(model);
     }
 
-	public void showVideoGame() {
+	public void showVideoGame() throws SQLException {
 		VideoGameModel[] models = dbHandler.getVideoGameInfo();
 
 		for (int i = 0; i < models.length; i++) {
@@ -83,15 +83,15 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		}
 	}
 
-	public VideoGameModel[] getVideoGamesObjects() {
+	public VideoGameModel[] getVideoGamesObjects() throws SQLException {
 		return dbHandler.getVideoGameInfo();
 	}
 
-	public DeveloperNameModel[] getDeveloperNamesObjects() {
+	public DeveloperNameModel[] getDeveloperNamesObjects() throws SQLException {
 		return dbHandler.getDeveloperNameInfo();
 	}
 
-	public void showDeveloperName() {
+	public void showDeveloperName() throws SQLException {
 		DeveloperNameModel[] models = dbHandler.getDeveloperNameInfo();
 
 		for (int i = 0; i < models.length; i++) {
@@ -104,7 +104,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		}
 	}
 
-	public void updateVideoGame(String newTitle, int year, String oldTitle) {
+	public void updateVideoGame(String newTitle, int year, String oldTitle) throws SQLException {
 		dbHandler.updateVideoGame(newTitle, year, oldTitle);
 	}
 
@@ -115,35 +115,35 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		System.exit(0);
 	}
 
-	public void insertDeveloperName(DeveloperNameModel model) {
+	public void insertDeveloperName(DeveloperNameModel model) throws SQLException {
 		dbHandler.insertDeveloperName(model);
 	}
 
-	public void deleteDeveloperName(String developerName) {
+	public void deleteDeveloperName(String developerName) throws SQLException {
 		dbHandler.deleteDeveloperName(developerName);
 	}
 
-	public void updateDeveloperName(String newLeadDev, String developerName) {
+	public void updateDeveloperName(String newLeadDev, String developerName) throws SQLException {
 		dbHandler.updateDeveloperName(newLeadDev, developerName);
 	}
 
-	public void updateDeveloperNameLead(String newLeadDev, String developerName) {
+	public void updateDeveloperNameLead(String newLeadDev, String developerName) throws SQLException {
 		dbHandler.updateDeveloperNameLead(newLeadDev, developerName);
 	}
 
-	public void updateDeveloperNameWebsite(String website, String developerName) {
+	public void updateDeveloperNameWebsite(String website, String developerName) throws SQLException {
 		dbHandler.updateDeveloperNameWebsite(website, developerName);
 	}
 
-	public void updateDeveloperNameName(String newDeveloperName, String developerName) {
+	public void updateDeveloperNameName(String newDeveloperName, String developerName) throws SQLException {
 		dbHandler.updateDeveloperNameName(newDeveloperName, developerName);
 	}
 
-	public void deleteDeveloperNameLead(String deleteLeadDev) {
+	public void deleteDeveloperNameLead(String deleteLeadDev) throws SQLException {
 		dbHandler.deleteDeveloperNameLead(deleteLeadDev);
 	}
 
-	public void deleteDeveloperNameWeb(String deleteWebsite) {
+	public void deleteDeveloperNameWeb(String deleteWebsite) throws SQLException {
 		dbHandler.deleteDeveloperNameWeb(deleteWebsite);
 	}
 
@@ -151,7 +151,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		return dbHandler.filterDevelopers(leadDev, website, name);
 	}
 
-		public DeveloperNameModel[] selectLeadDev(String leadDev) {
+		public DeveloperNameModel[] selectLeadDev(String leadDev) throws SQLException {
 		DeveloperNameModel[] models = dbHandler.selectLeadDev(leadDev);
 
 		for (int i = 0; i < models.length; i++) {
@@ -183,7 +183,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 
 	}
 
-	public DeveloperNameModel[] selectName(String name) {
+	public DeveloperNameModel[] selectName(String name) throws SQLException {
 		DeveloperNameModel[] models = dbHandler.selectName(name);
 
 		for (int i = 0; i < models.length; i++) {
@@ -198,7 +198,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		return models;
 	}
 
-	public void projectionColumns(List<String> columns) {
+	public void projectionColumns(List<String> columns) throws SQLException {
 		VideoGameModel[] models = dbHandler.projectionColumns(columns);
 
 		for (int i = 0; i < models.length; i++) {
@@ -237,7 +237,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		return models;
 	}
 
-	public void aggregateGroupBy() {
+	public void aggregateGroupBy() throws SQLException {
 		VideoGameCountModel[] models = dbHandler.aggregateGroupBy();
 		System.out.println("Aggregate Group By query : number of genres per developer");
 		for (int i = 0; i < models.length; i++) {
@@ -248,7 +248,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		System.out.println();
 	}
 
-	public void aggregateGroupByHaving() {
+	public void aggregateGroupByHaving() throws SQLException {
 		VideoGameCountModel[] models = dbHandler.aggregateGroupByHaving();
 		System.out.println("Aggregate Group By Having query : find most recent releases after 2015, by genre and developer");
 		for (int i = 0; i < models.length; i++) {
@@ -260,7 +260,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		System.out.println();
 	}
 
-	public VideoGameModel[] division() {
+	public VideoGameModel[] division() throws SQLException {
 		VideoGameModel[] models = dbHandler.division();
 		System.out.println("Division query : developer names who worked in every genre");
 		for (int i = 0; i < models.length; i++) {
@@ -271,7 +271,7 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		return models;
 	}
 
-	public VideoGameCountModel[] nestedAggregation() {
+	public VideoGameCountModel[] nestedAggregation() throws SQLException {
 		VideoGameCountModel[] models = dbHandler.nestedAggregation();
 		System.out.println("Nested Aggregation query : number of titles per developer where game was released after 2015");
 		for (int i = 0; i < models.length; i++) {

@@ -93,77 +93,81 @@ public class TerminalGames {
 
 			System.out.println(" ");
 
-			if (choice != INVALID_INPUT) {
-				switch (choice) {
-				case 1:
-					handleInsertOption();
-					break;
-				case 2:
-					handleDeleteOption();
-					break;
-				case 3:
-					handleUpdateOption();
-					break;
-				case 4:
-					delegate.showVideoGame();
-					break;
-				case 5:
-					handleSelectionOption();
-					break;
-				case 6:
-					handleProjectionOption();
-					break;
-				case 7:
-					handleJoinOption();
-					break;
-				case 8:
-					handleAggregationGroupByOption();
-					break;
-				case 9:
-					handleAggregationGroupByHavingOption();
-					break;
-				case 10:
-					handleNestedAggregation();
-					break;
-				case 11:
-					handleDivisionOption();
-					break;
-				case 12:
-					handleDevInsertOption();
-					break;
-				case 13:
-					handleDevDeleteOptionChoose(delegate);
-					break;
-				case 14:
-					handleDevUpdateChoose(delegate);
-					break;
-				case 15:
-					delegate.showDeveloperName();
-					break;
-				case 16:
-					handleQuitOption();
-					break;
-				default:
-					System.out.println(WARNING_TAG + " The number that you entered was not a valid option.");
-					break;
+			try {
+				if (choice != INVALID_INPUT) {
+					switch (choice) {
+						case 1:
+							handleInsertOption();
+							break;
+						case 2:
+							handleDeleteOption();
+							break;
+						case 3:
+							handleUpdateOption();
+							break;
+						case 4:
+							delegate.showVideoGame();
+							break;
+						case 5:
+							handleSelectionOption();
+							break;
+						case 6:
+							handleProjectionOption();
+							break;
+						case 7:
+							handleJoinOption();
+							break;
+						case 8:
+							handleAggregationGroupByOption();
+							break;
+						case 9:
+							handleAggregationGroupByHavingOption();
+							break;
+						case 10:
+							handleNestedAggregation();
+							break;
+						case 11:
+							handleDivisionOption();
+							break;
+						case 12:
+							handleDevInsertOption();
+							break;
+						case 13:
+							handleDevDeleteOptionChoose(delegate);
+							break;
+						case 14:
+							handleDevUpdateChoose(delegate);
+							break;
+						case 15:
+							delegate.showDeveloperName();
+							break;
+						case 16:
+							handleQuitOption();
+							break;
+						default:
+							System.out.println(WARNING_TAG + " The number that you entered was not a valid option.");
+							break;
+					}
 				}
+			} catch (SQLException e) {
+				// do nothing
 			}
 		}
 	}
 
-	private void handleDivisionOption() {
+	private void handleDivisionOption() throws SQLException {
 		delegate.division();
 	}
 
-	private void handleNestedAggregation() {
+	private void handleNestedAggregation() throws SQLException {
 		delegate.nestedAggregation();
 	}
 
-	private void handleAggregationGroupByHavingOption() throws IOException {
+	private void handleAggregationGroupByHavingOption() throws IOException, SQLException {
 		delegate.aggregateGroupByHaving();
 	}
 
-	private void handleAggregationGroupByOption() throws IOException {
+	private void handleAggregationGroupByOption() throws IOException, SQLException {
 		delegate.aggregateGroupBy();
 	}
 
@@ -226,7 +230,7 @@ public class TerminalGames {
 		}
 	}
 
-	private void handleProjectionOption() throws IOException {
+	private void handleProjectionOption() throws IOException, SQLException {
 		String table = null;
 
 		while (table == null || table.length() <= 0) {
@@ -264,7 +268,7 @@ public class TerminalGames {
 		}
 	}
 
-	private void handleSelectionOption() throws IOException {
+	private void handleSelectionOption() throws IOException, SQLException {
 			System.out.println("Select columns to filter on DeveloperName: ");
 			bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 			int choice = INVALID_INPUT;
@@ -289,7 +293,7 @@ public class TerminalGames {
 			}
 	}
 
-	private void handleDevSelect(String separatedInput) {
+	private void handleDevSelect(String separatedInput) throws SQLException {
 		if (separatedInput.contains("1")) {
 			String lead_dev = null;
 
@@ -344,7 +348,7 @@ public class TerminalGames {
 		}
 	}
 
-	private void handleDevDeleteOptionChoose(TerminalGamesDelegate delegate) throws IOException {
+	private void handleDevDeleteOptionChoose(TerminalGamesDelegate delegate) throws IOException, SQLException {
 		System.out.println("Select deletion method: ");
 		bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 		int choice = INVALID_INPUT;
@@ -376,7 +380,7 @@ public class TerminalGames {
 		}
 	}
 
-	private void handleDevDeleteLead() {
+	private void handleDevDeleteLead() throws SQLException {
 		String lead_dev = null;
 
 		while (lead_dev == null  || lead_dev.length() <= 0) {
@@ -386,7 +390,7 @@ public class TerminalGames {
 		}
 	}
 
-	private void handleDevDeleteWebsite() {
+	private void handleDevDeleteWebsite() throws SQLException {
 		String website = null;
 
 		while (website == null  || website.length() <= 0) {
@@ -396,7 +400,7 @@ public class TerminalGames {
 		}
 	}
 
-	private void handleDevInsertOption() {
+	private void handleDevInsertOption() throws SQLException {
 		String lead_dev = null;
 		String website = null;
 		String developer_name = null;
@@ -420,7 +424,7 @@ public class TerminalGames {
 		delegate.insertDeveloperName(model);
 	}
 
-	private void handleInsertOption() {
+	private void handleInsertOption() throws SQLException {
 		String title = null;
 		int year = INVALID_INPUT;
 		String genre = null;
@@ -447,11 +451,8 @@ public class TerminalGames {
 		}
 
 		VideoGameModel model = new VideoGameModel(title, year, genre, developer_name);
-		try {
-			delegate.insertVideoGame(model);
-		} catch (SQLException e) {
+		delegate.insertVideoGame(model);
 
-		}
 	}
 
 	private void handleQuitOption() {
@@ -468,7 +469,7 @@ public class TerminalGames {
 		delegate.terminalGamesFinished();
 	}
 
-	private void handleUpdateOption() {
+	private void handleUpdateOption() throws SQLException {
 		String oldName = null;
 		while (oldName == null || oldName.length() <= 0) {
 			System.out.print("Please enter the video game name you wish to update: ");
@@ -490,7 +491,7 @@ public class TerminalGames {
 		delegate.updateVideoGame(name, year, oldName);
 	}
 
-	private void handleDevUpdateChoose(TerminalGamesDelegate delegate) throws IOException {
+	private void handleDevUpdateChoose(TerminalGamesDelegate delegate) throws IOException, SQLException {
 		System.out.println("Which column do you want to update? Enter a space separated list (ex. 1 OR 1 2 3)");
 
 		bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -545,7 +546,7 @@ public class TerminalGames {
 		return developer_name;
 	}
 
-	private void handleDevUpdateLead(String developer_name) {
+	private void handleDevUpdateLead(String developer_name) throws SQLException {
 		String new_lead_dev = null;
 
 		while (new_lead_dev == null || new_lead_dev.length() <= 0) {
@@ -556,7 +557,7 @@ public class TerminalGames {
 		delegate.updateDeveloperNameLead(new_lead_dev, developer_name);
 	}
 
-	private void handleDevUpdateWeb(String developer_name) {
+	private void handleDevUpdateWeb(String developer_name) throws SQLException {
 		String website = null;
 
 		while (website == null || website.length() <= 0) {
@@ -567,7 +568,7 @@ public class TerminalGames {
 		delegate.updateDeveloperNameWebsite(website, developer_name);
 	}
 
-	private void handleDevUpdateName(String developer_name) {
+	private void handleDevUpdateName(String developer_name) throws SQLException {
 		String new_developer_name = null;
 
 		while (new_developer_name == null || new_developer_name.length() <= 0) {

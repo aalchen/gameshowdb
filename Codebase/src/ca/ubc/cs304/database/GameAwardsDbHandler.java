@@ -58,6 +58,7 @@ public class GameAwardsDbHandler {
 			int rowCount = ps.executeUpdate();
 			if (rowCount == 0) {
 				System.out.println(WARNING_TAG + " Video game name " + name + " and/or year " + year + " does not exist!");
+				throw new SQLException(" Video game name " + name + " and/or year " + year + " does not exist!");
 			}
 
 			connection.commit();
@@ -90,7 +91,7 @@ public class GameAwardsDbHandler {
 		}
 	}
 
-	public void insertDeveloperName(DeveloperNameModel model) {
+	public void insertDeveloperName(DeveloperNameModel model) throws SQLException {
 		try {
 			String query = "INSERT INTO DeveloperName VALUES (?,?,?)";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -105,10 +106,11 @@ public class GameAwardsDbHandler {
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 			rollbackConnection();
+			throw e;
 		}
 	}
 
-	public VideoGameModel[] getVideoGameInfo() {
+	public VideoGameModel[] getVideoGameInfo() throws SQLException {
 		ArrayList<VideoGameModel> result = new ArrayList<VideoGameModel>();
 
 		try {
@@ -128,12 +130,13 @@ public class GameAwardsDbHandler {
 			ps.close();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
 		}
 
 		return result.toArray(new VideoGameModel[result.size()]);
 	}
 
-	public void updateVideoGame(String newName, int year, String oldName) {
+	public void updateVideoGame(String newName, int year, String oldName) throws SQLException {
 		try {
 			String query = "UPDATE VideoGame SET title = ? WHERE year = ? AND title = ?";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -152,6 +155,7 @@ public class GameAwardsDbHandler {
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 			rollbackConnection();
+			throw e;
 		}
 	}
 
@@ -192,7 +196,7 @@ public class GameAwardsDbHandler {
 		}
 	}
 
-	private void dropBranchTableIfExists() {
+	private void dropBranchTableIfExists() throws SQLException {
 		try {
 			String query = "select table_name from user_tables";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -220,10 +224,11 @@ public class GameAwardsDbHandler {
 			ps.close();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
 		}
 	}
 
-	public DeveloperNameModel[] getDeveloperNameInfo() {
+	public DeveloperNameModel[] getDeveloperNameInfo() throws SQLException {
 		ArrayList<DeveloperNameModel> result = new ArrayList<DeveloperNameModel>();
 
 		try {
@@ -242,12 +247,13 @@ public class GameAwardsDbHandler {
 			ps.close();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
 		}
 
 		return result.toArray(new DeveloperNameModel[result.size()]);
 	}
 
-	public void updateDeveloperName(String newLeadDev, String developerName) {
+	public void updateDeveloperName(String newLeadDev, String developerName) throws SQLException {
 		try {
 			String query = "UPDATE DeveloperName SET lead_developer = ? WHERE name = ?";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -265,10 +271,11 @@ public class GameAwardsDbHandler {
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 			rollbackConnection();
+			throw e;
 		}
 	}
 
-	public void deleteDeveloperName(String developerName) {
+	public void deleteDeveloperName(String developerName) throws SQLException {
 		try {
 			String query = "DELETE FROM DeveloperName WHERE name = ?";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -277,6 +284,7 @@ public class GameAwardsDbHandler {
 			int rowCount = ps.executeUpdate();
 			if (rowCount == 0) {
 				System.out.println(WARNING_TAG + " Developer name " + developerName + " does not exist!");
+				throw new SQLException("Developer " + developerName + " not found. Could not delete.");
 			}
 
 			connection.commit();
@@ -285,10 +293,11 @@ public class GameAwardsDbHandler {
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 			rollbackConnection();
+			throw e;
 		}
 	}
 
-	public void updateDeveloperNameLead(String newLeadDev, String developerName) {
+	public void updateDeveloperNameLead(String newLeadDev, String developerName) throws SQLException {
 		try {
 			String query = "UPDATE DeveloperName SET lead_developer = ? WHERE name = ?";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -298,6 +307,7 @@ public class GameAwardsDbHandler {
 			int rowCount = ps.executeUpdate();
 			if (rowCount == 0) {
 				System.out.println(WARNING_TAG + " Developer name" + developerName + " does not exist!");
+				throw new SQLException("Developer " + developerName + " does not exist!");
 			}
 
 			connection.commit();
@@ -306,10 +316,11 @@ public class GameAwardsDbHandler {
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 			rollbackConnection();
+			throw e;
 		}
 	}
 
-	public void updateDeveloperNameWebsite(String website, String developerName) {
+	public void updateDeveloperNameWebsite(String website, String developerName) throws SQLException {
 		try {
 			String query = "UPDATE DeveloperName SET website = ? WHERE name = ?";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -327,10 +338,11 @@ public class GameAwardsDbHandler {
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 			rollbackConnection();
+			throw e;
 		}
 	}
 
-	public void updateDeveloperNameName(String newDeveloperName, String developerName) {
+	public void updateDeveloperNameName(String newDeveloperName, String developerName) throws SQLException {
 		try {
 			String query = "UPDATE DeveloperName SET name = ? WHERE name = ?";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -348,10 +360,12 @@ public class GameAwardsDbHandler {
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 			rollbackConnection();
+			throw e;
+
 		}
 	}
 
-	public void deleteDeveloperNameLead(String deleteDevLead) {
+	public void deleteDeveloperNameLead(String deleteDevLead) throws SQLException {
 		try {
 			String query = "DELETE FROM DeveloperName WHERE lead_developer = ?";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -368,10 +382,11 @@ public class GameAwardsDbHandler {
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 			rollbackConnection();
+			throw e;
 		}
 	}
 
-	public void deleteDeveloperNameWeb(String deleteWebsite) {
+	public void deleteDeveloperNameWeb(String deleteWebsite) throws SQLException {
 		try {
 			String query = "DELETE FROM DeveloperName WHERE website = ?";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -388,6 +403,7 @@ public class GameAwardsDbHandler {
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 			rollbackConnection();
+			throw e;
 		}
 	}
 
@@ -449,7 +465,7 @@ public class GameAwardsDbHandler {
 		}
 	}
 
-	public DeveloperNameModel[] selectLeadDev(String leadDev) {
+	public DeveloperNameModel[] selectLeadDev(String leadDev) throws SQLException {
 		ArrayList<DeveloperNameModel> result = new ArrayList<DeveloperNameModel>();
 
 		try {
@@ -469,6 +485,8 @@ public class GameAwardsDbHandler {
 			ps.close();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+
 		}
 
 		return result.toArray(new DeveloperNameModel[result.size()]);
@@ -499,7 +517,7 @@ public class GameAwardsDbHandler {
 		return result.toArray(new DeveloperNameModel[result.size()]);
 	}
 
-	public VideoGameModel[] projectionColumns(List<String> projectionColumns) {
+	public VideoGameModel[] projectionColumns(List<String> projectionColumns) throws SQLException {
 		ArrayList<VideoGameModel> result = new ArrayList<VideoGameModel>();
 		String queryColumns = "";
 		for (int i = 0; i < projectionColumns.size(); i++) {
@@ -540,12 +558,14 @@ public class GameAwardsDbHandler {
 			ps.close();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+
 		}
 
 		return result.toArray(new VideoGameModel[result.size()]);
 	}
 
-	public DeveloperNameModel[] selectName(String name) {
+	public DeveloperNameModel[] selectName(String name) throws SQLException {
 		ArrayList<DeveloperNameModel> result = new ArrayList<DeveloperNameModel>();
 
 		try {
@@ -565,6 +585,8 @@ public class GameAwardsDbHandler {
 			ps.close();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+
 		}
 
 		return result.toArray(new DeveloperNameModel[result.size()]);
@@ -599,7 +621,7 @@ public class GameAwardsDbHandler {
 		return result.toArray(new DeveloperNameVideoGameModel[result.size()]);
 	}
 
-	public VideoGameCountModel[] aggregateGroupBy() {
+	public VideoGameCountModel[] aggregateGroupBy() throws SQLException {
 		ArrayList<VideoGameCountModel> result = new ArrayList<VideoGameCountModel>();
 
 		try {
@@ -620,13 +642,15 @@ public class GameAwardsDbHandler {
 			ps.close();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+
 		}
 
 		return result.toArray(new VideoGameCountModel[result.size()]);
 
 	}
 
-	public VideoGameCountModel[] aggregateGroupByHaving() {
+	public VideoGameCountModel[] aggregateGroupByHaving() throws SQLException {
 		ArrayList<VideoGameCountModel> result = new ArrayList<VideoGameCountModel>();
 
 		try {
@@ -647,12 +671,14 @@ public class GameAwardsDbHandler {
 			ps.close();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+
 		}
 
 		return result.toArray(new VideoGameCountModel[result.size()]);
 	}
 
-	public VideoGameCountModel[] nestedAggregation() {
+	public VideoGameCountModel[] nestedAggregation() throws SQLException {
 		ArrayList<VideoGameCountModel> result = new ArrayList<VideoGameCountModel>();
 
 		try {
@@ -673,12 +699,13 @@ public class GameAwardsDbHandler {
 			ps.close();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
 		}
 
 		return result.toArray(new VideoGameCountModel[result.size()]);
 	}
 
-	public VideoGameModel[] division() {
+	public VideoGameModel[] division() throws SQLException {
 		ArrayList<VideoGameModel> result = new ArrayList<VideoGameModel>();
 
 		try {
@@ -698,6 +725,8 @@ public class GameAwardsDbHandler {
 			ps.close();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+
 		}
 
 		return result.toArray(new VideoGameModel[result.size()]);
