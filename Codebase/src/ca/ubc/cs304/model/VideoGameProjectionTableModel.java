@@ -8,8 +8,8 @@ public class VideoGameProjectionTableModel extends AbstractTableModel {
     private VideoGameModel[] videoGameModels;
     private List<String> columnNames;
 
-    public VideoGameProjectionTableModel(VideoGameModel[] videoGameModels, List<String> columnNames) {
-        this.videoGameModels = videoGameModels;
+    public VideoGameProjectionTableModel(Model[] videoGameModels, List<String> columnNames) {
+        this.videoGameModels = (VideoGameModel[]) videoGameModels;
         this.columnNames = columnNames;
     }
     @Override

@@ -8,8 +8,8 @@ public class StaffProjectionTableModel extends AbstractTableModel {
     private StaffModel[] staffModels;
     private List<String> columnNames;
 
-    public StaffProjectionTableModel(StaffModel[] staffModels, List<String> columnNames) {
-        this.staffModels = staffModels;
+    public StaffProjectionTableModel(Model[] staffModels, List<String> columnNames) {
+        this.staffModels = (StaffModel[]) staffModels;
         this.columnNames = columnNames;
     }
     @Override

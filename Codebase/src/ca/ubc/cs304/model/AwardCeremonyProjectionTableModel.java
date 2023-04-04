@@ -8,8 +8,8 @@ public class AwardCeremonyProjectionTableModel extends AbstractTableModel {
     private AwardCeremonyModel[] awardCeremonyModels;
     private List<String> columnNames;
 
-    public AwardCeremonyProjectionTableModel(AwardCeremonyModel[] awardCeremonyModels, List<String> columnNames) {
-        this.awardCeremonyModels = awardCeremonyModels;
+    public AwardCeremonyProjectionTableModel(Model[] awardCeremonyModels, List<String> columnNames) {
+        this.awardCeremonyModels = (AwardCeremonyModel[]) awardCeremonyModels;
         this.columnNames = columnNames;
     }
     @Override

@@ -8,8 +8,8 @@ public class LivestreamViewerCountProjectionTableModel extends AbstractTableMode
     private LivestreamViewerCountModel[] livestreamViewerCountModels;
     private List<String> columnNames;
 
-    public LivestreamViewerCountProjectionTableModel(LivestreamViewerCountModel[] livestreamViewerCountModels, List<String> columnNames) {
-        this.livestreamViewerCountModels = livestreamViewerCountModels;
+    public LivestreamViewerCountProjectionTableModel(Model[] livestreamViewerCountModels, List<String> columnNames) {
+        this.livestreamViewerCountModels = (LivestreamViewerCountModel[]) livestreamViewerCountModels;
         this.columnNames = columnNames;
     }
     @Override

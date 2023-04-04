@@ -8,8 +8,8 @@ public class CommunityAwardProjectionTableModel extends AbstractTableModel {
     private CommunityAwardModel[] communityAwardModels;
     private List<String> columnNames;
 
-    public CommunityAwardProjectionTableModel(CommunityAwardModel[] communityAwardModels, List<String> columnNames) {
-        this.communityAwardModels = communityAwardModels;
+    public CommunityAwardProjectionTableModel(Model[] communityAwardModels, List<String> columnNames) {
+        this.communityAwardModels = (CommunityAwardModel[]) communityAwardModels;
         this.columnNames = columnNames;
     }
     @Override

@@ -8,8 +8,8 @@ public class SponsorsProjectionTableModel extends AbstractTableModel {
     private SponsorsModel[] sponsorsModels;
     private List<String> columnNames;
 
-    public SponsorsProjectionTableModel(SponsorsModel[] sponsorsModels, List<String> columnNames) {
-        this.sponsorsModels = sponsorsModels;
+    public SponsorsProjectionTableModel(Model[] sponsorsModels, List<String> columnNames) {
+        this.sponsorsModels = (SponsorsModel[]) sponsorsModels;
         this.columnNames = columnNames;
     }
     @Override

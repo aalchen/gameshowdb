@@ -8,8 +8,8 @@ public class CompanyProjectionTableModel extends AbstractTableModel {
     private CompanyModel[] companyModels;
     private List<String> columnNames;
 
-    public CompanyProjectionTableModel(CompanyModel[] companyModels, List<String> columnNames) {
-        this.companyModels = companyModels;
+    public CompanyProjectionTableModel(Model[] companyModels, List<String> columnNames) {
+        this.companyModels = (CompanyModel[]) companyModels;
         this.columnNames = columnNames;
     }
     @Override

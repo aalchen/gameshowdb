@@ -8,8 +8,8 @@ public class DeveloperNameProjectionTableModel extends AbstractTableModel {
     private DeveloperNameModel[] developerNameModels;
     private List<String> columnNames;
 
-    public DeveloperNameProjectionTableModel(DeveloperNameModel[] developerNameModels, List<String> columnNames) {
-        this.developerNameModels = developerNameModels;
+    public DeveloperNameProjectionTableModel(Model[] developerNameModels, List<String> columnNames) {
+        this.developerNameModels = (DeveloperNameModel[]) developerNameModels;
         this.columnNames = columnNames;
     }
     @Override

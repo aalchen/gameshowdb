@@ -8,8 +8,8 @@ public class VenueProjectionTableModel extends AbstractTableModel {
     private VenueModel[] venueModels;
     private List<String> columnNames;
 
-    public VenueProjectionTableModel(VenueModel[] venueModels, List<String> columnNames) {
-        this.venueModels = venueModels;
+    public VenueProjectionTableModel(Model[] venueModels, List<String> columnNames) {
+        this.venueModels = (VenueModel[]) venueModels;
         this.columnNames = columnNames;
     }
     @Override

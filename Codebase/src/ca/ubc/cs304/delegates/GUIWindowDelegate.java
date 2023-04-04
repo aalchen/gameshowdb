@@ -1,9 +1,6 @@
 package ca.ubc.cs304.delegates;
 
-import ca.ubc.cs304.model.DeveloperNameModel;
-import ca.ubc.cs304.model.DeveloperNameVideoGameModel;
-import ca.ubc.cs304.model.VideoGameCountModel;
-import ca.ubc.cs304.model.VideoGameModel;
+import ca.ubc.cs304.model.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -35,7 +32,7 @@ public interface GUIWindowDelegate {
 	public DeveloperNameModel[] selectLeadDev(String leadDev) throws SQLException;
 	public DeveloperNameModel[] selectWebsite(String website);
 	public DeveloperNameModel[] selectName(String name) throws SQLException;
-	public VideoGameModel[] projectionColumns(List<String> columns) throws SQLException;
+	public Model[] projectionColumns(List<String> columns) throws SQLException;
 	public DeveloperNameVideoGameModel[] joinTables(String joinWhere) throws SQLException;
 	public VideoGameCountModel[] aggregateGroupBy() throws SQLException;
 	public VideoGameCountModel[] aggregateGroupByHaving() throws SQLException;

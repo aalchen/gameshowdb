@@ -8,8 +8,8 @@ public class SponsoredAwardProjectionTableModel extends AbstractTableModel {
     private SponsoredAwardModel[] sponsoredAwardModels;
     private List<String> columnNames;
 
-    public SponsoredAwardProjectionTableModel(SponsoredAwardModel[] sponsoredAwardModels, List<String> columnNames) {
-        this.sponsoredAwardModels = sponsoredAwardModels;
+    public SponsoredAwardProjectionTableModel(Model[] sponsoredAwardModels, List<String> columnNames) {
+        this.sponsoredAwardModels = (SponsoredAwardModel[]) sponsoredAwardModels;
         this.columnNames = columnNames;
     }
     @Override

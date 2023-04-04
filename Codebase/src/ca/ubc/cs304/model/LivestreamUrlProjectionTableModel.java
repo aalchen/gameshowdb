@@ -8,8 +8,8 @@ public class LivestreamUrlProjectionTableModel extends AbstractTableModel {
     private LivestreamUrlModel[] livestreamUrlModels;
     private List<String> columnNames;
 
-    public LivestreamUrlProjectionTableModel(LivestreamUrlModel[] livestreamUrlModels, List<String> columnNames) {
-        this.livestreamUrlModels = livestreamUrlModels;
+    public LivestreamUrlProjectionTableModel(Model[] livestreamUrlModels, List<String> columnNames) {
+        this.livestreamUrlModels = (LivestreamUrlModel[]) livestreamUrlModels;
         this.columnNames = columnNames;
     }
     @Override
