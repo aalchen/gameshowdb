@@ -222,77 +222,84 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	private void aggregationGroupByHavingHandler(GUIWindowDelegate delegate) {
 		setUpJpanel();
 
-		VideoGameCountModel[] models = delegate.aggregateGroupByHaving();
-		VideoGameMaxTableModel nestedAggregationTable = new VideoGameMaxTableModel(models);
-		setupTable(new JTable(nestedAggregationTable));
+		try {
+			VideoGameCountModel[] models = delegate.aggregateGroupByHaving();
+			VideoGameMaxTableModel nestedAggregationTable = new VideoGameMaxTableModel(models);
+			setupTable(new JTable(nestedAggregationTable));
 
-		// Create a new JPanel for buttons with FlowLayout
-		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+			// Create a new JPanel for buttons with FlowLayout
+			JPanel buttonsPanel = new JPanel();
+			buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
 
-		// Add a 5-pixel spacer between the buttons
-		Dimension spacer = new Dimension(2, 0);
-		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+			// Add a 5-pixel spacer between the buttons
+			Dimension spacer = new Dimension(2, 0);
+			buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
 
-		buttonsPanel.add(mainMenuButton);
+			buttonsPanel.add(mainMenuButton);
 
-		// Add a 5-pixel spacer between the buttons
-		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+			// Add a 5-pixel spacer between the buttons
+			buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
 
-		buttonsPanel.add(returnToFinderToolButton);
-		returnToFinderToolButton.addActionListener(this);
+			buttonsPanel.add(returnToFinderToolButton);
+			returnToFinderToolButton.addActionListener(this);
 
-		// Add the buttonsPanel to the contentPanel with GridBagLayout
-		c.gridx = 0;
-		c.gridy = 1;
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		c.fill = GridBagConstraints.NONE;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
-		c.insets = new Insets(0, 5, 5, 5);
-		contentPanel.add(buttonsPanel, c);
+			// Add the buttonsPanel to the contentPanel with GridBagLayout
+			c.gridx = 0;
+			c.gridy = 1;
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			c.fill = GridBagConstraints.NONE;
+			c.weightx = 0.0;
+			c.weighty = 0.0;
+			c.insets = new Insets(0, 5, 5, 5);
+			contentPanel.add(buttonsPanel, c);
 
-		contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
-		revalidate();
-		repaint();
+			contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
+			revalidate();
+			repaint();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private void aggregationGroupByHandler(GUIWindowDelegate delegate) {
 		setUpJpanel();
+		try {
+			VideoGameCountModel[] models = delegate.aggregateGroupBy();
+			VideoGameCountTableModel nestedAggregationTable = new VideoGameCountTableModel(models);
+			setupTable(new JTable(nestedAggregationTable));
 
-		VideoGameCountModel[] models = delegate.aggregateGroupBy();
-		VideoGameCountTableModel nestedAggregationTable = new VideoGameCountTableModel(models);
-		setupTable(new JTable(nestedAggregationTable));
+			// Create a new JPanel for buttons with FlowLayout
+			JPanel buttonsPanel = new JPanel();
+			buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
 
-		// Create a new JPanel for buttons with FlowLayout
-		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+			// Add a 5-pixel spacer between the buttons
+			Dimension spacer = new Dimension(2, 0);
+			buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
 
-		// Add a 5-pixel spacer between the buttons
-		Dimension spacer = new Dimension(2, 0);
-		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+			buttonsPanel.add(mainMenuButton);
 
-		buttonsPanel.add(mainMenuButton);
+			// Add a 5-pixel spacer between the buttons
+			buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
 
-		// Add a 5-pixel spacer between the buttons
-		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+			buttonsPanel.add(returnToFinderToolButton);
+			returnToFinderToolButton.addActionListener(this);
 
-		buttonsPanel.add(returnToFinderToolButton);
-		returnToFinderToolButton.addActionListener(this);
+			// Add the buttonsPanel to the contentPanel with GridBagLayout
+			c.gridx = 0;
+			c.gridy = 1;
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			c.fill = GridBagConstraints.NONE;
+			c.weightx = 0.0;
+			c.weighty = 0.0;
+			c.insets = new Insets(0, 5, 5, 5);
+			contentPanel.add(buttonsPanel, c);
 
-		// Add the buttonsPanel to the contentPanel with GridBagLayout
-		c.gridx = 0;
-		c.gridy = 1;
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		c.fill = GridBagConstraints.NONE;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
-		c.insets = new Insets(0, 5, 5, 5);
-		contentPanel.add(buttonsPanel, c);
-
-		contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
-		revalidate();
-		repaint();
+			contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
+			revalidate();
+			repaint();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private void projectionSubmitHandler(GUIWindowDelegate delegate) {
@@ -312,39 +319,43 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			columns.add("Developer_Name");
 		}
 
-		VideoGameModel[] models = delegate.projectionColumns(columns);
-		VideoGameProjectionTableModel projectionTable = new VideoGameProjectionTableModel(models, columns);
-		setupTable(new JTable(projectionTable));
+		try {
+			VideoGameModel[] models = delegate.projectionColumns(columns);
+			VideoGameProjectionTableModel projectionTable = new VideoGameProjectionTableModel(models, columns);
+			setupTable(new JTable(projectionTable));
 
-		// Create a new JPanel for buttons with FlowLayout
-		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+			// Create a new JPanel for buttons with FlowLayout
+			JPanel buttonsPanel = new JPanel();
+			buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
 
-		// Add a 5-pixel spacer between the buttons
-		Dimension spacer = new Dimension(2, 0);
-		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+			// Add a 5-pixel spacer between the buttons
+			Dimension spacer = new Dimension(2, 0);
+			buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
 
-		buttonsPanel.add(mainMenuButton);
+			buttonsPanel.add(mainMenuButton);
 
-		// Add a 5-pixel spacer between the buttons
-		buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
+			// Add a 5-pixel spacer between the buttons
+			buttonsPanel.add(new Box.Filler(spacer, spacer, spacer));
 
-		buttonsPanel.add(returnToFinderToolButton);
-		returnToFinderToolButton.addActionListener(this);
+			buttonsPanel.add(returnToFinderToolButton);
+			returnToFinderToolButton.addActionListener(this);
 
-		// Add the buttonsPanel to the contentPanel with GridBagLayout
-		c.gridx = 0;
-		c.gridy = 1;
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		c.fill = GridBagConstraints.NONE;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
-		c.insets = new Insets(0, 5, 5, 5);
-		contentPanel.add(buttonsPanel, c);
+			// Add the buttonsPanel to the contentPanel with GridBagLayout
+			c.gridx = 0;
+			c.gridy = 1;
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			c.fill = GridBagConstraints.NONE;
+			c.weightx = 0.0;
+			c.weighty = 0.0;
+			c.insets = new Insets(0, 5, 5, 5);
+			contentPanel.add(buttonsPanel, c);
 
-		contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
-		revalidate();
-		repaint();
+			contentPanel.setPreferredSize(new Dimension(TABLE_FRAME_WIDTH - 20, TABLE_FRAME_HEIGHT - 30));
+			revalidate();
+			repaint();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private void projectionHandler() {
