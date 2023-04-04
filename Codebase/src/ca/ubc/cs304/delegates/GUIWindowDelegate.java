@@ -21,29 +21,29 @@ public interface GUIWindowDelegate {
 	public void databaseSetup();
 	public void deleteVideoGame(String title, int year) throws SQLException;
 	public void insertVideoGame(VideoGameModel videoGame) throws SQLException;
-	public void showVideoGame();
-	public void showDeveloperName();
-	public void updateVideoGame(String newTitle, int year, String oldTitle);
+	public void showVideoGame() throws SQLException;
+	public void showDeveloperName() throws SQLException;
+	public void updateVideoGame(String newTitle, int year, String oldTitle) throws SQLException;
 	public void terminalGamesFinished();
-	public void insertDeveloperName(DeveloperNameModel model);
+	public void insertDeveloperName(DeveloperNameModel model) throws SQLException;
 	public void deleteDeveloperName(String developerName) throws SQLException;
-	public void updateDeveloperNameLead(String newLeadDev, String developerName);
-	public void updateDeveloperNameWebsite(String website, String developerName);
-	public void updateDeveloperNameName(String newDeveloperName, String developerName);
-	public void deleteDeveloperNameLead(String deleteLeadDev);
-	public void deleteDeveloperNameWeb(String deleteWebsite);
-	public DeveloperNameModel[] selectLeadDev(String leadDev);
+	public void updateDeveloperNameLead(String newLeadDev, String developerName) throws SQLException;
+	public void updateDeveloperNameWebsite(String website, String developerName) throws SQLException;
+	public void updateDeveloperNameName(String newDeveloperName, String developerName) throws SQLException;
+	public void deleteDeveloperNameLead(String deleteLeadDev) throws SQLException;
+	public void deleteDeveloperNameWeb(String deleteWebsite) throws SQLException;
+	public DeveloperNameModel[] selectLeadDev(String leadDev) throws SQLException;
 	public DeveloperNameModel[] selectWebsite(String website);
-	public DeveloperNameModel[] selectName(String name);
-	public VideoGameModel[] projectionColumns(List<String> columns);
+	public DeveloperNameModel[] selectName(String name) throws SQLException;
+	public VideoGameModel[] projectionColumns(List<String> columns) throws SQLException;
 	public DeveloperNameVideoGameModel[] joinTables(String joinWhere) throws SQLException;
-	public VideoGameCountModel[] aggregateGroupBy();
-	public VideoGameCountModel[] aggregateGroupByHaving();
-	public VideoGameModel[] division();
-	public VideoGameCountModel[] nestedAggregation();
+	public VideoGameCountModel[] aggregateGroupBy() throws SQLException;
+	public VideoGameCountModel[] aggregateGroupByHaving() throws SQLException;
+	public VideoGameModel[] division() throws SQLException;
+	public VideoGameCountModel[] nestedAggregation() throws SQLException;
 
-	VideoGameModel[] getVideoGamesObjects();
-	DeveloperNameModel[] getDeveloperNamesObjects();
+	VideoGameModel[] getVideoGamesObjects() throws SQLException;
+	DeveloperNameModel[] getDeveloperNamesObjects() throws SQLException;
 
 	DeveloperNameModel[] filterDevelopers(String leadDev, String website, String name) throws SQLException;
 }
