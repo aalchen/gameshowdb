@@ -300,6 +300,9 @@ public class GameAwardsDbHandler {
 
 	public void updateDeveloperNameLead(String newLeadDev, String developerName) throws SQLException {
 		try {
+			if (!newLeadDev.matches("^[a-zA-Z\\s]+$")) {
+				throw new SQLException("Lead Developer must contain all alphabetical characters.");
+			}
 			String query = "UPDATE DeveloperName SET lead_developer = ? WHERE name = ?";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 			ps.setString(1, newLeadDev);
@@ -323,6 +326,9 @@ public class GameAwardsDbHandler {
 
 	public void updateDeveloperNameWebsite(String website, String developerName) throws SQLException {
 		try {
+			if (!website.matches(".*[a-zA-Z].*")) {
+				throw new SQLException("Website must contain some alphabetical characters.");
+			}
 			String query = "UPDATE DeveloperName SET website = ? WHERE name = ?";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 			ps.setString(1, website);
