@@ -892,9 +892,6 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		} else if (name.length() > 50) {
 			JOptionPane.showMessageDialog(null, "Name is too long. Please enter a name with 50 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
-		} else if (!name.matches(".*[a-zA-Z].*")) {
-			JOptionPane.showMessageDialog(null, "Name must contain some alphabetical characters.", "Error", JOptionPane.ERROR_MESSAGE);
-			return false;
 		}
 
 		if (website.isEmpty()) {
