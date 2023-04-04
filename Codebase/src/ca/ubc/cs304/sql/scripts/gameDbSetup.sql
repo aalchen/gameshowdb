@@ -6,7 +6,7 @@ CREATE TABLE DeveloperName(
 
 CREATE TABLE Company(
                         name VARCHAR(50) PRIMARY KEY,
-                        contact_info VARCHAR(100)
+                        contact_info VARCHAR(100) UNIQUE
 );
 
 CREATE TABLE Venue(
@@ -97,7 +97,7 @@ CREATE TABLE VideoGame_DLC(
 
 CREATE TABLE CommunityAward(
                                votes INTEGER,
-                               deadline Date,
+                               deadline Date NOT NULL,
                                award_name VARCHAR(50),
                                award_date Date,
                                PRIMARY KEY (award_name, award_date),
@@ -126,7 +126,7 @@ CREATE TABLE Staff_AwardCeremony(
 CREATE TABLE Sponsors(
                          company_name VARCHAR(50),
                          awardceremony_date Date,
-                         money INTEGER,
+                         money INTEGER NOT NULL,
                          PRIMARY KEY(company_name, awardceremony_date),
                          FOREIGN KEY(company_name) REFERENCES Company(name),
                          FOREIGN KEY(awardceremony_date) REFERENCES AwardCeremony(award_ceremony_date)
@@ -199,6 +199,7 @@ INSERT INTO LivestreamViewerCount VALUES ('English', 3423, 'Twitch', '2022-12-11
 INSERT INTO LivestreamViewerCount VALUES ('English', 3683, 'Youtube', '2022-12-11');
 
 INSERT INTO DeveloperName VALUES ('Todd Howard', 'https://bethesdagamestudios.com/', 'Bethesda Game Studios');
+INSERT INTO DeveloperName VALUES ('Todd Howard', 'https://www.blizzard.com', 'Blizzard Entertainment');
 INSERT INTO DeveloperName VALUES ('Hidetaka Miyazaki', 'https://www.fromsoftware.jp/ww/', 'FromSoftware');
 INSERT INTO DeveloperName VALUES ('Hideo Kojima','https://kojimaproductions.jp/', 'Kojima Productions');
 INSERT INTO DeveloperName VALUES ('Shinya Takahashi', 'https://www.nintendo.com/en-ca/', 'Nintendo EPD');
