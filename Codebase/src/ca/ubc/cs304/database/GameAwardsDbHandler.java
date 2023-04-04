@@ -263,6 +263,7 @@ public class GameAwardsDbHandler {
 			int rowCount = ps.executeUpdate();
 			if (rowCount == 0) {
 				System.out.println(WARNING_TAG + " Developer name" + developerName + " does not exist!");
+				throw new SQLException("This developer name does not exist!");
 			}
 
 			connection.commit();
@@ -330,6 +331,7 @@ public class GameAwardsDbHandler {
 			int rowCount = ps.executeUpdate();
 			if (rowCount == 0) {
 				System.out.println(WARNING_TAG + " Developer name" + developerName + " does not exist!");
+				throw new SQLException("This developer name does not exist!");
 			}
 
 			connection.commit();
@@ -352,6 +354,7 @@ public class GameAwardsDbHandler {
 			int rowCount = ps.executeUpdate();
 			if (rowCount == 0) {
 				System.out.println(WARNING_TAG + " Developer name" + developerName + " does not exist!");
+				throw new SQLException("This developer name does not exist!");
 			}
 
 			connection.commit();
