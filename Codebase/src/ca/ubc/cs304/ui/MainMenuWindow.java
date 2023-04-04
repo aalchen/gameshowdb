@@ -69,6 +69,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		this.aggregationGroupByButton = new JButton("View Number of Genres per Developer");
 		this.aggregationGroupByHavingButton = new JButton("View Most Recent Genre Release for Developer after 2015");
 		this.projectionButton = new JButton("View Selected Columns for Video Games");
+		this.projectionSubmitButton = new JButton("Submit");
 		this.quitButton = new JButton("Quit");
 		this.removeVideoGameSubmitButton = new JButton("Submit");
 		this.addDeveloperButton = new JButton("Add developer");
@@ -95,6 +96,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		this.aggregationGroupByHavingButton.addActionListener(this);
 		this.projectionButton.addActionListener(this);
 		this.projectionSubmitButton.addActionListener(this);
+		this.nestedAggregationButton.addActionListener(this);
 		this.quitButton.addActionListener(this);
 		this.removeVideoGameSubmitButton.addActionListener(this);
 		this.addDeveloperButton.addActionListener(this);
@@ -377,8 +379,6 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		developerNameCheckBox.setSelected(false);
 		addCheckBox(developerNameCheckBox);
 
-		projectionSubmitButton = new JButton("Submit");
-
 		addButton(projectionSubmitButton);
 		addButton(finderButton);
 		addButton(mainMenuButton);
@@ -471,7 +471,6 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 	}
 
 	private void finderWindow() {
-		// TODO ADD AGGREGATIONS AND PROJECTIONS
 		setUpJpanel();
 
 		// add buttons
