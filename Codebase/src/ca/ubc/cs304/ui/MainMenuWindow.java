@@ -502,7 +502,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(null, "Genre is too long. Please enter a genre with 20 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		} else if (!genre.matches("^[a-zA-Z\\s]+$")) {
-			JOptionPane.showMessageDialog(null, "Genre must contain all alphabetical characters.", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Genre must contain all alphabetical characters. Please enter a valid genre.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 
@@ -900,8 +900,8 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		} else if (website.length() > 50) {
 			JOptionPane.showMessageDialog(null, "Website is too long. Please enter a website with 50 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
-		} else if (!website.matches(".*[a-zA-Z].*")) {
-			JOptionPane.showMessageDialog(null, "Website must contain some alphabetical characters.", "Error", JOptionPane.ERROR_MESSAGE);
+		} else if (!website.matches(".*\\..*")) {
+			JOptionPane.showMessageDialog(null, "Website is not in a url format. Please re-enter with a valid url.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 
@@ -912,7 +912,7 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(null, "Lead Developer is too long. Please enter a Lead Developer with 50 characters or less.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		} else if (!leadDeveloper.matches("^[a-zA-Z\\s]+$")) {
-			JOptionPane.showMessageDialog(null, "Lead Developer must contain all alphabetical characters.", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Lead Developer must contain all alphabetical characters. Please enter a Lead Developer with alphabetical characters.", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		return true;
