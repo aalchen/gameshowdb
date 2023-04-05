@@ -215,6 +215,58 @@ public class GameAwardsShow implements LoginWindowDelegate, TerminalGamesDelegat
 		return models;
 	}
 
+	public CompanyModel[] projectionCompany(List<String> columns) throws SQLException {
+		CompanyModel[] models = dbHandler.projectionCompany(columns);
+		return models;
+	}
+
+	public DeveloperCountryModel[] projectionDeveloperCountry(List<String> columns) throws SQLException {
+		DeveloperCountryModel[] models = dbHandler.projectionDeveloperCountry(columns);
+		return models;
+	}
+
+	public DeveloperNameModel[] projectionDeveloperName(List<String> columns) throws SQLException {
+		DeveloperNameModel[] models = dbHandler.projectionDeveloperName(columns);
+		return models;
+	}
+
+	public LivestreamUrlModel[] projectionLivestreamUrl(List<String> columns) throws SQLException {
+		LivestreamUrlModel[] models = dbHandler.projectionLivestreamUrl(columns);
+		return models;
+	}
+
+	public LivestreamViewerCountModel[] projectionLivestreamViewerCount(List<String> columns) throws SQLException {
+		LivestreamViewerCountModel[] models = dbHandler.projectionLivestreamViewerCount(columns);
+		return models;
+	}
+
+	public SponsoredAwardModel[] projectionSponsoredAward(List<String> columns) throws SQLException {
+		SponsoredAwardModel[] models = dbHandler.projectionSponsoredAward(columns);
+		return models;
+	}
+
+	public SponsorsModel[] projectionSponsors(List<String> columns) throws SQLException {
+		SponsorsModel[] models = dbHandler.projectionSponsors(columns);
+		return models;
+	}
+
+	public StaffModel[] projectionStaff(List<String> columns) throws SQLException {
+		StaffModel[] models = dbHandler.projectionStaff(columns);
+		return models;
+	}
+
+	public StaffAwardCeremonyModel[] projectionStaffAwardCeremony(List<String> columns) throws SQLException {
+		StaffAwardCeremonyModel[] models = dbHandler.projectionStaffAwardCeremony(columns);
+		return models;
+	}
+
+	public VideoGameDLCModel[] projectionVideoGameDLC(List<String> columns) throws SQLException {
+		VideoGameDLCModel[] models = dbHandler.projectionVideoGameDLC(columns);
+		return models;
+	}
+
+
+
 	public VenueModel[] projectionVenue(List<String> columns) throws SQLException {
 		VenueModel[] models = dbHandler.projectionVenue(columns);
 		return models;

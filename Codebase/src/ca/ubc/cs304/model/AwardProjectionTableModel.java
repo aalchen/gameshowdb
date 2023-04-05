@@ -34,7 +34,7 @@ public class AwardProjectionTableModel extends AbstractTableModel {
                 return awardModels[rowIndex].getName();
             case "prize":
                 return awardModels[rowIndex].getPrize();
-            case "date":
+            case "award_date":
                 return awardModels[rowIndex].getDate();
             case "videogame_title":
                 return awardModels[rowIndex].getVideoGameTitle();

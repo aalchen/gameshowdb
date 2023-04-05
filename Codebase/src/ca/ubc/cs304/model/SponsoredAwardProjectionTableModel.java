@@ -24,24 +24,17 @@ public class SponsoredAwardProjectionTableModel extends AbstractTableModel {
 
     @Override
     public String getColumnName(int columnIndex) {
-        switch (columnNames.get(columnIndex)) {
-            case "SPONSOR":
-                return "Sponsor";
-            case "AWARD_NAME":
-                return "Award Name";
-            case "AWARD_DATE":
-                return "Award Date";
-        }
-        return null;
+        String result = columnNames.get(columnIndex);
+        return result;
     }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (getColumnName(columnIndex)) {
-            case "Sponsor":
+            case "sponsor":
                 return sponsoredAwardModels[rowIndex].getSponsor();
-            case "Award Name":
+            case "award_name":
                 return sponsoredAwardModels[rowIndex].getAwardName();
-            case "Award Date":
+            case "award_date":
                 return sponsoredAwardModels[rowIndex].getAwardDate();
         }
         return null;

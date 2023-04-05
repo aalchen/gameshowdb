@@ -24,20 +24,15 @@ public class StaffAwardCeremonyProjectionTableModel extends AbstractTableModel {
 
     @Override
     public String getColumnName(int columnIndex) {
-        switch (columnNames.get(columnIndex)) {
-            case "STAFF_ID":
-                return "Staff Id";
-            case "AWARDCEREMONY_DATE":
-                return "Award Ceremony Date";
-        }
-        return null;
+        String result = columnNames.get(columnIndex);
+        return result;
     }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (getColumnName(columnIndex)) {
-            case "Staff Id":
+            case "staff_id":
                 return staffAwardCeremonyModels[rowIndex].getStaffId();
-            case "Award Ceremony Date":
+            case "awardceremony_date":
                 return staffAwardCeremonyModels[rowIndex].getAwardCeremonyDate();
         }
         return null;

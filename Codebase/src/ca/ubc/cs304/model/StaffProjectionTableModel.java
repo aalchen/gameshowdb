@@ -24,28 +24,19 @@ public class StaffProjectionTableModel extends AbstractTableModel {
 
     @Override
     public String getColumnName(int columnIndex) {
-        switch (columnNames.get(columnIndex)) {
-            case "PHONE_NUMBER":
-                return "Phone Number";
-            case "NAME":
-                return "Name";
-            case "ID":
-                return "Id";
-            case "ROLE":
-                return "Role";
-        }
-        return null;
+        String result = columnNames.get(columnIndex);
+        return result;
     }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (getColumnName(columnIndex)) {
-            case "Phone Number":
+            case "phone_number":
                 return staffModels[rowIndex].getPhoneNumber();
-            case "Name":
+            case "name":
                 return staffModels[rowIndex].getName();
-            case "Id":
+            case "id":
                 return staffModels[rowIndex].getId();
-            case "Role":
+            case "role":
                 return staffModels[rowIndex].getRole();
         }
         return null;

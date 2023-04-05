@@ -342,37 +342,47 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 					projectionTable = new CommunityAwardProjectionTableModel(models, columns);
 					break;
 				case "company":
+					models = delegate.projectionCompany(columns);
 					projectionTable = new CompanyProjectionTableModel(models, columns);
 					break;
 				case "developercountry":
+					models = delegate.projectionDeveloperCountry(columns);
 					projectionTable = new DeveloperCountryProjectionTableModel(models, columns);
 					break;
 				case "developername":
+					models = delegate.projectionDeveloperName(columns);
 					projectionTable = new DeveloperNameProjectionTableModel(models, columns);
 					break;
 				case "livestreamurl":
+					models = delegate.projectionLivestreamUrl(columns);
 					projectionTable = new LivestreamUrlProjectionTableModel(models, columns);
 					break;
 				case "livestreamviewercount":
+					models = delegate.projectionLivestreamViewerCount(columns);
 					projectionTable = new LivestreamViewerCountProjectionTableModel(models, columns);
 					break;
 				case "sponsoredaward":
+					models = delegate.projectionSponsoredAward(columns);
 					projectionTable = new SponsoredAwardProjectionTableModel(models, columns);
 					break;
 				case "sponsors":
+					models = delegate.projectionSponsors(columns);
 					projectionTable = new SponsorsProjectionTableModel(models, columns);
 					break;
 				case "staff":
+					models = delegate.projectionStaff(columns);
 					projectionTable = new StaffProjectionTableModel(models, columns);
 					break;
-				case "staffawardceremony":
+				case "staff_awardceremony":
+					models = delegate.projectionStaffAwardCeremony(columns);
 					projectionTable = new StaffAwardCeremonyProjectionTableModel(models, columns);
 					break;
 				case "venue":
 					models = delegate.projectionVenue(columns);
 					projectionTable = new VenueProjectionTableModel(models, columns);
 					break;
-				case "videogamedlc":
+				case "videogame_dlc":
+					models = delegate.projectionVideoGameDLC(columns);
 					projectionTable = new VideoGameDLCProjectionTableModel(models, columns);
 					break;
 				case "videogame":
