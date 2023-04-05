@@ -262,6 +262,7 @@ public class GameAwardsDbHandler {
 			int rowCount = ps.executeUpdate();
 			if (rowCount == 0) {
 				System.out.println(WARNING_TAG + " Developer name" + developerName + " does not exist!");
+				throw new SQLException("This developer name does not exist!");
 			}
 
 			connection.commit();
@@ -298,6 +299,9 @@ public class GameAwardsDbHandler {
 
 	public void updateDeveloperNameLead(String newLeadDev, String developerName) throws SQLException {
 		try {
+			if (!newLeadDev.matches("^[a-zA-Z\\s]+$")) {
+				throw new SQLException("Lead Developer must contain all alphabetical characters. Please enter a Lead Developer with alphabetical characters.");
+			}
 			String query = "UPDATE DeveloperName SET lead_developer = ? WHERE name = ?";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 			ps.setString(1, newLeadDev);
@@ -321,6 +325,9 @@ public class GameAwardsDbHandler {
 
 	public void updateDeveloperNameWebsite(String website, String developerName) throws SQLException {
 		try {
+			if (!website.matches(".*\\..*")) {
+				throw new SQLException("Website is not in a url format. Please re-enter with a valid url.");
+			}
 			String query = "UPDATE DeveloperName SET website = ? WHERE name = ?";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 			ps.setString(1, website);
@@ -329,6 +336,7 @@ public class GameAwardsDbHandler {
 			int rowCount = ps.executeUpdate();
 			if (rowCount == 0) {
 				System.out.println(WARNING_TAG + " Developer name" + developerName + " does not exist!");
+				throw new SQLException("This developer name does not exist!");
 			}
 
 			connection.commit();
@@ -358,6 +366,7 @@ public class GameAwardsDbHandler {
 			int rowCount = ps.executeUpdate();
 			if (rowCount == 0) {
 				System.out.println(WARNING_TAG + " Developer name" + developerName + " does not exist!");
+				throw new SQLException("This developer name does not exist!");
 			}
 			ps.close();
 
