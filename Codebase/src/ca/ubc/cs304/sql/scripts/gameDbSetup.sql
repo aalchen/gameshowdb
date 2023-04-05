@@ -45,8 +45,9 @@ CREATE TABLE Staff(
 CREATE TABLE DeveloperCountry(
                                  name VARCHAR(50) PRIMARY KEY,
                                  country VARCHAR(50),
-                                 FOREIGN KEY (name) REFERENCES DeveloperName(name)
-                                     ON DELETE CASCADE
+                                 CONSTRAINT devcountry_fk
+                                     FOREIGN KEY (name) REFERENCES DeveloperName(name)
+                                         ON DELETE CASCADE
 );
 
 CREATE TABLE VideoGame(
@@ -55,8 +56,9 @@ CREATE TABLE VideoGame(
                           genre VARCHAR(50),
                           developer_name VARCHAR(50),
                           PRIMARY KEY (title, year),
-                          FOREIGN KEY (developer_name) REFERENCES DeveloperName(name)
-                              ON DELETE SET NULL
+                          CONSTRAINT videogame_fk
+                              FOREIGN KEY (developer_name) REFERENCES DeveloperName(name)
+                                  ON DELETE SET NULL
 );
 
 CREATE TABLE Award(
@@ -90,7 +92,7 @@ CREATE TABLE VideoGame_DLC(
                               videogame_year INTEGER,
                               PRIMARY KEY (title, year, videogame_title, videogame_year),
                               FOREIGN KEY (videogame_title, videogame_year) REFERENCES VideoGame(title, year)
-                                  ON DELETE SET NULL
+                                  ON DELETE CASCADE
 );
 
 
@@ -159,7 +161,7 @@ INSERT INTO Staff VALUES (1232224511, 'Sam Cho', 23122, 'Security and Safety');
 INSERT INTO Staff VALUES (2234422455, 'Arjun Dhaliwal', 12245, 'Internal Jury');
 INSERT INTO Staff VALUES (4122320485, 'Olivia Moon', 12431, 'Internal Jury');
 INSERT INTO Staff VALUES (1344422123, 'Sam Person', 12456, 'Internal Jury');
-INSERT INTO Staff VALUES (1412120435, 'Chris Amongus', 12436, 'Internal Jury');
+INSERT INTO Staff VALUES (141-212-0435, 'Chris Amongus', 12436, 'Internal Jury');
 
 INSERT INTO Company VALUES ('Red Bull Inc', 'sponsor@redbull.com');
 INSERT INTO Company VALUES ('Nintendo of America', 'nintendoSponsor@ntdsponsor.com');
@@ -199,7 +201,6 @@ INSERT INTO LivestreamViewerCount VALUES ('English', 3423, 'Twitch', '2022-12-11
 INSERT INTO LivestreamViewerCount VALUES ('English', 3683, 'Youtube', '2022-12-11');
 
 INSERT INTO DeveloperName VALUES ('Todd Howard', 'https://bethesdagamestudios.com/', 'Bethesda Game Studios');
-INSERT INTO DeveloperName VALUES ('Todd Howard', 'https://www.blizzard.com', 'Blizzard Entertainment');
 INSERT INTO DeveloperName VALUES ('Hidetaka Miyazaki', 'https://www.fromsoftware.jp/ww/', 'FromSoftware');
 INSERT INTO DeveloperName VALUES ('Hideo Kojima','https://kojimaproductions.jp/', 'Kojima Productions');
 INSERT INTO DeveloperName VALUES ('Shinya Takahashi', 'https://www.nintendo.com/en-ca/', 'Nintendo EPD');
