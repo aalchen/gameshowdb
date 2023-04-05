@@ -1277,7 +1277,7 @@ public class GameAwardsDbHandler {
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 			ResultSet rs = ps.executeQuery();
 			String name = "";
-			int phone_number = INVALID_INPUT;
+			String phone_number = "";
 			String role = "";
 			int id = INVALID_INPUT;
 
@@ -1286,7 +1286,7 @@ public class GameAwardsDbHandler {
 					name = rs.getString("name");
 				}
 				if (projectionColumns.contains("phone_number")) {
-					phone_number = rs.getInt("phone_number");
+					phone_number = rs.getString("phone_number");
 				}
 				if (projectionColumns.contains("role")) {
 					role = rs.getString("role");
