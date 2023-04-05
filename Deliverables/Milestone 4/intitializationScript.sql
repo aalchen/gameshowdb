@@ -6,7 +6,7 @@ CREATE TABLE DeveloperName(
 
 CREATE TABLE Company(
                         name VARCHAR(50) PRIMARY KEY,
-                        contact_info VARCHAR(100)
+                        contact_info VARCHAR(100) UNIQUE
 );
 
 CREATE TABLE Venue(
@@ -45,8 +45,9 @@ CREATE TABLE Staff(
 CREATE TABLE DeveloperCountry(
                                  name VARCHAR(50) PRIMARY KEY,
                                  country VARCHAR(50),
-                                 FOREIGN KEY (name) REFERENCES DeveloperName(name)
-                                     ON DELETE CASCADE
+                                 CONSTRAINT devcountry_fk
+                                     FOREIGN KEY (name) REFERENCES DeveloperName(name)
+                                         ON DELETE CASCADE
 );
 
 CREATE TABLE VideoGame(
@@ -55,8 +56,9 @@ CREATE TABLE VideoGame(
                           genre VARCHAR(50),
                           developer_name VARCHAR(50),
                           PRIMARY KEY (title, year),
-                          FOREIGN KEY (developer_name) REFERENCES DeveloperName(name)
-                              ON DELETE SET NULL
+                          CONSTRAINT videogame_fk
+                              FOREIGN KEY (developer_name) REFERENCES DeveloperName(name)
+                                  ON DELETE SET NULL
 );
 
 CREATE TABLE Award(
@@ -90,14 +92,14 @@ CREATE TABLE VideoGame_DLC(
                               videogame_year INTEGER,
                               PRIMARY KEY (title, year, videogame_title, videogame_year),
                               FOREIGN KEY (videogame_title, videogame_year) REFERENCES VideoGame(title, year)
-                                  ON DELETE SET NULL
+                                  ON DELETE CASCADE
 );
 
 
 
 CREATE TABLE CommunityAward(
                                votes INTEGER,
-                               deadline Date,
+                               deadline Date NOT NULL,
                                award_name VARCHAR(50),
                                award_date Date,
                                PRIMARY KEY (award_name, award_date),
@@ -126,7 +128,7 @@ CREATE TABLE Staff_AwardCeremony(
 CREATE TABLE Sponsors(
                          company_name VARCHAR(50),
                          awardceremony_date Date,
-                         money INTEGER,
+                         money INTEGER NOT NULL,
                          PRIMARY KEY(company_name, awardceremony_date),
                          FOREIGN KEY(company_name) REFERENCES Company(name),
                          FOREIGN KEY(awardceremony_date) REFERENCES AwardCeremony(award_ceremony_date)
@@ -199,6 +201,7 @@ INSERT INTO LivestreamViewerCount VALUES ('English', 3423, 'Twitch', '2022-12-11
 INSERT INTO LivestreamViewerCount VALUES ('English', 3683, 'Youtube', '2022-12-11');
 
 INSERT INTO DeveloperName VALUES ('Todd Howard', 'https://bethesdagamestudios.com/', 'Bethesda Game Studios');
+INSERT INTO DeveloperName VALUES ('Todd Howard', 'https://www.blizzard.com', 'Blizzard Entertainment');
 INSERT INTO DeveloperName VALUES ('Hidetaka Miyazaki', 'https://www.fromsoftware.jp/ww/', 'FromSoftware');
 INSERT INTO DeveloperName VALUES ('Hideo Kojima','https://kojimaproductions.jp/', 'Kojima Productions');
 INSERT INTO DeveloperName VALUES ('Shinya Takahashi', 'https://www.nintendo.com/en-ca/', 'Nintendo EPD');
@@ -208,6 +211,9 @@ INSERT INTO DeveloperName VALUES ('Andree Cossette', 'https://quebec.ubisoft.com
 INSERT INTO DeveloperName VALUES ('Jason Vandenberghe', 'https://montreal.ubisoft.com/en/', 'Ubisoft Montreal');
 
 INSERT INTO VideoGame VALUES ('Skyrim', 2013, 'Action role-playing', 'Bethesda Game Studios');
+INSERT INTO VideoGame VALUES ('Elder Scrolls', 2017, 'Action-adventure', 'Bethesda Game Studios');
+INSERT INTO VideoGame VALUES ('DOOM Eternal', 2020, 'Action', 'Bethesda Game Studios');
+INSERT INTO VideoGame VALUES ('Quake', 2000, 'First-person shooter', 'Bethesda Game Studios');
 INSERT INTO VideoGame VALUES ('Sekiro: Shadows Die Twice', 2019, 'Action-adventure', 'FromSoftware');
 INSERT INTO VideoGame VALUES ('Death Stranding', 2021, 'Action', 'Kojima Productions');
 INSERT INTO VideoGame VALUES ('The Legend of Zelda: Breath of the Wild', 2018, 'Action-adventure', 'Nintendo EPD');
