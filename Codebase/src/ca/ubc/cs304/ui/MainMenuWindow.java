@@ -551,7 +551,6 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		// add buttons
 		addButton(projectionTableSelectButton);
 		addButton(joinTablesButton);
-		contentPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
 		addButton(aggregationGroupByButton);
 		addButton(aggregationGroupByHavingButton);
 		addButton(nestedAggregationButton);
