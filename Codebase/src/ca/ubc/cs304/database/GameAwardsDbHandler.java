@@ -3,6 +3,7 @@ package ca.ubc.cs304.database;
 import ca.ubc.cs304.model.*;
 import ca.ubc.cs304.util.PrintablePreparedStatement;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
@@ -195,6 +196,7 @@ public class GameAwardsDbHandler {
 
 	private void dropBranchTableIfExists() throws SQLException {
 		try {
+			// https://piazza.com/class/lcfob0rgtel508/post/695
 			String query = "select table_name from user_tables";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 			List<String> lowercaseTableNames = new ArrayList<String>(Arrays.asList("communityaward", "sponsoredaward", "staff_awardceremony", "sponsors", "videogame_dlc", "livestreamviewercount", "award", "videogame", "developercountry", "staff", "livestreamurl", "awardceremony", "venue", "company", "developername"));
@@ -341,6 +343,13 @@ public class GameAwardsDbHandler {
 
 	public void updateDeveloperNameName(String newDeveloperName, String developerName) throws SQLException {
 		try {
+			String sqlString = new String(Files.readAllBytes(Paths.get("../project_c9p6e_d0c3b_f2x4t/Codebase/src/ca/ubc/cs304/sql/scripts/disableDeveloperNameFK.sql")));
+			String[] sqlArray = sqlString.split(";");
+			for (String statement : sqlArray) {
+				PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(statement), statement, false);
+				ps.executeUpdate();
+				ps.close();
+			}
 			String query = "UPDATE DeveloperName SET name = ? WHERE name = ?";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 			ps.setString(1, newDeveloperName);
@@ -350,15 +359,37 @@ public class GameAwardsDbHandler {
 			if (rowCount == 0) {
 				System.out.println(WARNING_TAG + " Developer name" + developerName + " does not exist!");
 			}
-
-			connection.commit();
-
 			ps.close();
+
+			String query1 = "UPDATE DeveloperCountry SET name = ? WHERE name = ?";
+			PrintablePreparedStatement ps1 = new PrintablePreparedStatement(connection.prepareStatement(query1), query1, false);
+			ps1.setString(1, newDeveloperName);
+			ps1.setString(2, developerName);
+			ps1.executeUpdate();
+			ps1.close();
+
+			String query2 = "UPDATE VideoGame SET developer_name = ? WHERE developer_name = ?";
+			PrintablePreparedStatement ps2 = new PrintablePreparedStatement(connection.prepareStatement(query2), query2, false);
+			ps2.setString(1, newDeveloperName);
+			ps2.setString(2, developerName);
+			ps2.executeUpdate();
+			ps2.close();
+
+			String sqlString3 = new String(Files.readAllBytes(Paths.get("../project_c9p6e_d0c3b_f2x4t/Codebase/src/ca/ubc/cs304/sql/scripts/enableDeveloperNameFK.sql")));
+			String[] sqlArray3 = sqlString3.split(";");
+			for (String statement : sqlArray3) {
+				PrintablePreparedStatement ps3 = new PrintablePreparedStatement(connection.prepareStatement(statement), statement, false);
+				ps3.executeUpdate();
+				ps3.close();
+			}
+			connection.commit();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 			rollbackConnection();
 			throw e;
 
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -752,7 +783,8 @@ public class GameAwardsDbHandler {
 	public List<String> projectionColList(String table) {
 		List<String> existingColumns = new ArrayList<>();
 		try {
-			String query = "select column_name from ALL_TAB_COLUMNS where table_name = ?";
+			// https://piazza.com/class/lcfob0rgtel508/post/695
+			String query = "select column_name from USER_TAB_COLUMNS where table_name = ?";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 			ps.setString(1, table);
 			ResultSet rs = ps.executeQuery();
@@ -1245,7 +1277,7 @@ public class GameAwardsDbHandler {
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 			ResultSet rs = ps.executeQuery();
 			String name = "";
-			int phone_number = INVALID_INPUT;
+			String phone_number = "";
 			String role = "";
 			int id = INVALID_INPUT;
 
@@ -1254,7 +1286,7 @@ public class GameAwardsDbHandler {
 					name = rs.getString("name");
 				}
 				if (projectionColumns.contains("phone_number")) {
-					phone_number = rs.getInt("phone_number");
+					phone_number = rs.getString("phone_number");
 				}
 				if (projectionColumns.contains("role")) {
 					role = rs.getString("role");

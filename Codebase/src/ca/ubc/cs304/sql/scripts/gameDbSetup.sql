@@ -35,7 +35,7 @@ CREATE TABLE LivestreamUrl(
 );
 
 CREATE TABLE Staff(
-                      phone_number INTEGER UNIQUE,
+                      phone_number VARCHAR(20),
                       name VARCHAR(50),
                       id INTEGER PRIMARY KEY,
                       role VARCHAR(50)
@@ -45,8 +45,9 @@ CREATE TABLE Staff(
 CREATE TABLE DeveloperCountry(
                                  name VARCHAR(50) PRIMARY KEY,
                                  country VARCHAR(50),
-                                 FOREIGN KEY (name) REFERENCES DeveloperName(name)
-                                     ON DELETE CASCADE
+                                 CONSTRAINT devcountry_fk
+                                     FOREIGN KEY (name) REFERENCES DeveloperName(name)
+                                         ON DELETE CASCADE
 );
 
 CREATE TABLE VideoGame(
@@ -55,8 +56,9 @@ CREATE TABLE VideoGame(
                           genre VARCHAR(50),
                           developer_name VARCHAR(50),
                           PRIMARY KEY (title, year),
-                          FOREIGN KEY (developer_name) REFERENCES DeveloperName(name)
-                              ON DELETE SET NULL
+                          CONSTRAINT videogame_fk
+                              FOREIGN KEY (developer_name) REFERENCES DeveloperName(name)
+                                  ON DELETE SET NULL
 );
 
 CREATE TABLE Award(
@@ -90,7 +92,7 @@ CREATE TABLE VideoGame_DLC(
                               videogame_year INTEGER,
                               PRIMARY KEY (title, year, videogame_title, videogame_year),
                               FOREIGN KEY (videogame_title, videogame_year) REFERENCES VideoGame(title, year)
-                                  ON DELETE SET NULL
+                                  ON DELETE CASCADE
 );
 
 
@@ -145,21 +147,21 @@ INSERT INTO AwardCeremony VALUES (13423, '2020-12-11', 'The AXIS Theater');
 INSERT INTO AwardCeremony VALUES (33683, '2021-12-09', 'Microsoft Theater');
 INSERT INTO AwardCeremony VALUES (63683, '2022-12-11', 'Microsoft Theater');
 
-INSERT INTO Staff VALUES (6132350112, 'Jeffrey Lovegood', 10000, 'Producer');
-INSERT INTO Staff VALUES (6135550192, 'Maria Salt', 11103, 'Presentor');
-INSERT INTO Staff VALUES(6223450192, 'Kamila Butter', 12103, 'Presentor');
-INSERT INTO Staff VALUES(6225650177, 'John Pink', 13103, 'Presentor');
-INSERT INTO Staff VALUES (6115001232, 'John Pool', 11190, 'Producer Assistant');
-INSERT INTO Staff VALUES (6131110152, 'Tommy Nook', 11111, 'Marketing');
-INSERT INTO Staff VALUES (2388631123, 'Lizzy Fox', 10100, 'Communications Director');
-INSERT INTO Staff VALUES (6115220352, 'Marshal Pepper', 40113, 'Communications Assistant');
-INSERT INTO Staff VALUES (2374442346, 'Kurl Kem', 10235,  'Communications Director');
-INSERT INTO Staff VALUES (4013333452, 'Shamsem Chumlo', 12355, 'Financing Management');
-INSERT INTO Staff VALUES (1232224511, 'Sam Cho', 23122, 'Security and Safety');
-INSERT INTO Staff VALUES (2234422455, 'Arjun Dhaliwal', 12245, 'Internal Jury');
-INSERT INTO Staff VALUES (4122320485, 'Olivia Moon', 12431, 'Internal Jury');
-INSERT INTO Staff VALUES (1344422123, 'Sam Person', 12456, 'Internal Jury');
-INSERT INTO Staff VALUES (1412120435, 'Chris Amongus', 12436, 'Internal Jury');
+INSERT INTO Staff VALUES ('6132350112', 'Jeffrey Lovegood', 10000, 'Producer');
+INSERT INTO Staff VALUES ('6135550192', 'Maria Salt', 11103, 'Presentor');
+INSERT INTO Staff VALUES('6223450192', 'Kamila Butter', 12103, 'Presentor');
+INSERT INTO Staff VALUES('6225650177', 'John Pink', 13103, 'Presentor');
+INSERT INTO Staff VALUES ('6115001232', 'John Pool', 11190, 'Producer Assistant');
+INSERT INTO Staff VALUES ('6131110152', 'Tommy Nook', 11111, 'Marketing');
+INSERT INTO Staff VALUES ('2388631123', 'Lizzy Fox', 10100, 'Communications Director');
+INSERT INTO Staff VALUES ('6115220352', 'Marshal Pepper', 40113, 'Communications Assistant');
+INSERT INTO Staff VALUES ('2374442346', 'Kurl Kem', 10235,  'Communications Director');
+INSERT INTO Staff VALUES ('4013333452', 'Shamsem Chumlo', 12355, 'Financing Management');
+INSERT INTO Staff VALUES ('1232224511', 'Sam Cho', 23122, 'Security and Safety');
+INSERT INTO Staff VALUES ('2234422455', 'Arjun Dhaliwal', 12245, 'Internal Jury');
+INSERT INTO Staff VALUES ('4122320485', 'Olivia Moon', 12431, 'Internal Jury');
+INSERT INTO Staff VALUES ('1344422123', 'Sam Person', 12456, 'Internal Jury');
+INSERT INTO Staff VALUES ('1412120435', 'Chris Amongus', 12436, 'Internal Jury');
 
 INSERT INTO Company VALUES ('Red Bull Inc', 'sponsor@redbull.com');
 INSERT INTO Company VALUES ('Nintendo of America', 'nintendoSponsor@ntdsponsor.com');

@@ -67,10 +67,10 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		this.mainMenuButton = new JButton("Return to Main Menu");
 		this.returnToFinderToolButton = new JButton("Return to Finder Tool Menu");
 		this.finderButton = new JButton("Finder Tool");
-		this.divisionTablesButton = new JButton("Find contenders for EveryGenre Award");
-		this.nestedAggregationButton = new JButton("Find Developer Release Count after 2015");
-		this.aggregationGroupByButton = new JButton("View Number of Genres per Developer");
-		this.aggregationGroupByHavingButton = new JButton("View Most Recent Genre Release for Developer after 2015");
+		this.divisionTablesButton = new JButton("View contenders for EveryGenre Award");
+		this.nestedAggregationButton = new JButton("View Developer Release Count (>2015)");
+		this.aggregationGroupByButton = new JButton("View Number of Genres by Developer");
+		this.aggregationGroupByHavingButton = new JButton("View Newest Genres by Developer (>2015)");
 		this.projectionTableSelectButton = new JButton("View Tables");
 		this.projectionButton = new JButton("Select Table");
 		this.projectionSubmitButton = new JButton("Submit");
@@ -549,12 +549,12 @@ public class MainMenuWindow extends JFrame implements ActionListener {
 		setUpJpanel();
 
 		// add buttons
-		addButton(joinTablesButton);
-		addButton(divisionTablesButton);
 		addButton(projectionTableSelectButton);
+		addButton(joinTablesButton);
 		addButton(aggregationGroupByButton);
 		addButton(aggregationGroupByHavingButton);
 		addButton(nestedAggregationButton);
+		addButton(divisionTablesButton);
 		addButton(mainMenuButton);
 		revalidate();
 		repaint();
