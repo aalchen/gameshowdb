@@ -196,6 +196,7 @@ public class GameAwardsDbHandler {
 
 	private void dropBranchTableIfExists() throws SQLException {
 		try {
+			// https://piazza.com/class/lcfob0rgtel508/post/695
 			String query = "select table_name from user_tables";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 			List<String> lowercaseTableNames = new ArrayList<String>(Arrays.asList("communityaward", "sponsoredaward", "staff_awardceremony", "sponsors", "videogame_dlc", "livestreamviewercount", "award", "videogame", "developercountry", "staff", "livestreamurl", "awardceremony", "venue", "company", "developername"));
@@ -782,6 +783,7 @@ public class GameAwardsDbHandler {
 	public List<String> projectionColList(String table) {
 		List<String> existingColumns = new ArrayList<>();
 		try {
+			// https://piazza.com/class/lcfob0rgtel508/post/695
 			String query = "select column_name from USER_TAB_COLUMNS where table_name = ?";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 			ps.setString(1, table);
