@@ -24,28 +24,19 @@ public class LivestreamUrlProjectionTableModel extends AbstractTableModel {
 
     @Override
     public String getColumnName(int columnIndex) {
-        switch (columnNames.get(columnIndex)) {
-            case "URL":
-                return "Url";
-            case "LANGUAGE":
-                return "Language";
-            case "NAME":
-                return "Name";
-            case "AWARD_CEREMONY_DATE":
-                return "Award Ceremony Date";
-        }
-        return null;
+        String result = columnNames.get(columnIndex);
+        return result;
     }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (getColumnName(columnIndex)) {
-            case "Url":
+            case "url":
                 return livestreamUrlModels[rowIndex].getUrl();
-            case "Language":
+            case "language":
                 return livestreamUrlModels[rowIndex].getLanguage();
-            case "Name":
+            case "name":
                 return livestreamUrlModels[rowIndex].getName();
-            case "Award Ceremony Date":
+            case "awardceremony_date":
                 return livestreamUrlModels[rowIndex].getAwardCeremonyDate();
         }
         return null;

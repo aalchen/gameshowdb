@@ -24,20 +24,15 @@ public class CompanyProjectionTableModel extends AbstractTableModel {
 
     @Override
     public String getColumnName(int columnIndex) {
-        switch (columnNames.get(columnIndex)) {
-            case "Name":
-                return "Name";
-            case "CONTACT_INFO":
-                return "Contact Information";
-        }
-        return null;
+        String result = columnNames.get(columnIndex);
+        return result;
     }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (getColumnName(columnIndex)) {
-            case "Name":
+            case "name":
                 return companyModels[rowIndex].getName();
-            case "Contact Information":
+            case "contact_info":
                 return companyModels[rowIndex].getContactInfo();
         }
         return null;

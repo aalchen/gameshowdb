@@ -24,24 +24,17 @@ public class DeveloperNameProjectionTableModel extends AbstractTableModel {
 
     @Override
     public String getColumnName(int columnIndex) {
-        switch (columnNames.get(columnIndex)) {
-            case "LEAD_DEVELOPER":
-                return "Lead Developer";
-            case "WEBSITE":
-                return "Website";
-            case "NAME":
-                return "Name";
-        }
-        return null;
+        String result = columnNames.get(columnIndex);
+        return result;
     }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (getColumnName(columnIndex)) {
-            case "Lead Developer":
+            case "lead_developer":
                 return developerNameModels[rowIndex].getLeadDeveloper();
-            case "Website":
+            case "website":
                 return developerNameModels[rowIndex].getWebsite();
-            case "Name":
+            case "name":
                 return developerNameModels[rowIndex].getName();
         }
         return null;

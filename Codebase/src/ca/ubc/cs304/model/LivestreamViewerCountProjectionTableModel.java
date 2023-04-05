@@ -24,28 +24,19 @@ public class LivestreamViewerCountProjectionTableModel extends AbstractTableMode
 
     @Override
     public String getColumnName(int columnIndex) {
-        switch (columnNames.get(columnIndex)) {
-            case "VIEWER_COUNT":
-                return "Viewer Count";
-            case "LANGUAGE":
-                return "Language";
-            case "NAME":
-                return "Name";
-            case "AWARD_CEREMONY_DATE":
-                return "Award Ceremony Date";
-        }
-        return null;
+        String result = columnNames.get(columnIndex);
+        return result;
     }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (getColumnName(columnIndex)) {
-            case "Viewer Count":
+            case "viewer_count":
                 return livestreamViewerCountModels[rowIndex].getViewerCount();
-            case "Language":
+            case "language":
                 return livestreamViewerCountModels[rowIndex].getLanguage();
-            case "Name":
+            case "name":
                 return livestreamViewerCountModels[rowIndex].getName();
-            case "Award Ceremony Date":
+            case "awardceremony_date":
                 return livestreamViewerCountModels[rowIndex].getAwardCeremonyDate();
         }
         return null;

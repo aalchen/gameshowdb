@@ -825,7 +825,7 @@ public class GameAwardsDbHandler {
 			ResultSet rs = ps.executeQuery();
 			String name = "";
 			int prize = INVALID_INPUT;
-			Date date = null;
+			Date award_date = null;
 			String videogame_title = "";
 			int videogame_year = INVALID_INPUT;
 
@@ -836,8 +836,8 @@ public class GameAwardsDbHandler {
 				if (projectionColumns.contains("prize")) {
 					prize = rs.getInt("prize");
 				}
-				if (projectionColumns.contains("date")) {
-					date = rs.getDate("date");
+				if (projectionColumns.contains("award_date")) {
+					award_date = rs.getDate("award_date");
 				}
 				if (projectionColumns.contains("videogame_title")) {
 					videogame_title = rs.getString("videogame_title");
@@ -845,7 +845,7 @@ public class GameAwardsDbHandler {
 				if (projectionColumns.contains("videogame_year")) {
 					videogame_year = rs.getInt("videogame_year");
 				}
-				AwardModel model = new AwardModel(name, prize, date, videogame_title, videogame_year);
+				AwardModel model = new AwardModel(name, prize, award_date, videogame_title, videogame_year);
 				result.add(model);
 			}
 
@@ -944,5 +944,415 @@ public class GameAwardsDbHandler {
 		}
 
 		return result.toArray(new CommunityAwardModel[result.size()]);
+	}
+
+	public CompanyModel[] projectionCompany(List<String> projectionColumns) throws SQLException {
+		ArrayList<CompanyModel> result = new ArrayList<CompanyModel>();
+		String queryColumns = "";
+		for (int i = 0; i < projectionColumns.size(); i++) {
+			queryColumns = queryColumns + projectionColumns.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
+
+		try {
+			String query = "SELECT " + queryColumns + " FROM Company";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			String name = "";
+			String contact_info = "";
+
+			while (rs.next()) {
+				if (projectionColumns.contains("name")) {
+					name = rs.getString("name");
+				}
+				if (projectionColumns.contains("contact_info")) {
+					contact_info = rs.getString("contact_info");
+				}
+				CompanyModel model = new CompanyModel(name, contact_info);
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+
+		}
+
+		return result.toArray(new CompanyModel[result.size()]);
+	}
+
+	public DeveloperCountryModel[] projectionDeveloperCountry(List<String> projectionColumns) throws SQLException {
+		ArrayList<DeveloperCountryModel> result = new ArrayList<DeveloperCountryModel>();
+		String queryColumns = "";
+		for (int i = 0; i < projectionColumns.size(); i++) {
+			queryColumns = queryColumns + projectionColumns.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
+
+		try {
+			String query = "SELECT " + queryColumns + " FROM DeveloperCountry";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			String name = "";
+			String country = "";
+
+			while (rs.next()) {
+				if (projectionColumns.contains("name")) {
+					name = rs.getString("name");
+				}
+				if (projectionColumns.contains("country")) {
+					country = rs.getString("country");
+				}
+				DeveloperCountryModel model = new DeveloperCountryModel(name, country);
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+
+		}
+
+		return result.toArray(new DeveloperCountryModel[result.size()]);
+	}
+
+	public DeveloperNameModel[] projectionDeveloperName(List<String> projectionColumns) throws SQLException {
+		ArrayList<DeveloperNameModel> result = new ArrayList<DeveloperNameModel>();
+		String queryColumns = "";
+		for (int i = 0; i < projectionColumns.size(); i++) {
+			queryColumns = queryColumns + projectionColumns.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
+
+		try {
+			String query = "SELECT " + queryColumns + " FROM DeveloperName";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			String name = "";
+			String lead_developer = "";
+			String website = "";
+
+			while (rs.next()) {
+				if (projectionColumns.contains("name")) {
+					name = rs.getString("name");
+				}
+				if (projectionColumns.contains("lead_developer")) {
+					lead_developer = rs.getString("lead_developer");
+				}
+				if (projectionColumns.contains("website")) {
+					website = rs.getString("website");
+				}
+				DeveloperNameModel model = new DeveloperNameModel(lead_developer, website, name);
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+
+		}
+
+		return result.toArray(new DeveloperNameModel[result.size()]);
+	}
+
+	public LivestreamUrlModel[] projectionLivestreamUrl(List<String> projectionColumns) throws SQLException {
+		ArrayList<LivestreamUrlModel> result = new ArrayList<LivestreamUrlModel>();
+		String queryColumns = "";
+		for (int i = 0; i < projectionColumns.size(); i++) {
+			queryColumns = queryColumns + projectionColumns.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
+
+		try {
+			String query = "SELECT " + queryColumns + " FROM LivestreamUrl";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			String name = "";
+			String language = "";
+			String url = "";
+			Date awardceremony_date = null;
+
+			while (rs.next()) {
+				if (projectionColumns.contains("name")) {
+					name = rs.getString("name");
+				}
+				if (projectionColumns.contains("language")) {
+					language = rs.getString("language");
+				}
+				if (projectionColumns.contains("url")) {
+					url = rs.getString("url");
+				}
+				if (projectionColumns.contains("awardceremony_date")) {
+					awardceremony_date = rs.getDate("awardceremony_date");
+				}
+				LivestreamUrlModel model = new LivestreamUrlModel(url, language, name, awardceremony_date);
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+
+		}
+
+		return result.toArray(new LivestreamUrlModel[result.size()]);
+	}
+
+	public LivestreamViewerCountModel[] projectionLivestreamViewerCount(List<String> projectionColumns) throws SQLException {
+		ArrayList<LivestreamViewerCountModel> result = new ArrayList<LivestreamViewerCountModel>();
+		String queryColumns = "";
+		for (int i = 0; i < projectionColumns.size(); i++) {
+			queryColumns = queryColumns + projectionColumns.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
+
+		try {
+			String query = "SELECT " + queryColumns + " FROM LivestreamViewerCount";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			String name = "";
+			String language = "";
+			int viewer_count = INVALID_INPUT;
+			Date awardceremony_date = null;
+
+			while (rs.next()) {
+				if (projectionColumns.contains("name")) {
+					name = rs.getString("name");
+				}
+				if (projectionColumns.contains("language")) {
+					language = rs.getString("language");
+				}
+				if (projectionColumns.contains("viewer_count")) {
+					viewer_count = rs.getInt("viewer_count");
+				}
+				if (projectionColumns.contains("awardceremony_date")) {
+					awardceremony_date = rs.getDate("awardceremony_date");
+				}
+				LivestreamViewerCountModel model = new LivestreamViewerCountModel(language, viewer_count, name, awardceremony_date);
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+
+		}
+
+		return result.toArray(new LivestreamViewerCountModel[result.size()]);
+	}
+
+	public SponsoredAwardModel[] projectionSponsoredAward(List<String> projectionColumns) throws SQLException {
+		ArrayList<SponsoredAwardModel> result = new ArrayList<SponsoredAwardModel>();
+		String queryColumns = "";
+		for (int i = 0; i < projectionColumns.size(); i++) {
+			queryColumns = queryColumns + projectionColumns.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
+
+		try {
+			String query = "SELECT " + queryColumns + " FROM SponsoredAward";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			String sponsor = "";
+			String award_name = "";
+			Date award_date = null;
+
+			while (rs.next()) {
+				if (projectionColumns.contains("sponsor")) {
+					sponsor = rs.getString("sponsor");
+				}
+				if (projectionColumns.contains("award_name")) {
+					award_name = rs.getString("award_name");
+				}
+				if (projectionColumns.contains("award_date")) {
+					award_date = rs.getDate("award_date");
+				}
+				SponsoredAwardModel model = new SponsoredAwardModel(sponsor, award_name, award_date);
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+
+		}
+
+		return result.toArray(new SponsoredAwardModel[result.size()]);
+	}
+
+	public SponsorsModel[] projectionSponsors(List<String> projectionColumns) throws SQLException {
+		ArrayList<SponsorsModel> result = new ArrayList<SponsorsModel>();
+		String queryColumns = "";
+		for (int i = 0; i < projectionColumns.size(); i++) {
+			queryColumns = queryColumns + projectionColumns.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
+
+		try {
+			String query = "SELECT " + queryColumns + " FROM Sponsors";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			String company_name = "";
+			int money = INVALID_INPUT;
+			Date awardceremony_date = null;
+
+			while (rs.next()) {
+				if (projectionColumns.contains("company_name")) {
+					company_name = rs.getString("company_name");
+				}
+				if (projectionColumns.contains("money")) {
+					money = rs.getInt("money");
+				}
+				if (projectionColumns.contains("awardceremony_date")) {
+					awardceremony_date = rs.getDate("awardceremony_date");
+				}
+				SponsorsModel model = new SponsorsModel(company_name, awardceremony_date, money);
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+		}
+
+		return result.toArray(new SponsorsModel[result.size()]);
+	}
+
+	public StaffModel[] projectionStaff(List<String> projectionColumns) throws SQLException {
+		ArrayList<StaffModel> result = new ArrayList<StaffModel>();
+		String queryColumns = "";
+		for (int i = 0; i < projectionColumns.size(); i++) {
+			queryColumns = queryColumns + projectionColumns.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
+
+		try {
+			String query = "SELECT " + queryColumns + " FROM Staff";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			String name = "";
+			int phone_number = INVALID_INPUT;
+			String role = "";
+			int id = INVALID_INPUT;
+
+			while (rs.next()) {
+				if (projectionColumns.contains("name")) {
+					name = rs.getString("name");
+				}
+				if (projectionColumns.contains("phone_number")) {
+					phone_number = rs.getInt("phone_number");
+				}
+				if (projectionColumns.contains("role")) {
+					role = rs.getString("role");
+				}
+				if (projectionColumns.contains("id")) {
+					id = rs.getInt("id");
+				}
+				StaffModel model = new StaffModel(phone_number, name, id, role);
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+		}
+
+		return result.toArray(new StaffModel[result.size()]);
+	}
+
+	public StaffAwardCeremonyModel[] projectionStaffAwardCeremony(List<String> projectionColumns) throws SQLException {
+		ArrayList<StaffAwardCeremonyModel> result = new ArrayList<StaffAwardCeremonyModel>();
+		String queryColumns = "";
+		for (int i = 0; i < projectionColumns.size(); i++) {
+			queryColumns = queryColumns + projectionColumns.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
+
+		try {
+			String query = "SELECT " + queryColumns + " FROM Staff_AwardCeremony";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			Date awardceremony_date = null;
+			int staff_id = INVALID_INPUT;
+
+			while (rs.next()) {
+				if (projectionColumns.contains("awardceremony_date")) {
+					awardceremony_date = rs.getDate("awardceremony_date");
+				}
+				if (projectionColumns.contains("staff_id")) {
+					staff_id = rs.getInt("staff_id");
+				}
+				StaffAwardCeremonyModel model = new StaffAwardCeremonyModel(staff_id, awardceremony_date);
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+		}
+
+		return result.toArray(new StaffAwardCeremonyModel[result.size()]);
+	}
+
+	public VideoGameDLCModel[] projectionVideoGameDLC(List<String> projectionColumns) throws SQLException {
+		ArrayList<VideoGameDLCModel> result = new ArrayList<VideoGameDLCModel>();
+		String queryColumns = "";
+		for (int i = 0; i < projectionColumns.size(); i++) {
+			queryColumns = queryColumns + projectionColumns.get(i) + ", ";
+		}
+		queryColumns = queryColumns.substring(0, queryColumns.length() - 2);
+
+		try {
+			String query = "SELECT " + queryColumns + " FROM VideoGame_DLC";
+			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+			ResultSet rs = ps.executeQuery();
+			String title = "";
+			int year = INVALID_INPUT;
+			String videogame_title = "";
+			int videogame_year = INVALID_INPUT;
+
+			while (rs.next()) {
+				if (projectionColumns.contains("title")) {
+					title = rs.getString("title");
+				}
+				if (projectionColumns.contains("year")) {
+					year = rs.getInt("year");
+				}
+				if (projectionColumns.contains("videogame_title")) {
+					videogame_title = rs.getString("videogame_title");
+				}
+				if (projectionColumns.contains("videogame_year")) {
+					videogame_year = rs.getInt("videogame_year");
+				}
+				VideoGameDLCModel model = new VideoGameDLCModel(title, year, videogame_title, videogame_year);
+				result.add(model);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			throw e;
+		}
+
+		return result.toArray(new VideoGameDLCModel[result.size()]);
 	}
 }

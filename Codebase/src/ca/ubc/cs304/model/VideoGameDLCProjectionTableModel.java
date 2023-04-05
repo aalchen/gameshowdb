@@ -24,28 +24,19 @@ public class VideoGameDLCProjectionTableModel extends AbstractTableModel {
 
     @Override
     public String getColumnName(int columnIndex) {
-        switch (columnNames.get(columnIndex)) {
-            case "TITLE":
-                return "Title";
-            case "YEAR":
-                return "Year";
-            case "VIDEOGAME_TITLE":
-                return "Video Game Title";
-            case "VIDEOGAME_YEAR":
-                return "Video Game Year";
-        }
-        return null;
+        String result = columnNames.get(columnIndex);
+        return result;
     }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (getColumnName(columnIndex)) {
-            case "Title":
+            case "title":
                 return videoGameDLCModels[rowIndex].getTitle();
-            case "Year":
+            case "year":
                 return videoGameDLCModels[rowIndex].getYear();
-            case "Video Game Title":
+            case "videogame_title":
                 return videoGameDLCModels[rowIndex].getVideoGameTitle();
-            case "Video Game Year":
+            case "videogame_year":
                 return videoGameDLCModels[rowIndex].getVideoGameYear();
         }
         return null;

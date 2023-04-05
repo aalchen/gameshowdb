@@ -36,7 +36,7 @@ public class VideoGameProjectionTableModel extends AbstractTableModel {
                 return videoGameModels[rowIndex].getYear();
             case "genre":
                 return videoGameModels[rowIndex].getGenre();
-            case "developer_Name":
+            case "developer_name":
                 return videoGameModels[rowIndex].getDeveloperName();
         }
         return null;

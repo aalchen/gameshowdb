@@ -47,4 +47,14 @@ public interface GUIWindowDelegate {
 	public Model[] projectionAward(List<String> columns) throws SQLException;
 	public Model[] projectionAwardCeremony(List<String> columns) throws SQLException;
 	public Model[] projectionCommunityAward(List<String> columns) throws SQLException;
+	public Model[] projectionCompany(List<String> columns) throws SQLException;
+	public Model[] projectionDeveloperCountry(List<String> columns) throws SQLException;
+	public Model[] projectionDeveloperName(List<String> columns) throws SQLException;
+	public Model[] projectionLivestreamUrl(List<String> columns) throws SQLException;
+	public Model[] projectionLivestreamViewerCount(List<String> columns) throws SQLException;
+	public Model[] projectionSponsoredAward(List<String> columns) throws SQLException;
+	public Model[] projectionSponsors(List<String> columns) throws SQLException;
+	public Model[] projectionStaff(List<String> columns) throws SQLException;
+	public Model[] projectionStaffAwardCeremony(List<String> columns) throws SQLException;
+	public Model[] projectionVideoGameDLC(List<String> columns) throws SQLException;
 }

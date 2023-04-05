@@ -24,20 +24,15 @@ public class DeveloperCountryProjectionTableModel extends AbstractTableModel {
 
     @Override
     public String getColumnName(int columnIndex) {
-        switch (columnNames.get(columnIndex)) {
-            case "Name":
-                return "Name";
-            case "COUNTRY":
-                return "Country";
-        }
-        return null;
+        String result = columnNames.get(columnIndex);
+        return result;
     }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (getColumnName(columnIndex)) {
-            case "Name":
-                return developerCountryModels[rowIndex].getLeadDeveloper();
-            case "Country":
+            case "name":
+                return developerCountryModels[rowIndex].getName();
+            case "country":
                 return developerCountryModels[rowIndex].getCountry();
         }
         return null;
