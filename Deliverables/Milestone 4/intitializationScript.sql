@@ -58,7 +58,7 @@ CREATE TABLE VideoGame(
                           PRIMARY KEY (title, year),
                           CONSTRAINT videogame_fk
                               FOREIGN KEY (developer_name) REFERENCES DeveloperName(name)
-                                  ON DELETE SET NULL
+                                  ON DELETE CASCADE
 );
 
 CREATE TABLE Award(
