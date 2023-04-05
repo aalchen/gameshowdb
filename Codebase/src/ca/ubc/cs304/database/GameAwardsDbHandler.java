@@ -782,7 +782,7 @@ public class GameAwardsDbHandler {
 	public List<String> projectionColList(String table) {
 		List<String> existingColumns = new ArrayList<>();
 		try {
-			String query = "select column_name from ALL_TAB_COLUMNS where table_name = ?";
+			String query = "select column_name from USER_TAB_COLUMNS where table_name = ?";
 			PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 			ps.setString(1, table);
 			ResultSet rs = ps.executeQuery();
